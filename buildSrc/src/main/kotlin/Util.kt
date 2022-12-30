@@ -8,6 +8,7 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.plugin.use.PluginDependency
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformCommonOptions
 import java.io.File
 import java.io.IOException
 import java.util.Base64
@@ -33,9 +34,9 @@ fun VersionCatalog.requireBundle(alias: String) = findBundle(alias).get()
 
 val org.gradle.api.provider.Provider<PluginDependency>.id: String get() = get().pluginId
 
-fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
-    (this as ExtensionAware).extensions.configure("kotlinOptions", block)
-}
+// fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinMultiplatformCommonOptions.() -> Unit) {
+//     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
+// }
 
 /**
  * Creates a java array initializer code for a list of strings.

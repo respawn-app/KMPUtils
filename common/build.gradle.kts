@@ -10,7 +10,3 @@ kotlin {
         jvm = true,
     )
 }
-
-dependencies {
-    commonMainApi(libs.kotlin.coroutines)
-}

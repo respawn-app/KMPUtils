@@ -5,6 +5,7 @@ package com.nek12.kmmutils.apiresult
 import com.nek12.kmmutils.apiresult.ApiResult.Success
 import com.nek12.kmmutils.apiresult.ApiResult.Error
 import com.nek12.kmmutils.apiresult.ApiResult.Loading
+import kotlinx.coroutines.CancellationException
 
 class NotFinishedException(
     message: String? = "ApiResult is still in Loading state",
@@ -55,6 +56,7 @@ sealed class ApiResult<out T> {
          * Execute [call] catching any exceptions.
          * Throwables are not caught on purpose.
          */
+        @Deprecated("Use ApiResult() or runResulting() instead", ReplaceWith("ApiResult(call)"))
         inline fun <T> wrap(call: () -> T): ApiResult<T> = try {
             Success(call())
         } catch (expected: Exception) {
@@ -74,13 +76,20 @@ sealed class ApiResult<out T> {
     }
 }
 
+inline fun <T> ApiResult(block: () -> T) = try {
+    Success(block())
+} catch (expected: CancellationException) {
+    // Cancellation exceptions should not be caught
+    throw expected
+} catch (expected: Exception) {
+    Error(expected)
+}
+
+inline fun <T, R> T.runResulting(block: (T) -> R) = ApiResult { block(this) }
+
+inline fun runResulting(block: () -> Unit) = ApiResult { block() }
+
 fun <R, T : R> ApiResult<T>.or(defaultValue: R): R = orElse { defaultValue }
-
-inline fun <T> ApiResult<List<T>>.orEmpty(): List<T> = or(emptyList())
-
-inline fun <T> ApiResult<Set<T>>.orEmpty(): Set<T> = or(emptySet())
-
-inline fun <T> ApiResult<Collection<T>>.orEmpty(): Collection<T> = or(emptyList())
 
 inline fun <T> ApiResult<T>.orNull(): T? = or(null)
 
@@ -156,25 +165,6 @@ inline fun <T, R> ApiResult<T>.map(block: (T) -> R): ApiResult<R> = when (this) 
 }
 
 /**
- * Map each [Success] value of given iterable
- */
-inline fun <T, R> Iterable<ApiResult<T>>.mapResults(transform: (T) -> R): List<ApiResult<R>> = map { it.map(transform) }
-
-/**
- * Map each [Error] value of given iterable
- */
-inline fun <T> Iterable<ApiResult<T>>.mapErrors(transform: (Exception) -> Exception) = map { it.mapError(transform) }
-
-/**
- * Change the exception of the [Error] response without affecting loading/success results
- */
-inline fun <T, R : Exception> ApiResult<T>.mapError(block: (Exception) -> R): ApiResult<T> = when (this) {
-    is Success -> this
-    is Error -> Error(block(e))
-    is Loading -> this
-}
-
-/**
  * Maps [Loading] to a [Success], not touching anything else
  */
 inline fun <R, T : R> ApiResult<T>.mapLoading(block: () -> R): ApiResult<R> = when (this) {
@@ -196,7 +186,7 @@ inline fun <T> ApiResult<ApiResult<T>>.unwrap(): ApiResult<T> = fold(
  * Change the type of successful result to [R], also wrapping [block] in another result then folding it (handling exceptions)
  */
 inline fun <T, R> ApiResult<T>.mapWrapping(block: (T) -> R): ApiResult<R> =
-    map { ApiResult.wrap { block(it) } }.unwrap()
+    map { ApiResult { block(it) } }.unwrap()
 
 /**
  * Make this result an error if [Success] value was null
@@ -210,33 +200,6 @@ inline fun <T> ApiResult<T?>.errorOnNull(
  */
 inline fun <T> ApiResult<T>.nullOnError(): ApiResult<T?> = if (this is Error) Success(null) else this
 
-/**
- * Returns a list containing only [Error] values
- */
-inline fun <T> Iterable<ApiResult<T>>.filterErrors() = filterIsInstance<Error>()
-
-/**
- * Returns a list containing only [Success] values
- */
-inline fun <T> Iterable<ApiResult<T>>.filterSuccesses() = filterIsInstance<Success<T>>()
-
-/**
- * Returns a new list containing only items that are both [Success] an not null
- */
-inline fun <T> Iterable<ApiResult<T?>>.filterNulls() =
-    filter { it !is Success || it.result != null }.mapResults { it!! }
-
-/**
- * Maps [Success] values of the sequence
- */
-inline fun <T, R> Sequence<ApiResult<T>>.mapResults(crossinline transform: (T) -> R) = map { it.map(transform) }
-
-/**
- * Makes [Success] an [Error] using provided [exception] if the collection is empty
- */
-inline fun <T, R : Collection<T>> ApiResult<R>.errorIfEmpty(
-    exception: Exception = ConditionNotSatisfiedException("Collection was empty")
-) = errorIf(exception) { it.isEmpty() }
 
 /**
  * Recover from an exception of type [R], else no-op.

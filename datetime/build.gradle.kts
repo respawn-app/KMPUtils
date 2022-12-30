@@ -11,6 +11,7 @@ kotlin {
     )
 }
 
+
 dependencies {
-    commonMainApi(libs.kotlin.coroutines)
+    commonMainApi(libs.kotlin.datetime)
 }

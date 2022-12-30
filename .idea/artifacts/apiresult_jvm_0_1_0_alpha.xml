@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="apiresult-jvm-0.1.0-alpha">
+    <output-path>$PROJECT_DIR$/apiresult/build/libs</output-path>
+    <root id="archive" name="apiresult-jvm-0.1.0-alpha.jar">
+      <element id="module-output" name="kmmutils.apiresult.jvmMain" />
+    </root>
+  </artifact>
+</component>

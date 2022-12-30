@@ -1,30 +1,39 @@
 [versions]
+atomicfu = "0.18.4"
 coroutines = "1.6.4"
 datetime = "0.4.0"
+dependencyAnalysisPlugin = "1.18.0"
 detekt = "1.22.0"
 gradleAndroid = "8.0.0-alpha10"
 gradleDoctorPlugin = "0.8.1"
+kotest = "5.5.4"
 # @pin
 kotlin = "1.8.0"
-versionCatalogUpdatePlugin = "0.7.0"
-versionsPlugin = "0.43.0"
+turbine = "0.12.1"
 uuid = "0.5.0"
-turbine = "0.8.0"
-atomicfu = "0.18.4"
-dependencyAnalysisPlugin = "1.13.1"
-
+versionCatalogUpdatePlugin = "0.7.0"
+versionsPlugin = "0.44.0"
 
 [libraries]
-kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+android-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradleAndroid" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
-android-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradleAndroid" }
-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 version-gradle = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "versionsPlugin" }
-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
-detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+
+[bundles]
+unittest = [
+    "kotest-assertions",
+    "kotest-property",
+    "kotlin-reflect",
+]
 
 [plugins]
 atomicfu = { id = "kotlinx-atomicfu", version.ref = "atomicfu" }

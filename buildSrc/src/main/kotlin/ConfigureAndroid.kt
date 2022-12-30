@@ -1,5 +1,6 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "MissingPackageDeclaration")
 
+import Config.jvmTarget
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project
@@ -30,12 +31,6 @@ fun Project.configureAndroid(
         targetCompatibility = Config.javaVersion
     }
 
-    kotlinOptions {
-        jvmTarget = Config.jvmTarget
-        allWarningsAsErrors = properties["warningsAsErrors"] as? Boolean ?: false
-        freeCompilerArgs = freeCompilerArgs + Config.kotlinCompilerArgs
-    }
-
     buildFeatures {
         aidl = false
         buildConfig = false
@@ -56,7 +51,7 @@ fun Project.configureAndroid(
                     useJUnitPlatform()
                     maxHeapSize = "1G"
                     setForkEvery(100)
-                    jvmArgs.addAll(listOf("-Xmx1g", "-Xms512m"))
+                    jvmArgs!!.addAll(listOf("-Xmx1g", "-Xms512m"))
                 }
             }
         }
@@ -65,6 +60,16 @@ fun Project.configureAndroid(
 
 fun Project.configureAndroidLibrary(variant: LibraryExtension) = variant.apply {
     configureAndroid(this)
+
+    buildTypes {
+        release {
+            setProperty(
+                "archivesBaseName",
+                project.name
+            )
+            isMinifyEnabled = false
+        }
+    }
 
     defaultConfig {
         consumerProguardFiles(file(Config.consumerProguardFile))
