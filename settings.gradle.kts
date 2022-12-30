@@ -25,6 +25,7 @@ dependencyResolutionManagement {
         maven { url = uri("https://jitpack.io") }
     }
 }
+
 rootProject.name = "kmmutils"
 
 include(":apiresult")

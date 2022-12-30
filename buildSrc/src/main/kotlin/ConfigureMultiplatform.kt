@@ -1,10 +1,11 @@
+@file:Suppress("MissingPackageDeclaration")
+
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.creating
+import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import gradle.kotlin.dsl.accessors._6c62bfe83ffd132b6e9b5c9e42b6a39d.sourceSets
-import org.gradle.kotlin.dsl.get
 
 @Suppress("unused")
 fun Project.configureMultiplatform(
@@ -21,7 +22,7 @@ fun Project.configureMultiplatform(
     if (jvm) {
         jvm {
             compilations.all {
-                kotlinOptions.jvmTarget = "11"
+                kotlinOptions.jvmTarget = Config.jvmTarget
             }
             testRuns["test"].executionTask.configure {
                 useJUnitPlatform()
@@ -42,8 +43,7 @@ fun Project.configureMultiplatform(
             }
         }
 
-        sourceSets {
-
+        sourceSets.apply {
             all {
                 languageSettings.apply {
                     optIn("kotlin.RequiresOptIn")

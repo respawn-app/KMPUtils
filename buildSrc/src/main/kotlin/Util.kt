@@ -10,28 +10,8 @@ import org.gradle.plugin.use.PluginDependency
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import java.io.File
 import java.io.IOException
-import java.util.Optional
+import java.util.Base64
 import java.util.concurrent.TimeUnit
-
-fun generateGitPatchVersion(): Int = "git rev-list HEAD --count".runCommand().trim().toInt()
-
-fun String.runCommand(
-    workingDir: File = File("."),
-    timeoutAmount: Long = 10,
-    timeoutUnit: TimeUnit = TimeUnit.SECONDS
-): String = ProcessBuilder(split("\\s(?=(?:[^'\"`]*(['\"`])[^'\"`]*\\1)*[^'\"`]*$)".toRegex()))
-    .directory(workingDir)
-    .redirectOutput(ProcessBuilder.Redirect.PIPE)
-    .redirectError(ProcessBuilder.Redirect.PIPE)
-    .start()
-    .apply { waitFor(timeoutAmount, timeoutUnit) }
-    .run {
-        val error = errorStream.bufferedReader().readText().trim()
-        if (error.isNotEmpty()) {
-            throw IOException(error)
-        }
-        inputStream.bufferedReader().readText().trim()
-    }
 
 /**
  * Load version catalog for usage in places where it is not available yet with gradle 7.x.
@@ -57,5 +37,23 @@ fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 }
 
-val Project.isReleaseBuild: Boolean
-    get() = properties.containsKey("signingKey")
+/**
+ * Creates a java array initializer code for a list of strings.
+ * { "a", "b", "c" }
+ */
+fun List<String>.toJavaArrayString() = buildString {
+    append("{")
+
+    this@toJavaArrayString.forEachIndexed { i, it ->
+
+        append("\"$it\"")
+
+        if (i != this@toJavaArrayString.lastIndex) {
+            append(", ")
+        }
+    }
+
+    append("}")
+}
+
+fun String.toBase64() = Base64.getEncoder().encodeToString(toByteArray())

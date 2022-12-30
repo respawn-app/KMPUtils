@@ -10,6 +10,8 @@ import org.gradle.kotlin.dsl.provideDelegate
 
 fun Project.configurePublication() {
 
+    val isReleaseBuild = properties["release"] == "true"
+
     afterEvaluate {
 
         extensions.findByType<PublishingExtension>()?.apply {
@@ -23,8 +25,8 @@ fun Project.configurePublication() {
                         }
                     )
                     credentials {
-                        username = requireNotNull(properties["sonatypeUsername"]).toString()
-                        password = requireNotNull(properties["sonatypePassword"]).toString()
+                        username = properties["sonatypeUsername"]?.toString()
+                        password = properties["sonatypePassword"]?.toString()
                     }
                 }
             }

@@ -1,19 +1,18 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "MissingPackageDeclaration")
 
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.variant.LibraryVariant
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project
 
 fun Project.configureAndroid(
     commonExtension: CommonExtension<*, *, *, *>,
 ) = commonExtension.apply {
-
     compileSdk = Config.compileSdk
 
     defaultConfig {
         minSdk = Config.minSdk
-        resourceConfigurations.addAll(Config.supportedLocales)
+        testInstrumentationRunner = Config.testRunner
+        // resourceConfigurations.addAll(Config.supportedLocales)
         proguardFiles(getDefaultProguardFile(Config.defaultProguardFile), Config.proguardFile)
     }
 
@@ -61,13 +60,6 @@ fun Project.configureAndroid(
                 }
             }
         }
-    }
-
-    val libs by versionCatalog
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.findVersion("compose-compiler").get().toString()
-        useLiveLiterals = true
     }
 }
 

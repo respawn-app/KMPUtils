@@ -14,12 +14,11 @@ kotlin {
     configureMultiplatform(
         this,
         android = true,
-        ios = true,
+        ios = false, // TODO: unresolved :kotlin-native-prebuilt-macos-aarch64:1.8.0
         jvm = true,
     )
 }
 
 android {
     configureAndroidLibrary(this)
-
 }
