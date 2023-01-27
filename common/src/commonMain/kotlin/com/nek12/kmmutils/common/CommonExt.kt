@@ -3,6 +3,7 @@
 package com.nek12.kmmutils.common
 
 import java.math.BigDecimal
+import java.sql.Time
 import java.util.Locale
 import java.util.UUID
 import kotlin.math.abs
@@ -127,9 +128,6 @@ val ClosedRange<Long>.size get() = endInclusive - start
 val ClosedRange<Short>.size @JvmName("sizeShort") get() = endInclusive - start
 
 val ClosedRange<Byte>.size @JvmName("sizeByte") get() = endInclusive - start
-
-val Iterable<Time?>.totalDuration: Time
-    get() = Time.fromSecondsSinceMidnight(this.sumOf { it?.totalSeconds?.toLong() ?: 0L })
 
 fun Int?.takeIfNotZero() = takeIf { it != 0 }
 fun Long?.takeIfNotZero() = takeIf { it != 0L }

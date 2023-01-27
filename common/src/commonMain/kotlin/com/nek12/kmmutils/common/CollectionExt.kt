@@ -82,3 +82,15 @@ fun <T> List<T>.swapped(index1: Int, index2: Int): List<T> {
 }
 
 fun <S, T> Collection<S>.cartesianProduct(other: List<T>) = flatMap { value -> List(other.size) { value }.zip(other) }
+
+inline fun <T> List<T>.tryReplace(
+    item: T,
+    replacement: T.() -> T
+): List<T> {
+    val i = indexOf(item)
+    if (i == -1) return this
+
+    val newList = toMutableList()
+    newList[i] = replacement(item)
+    return newList
+}

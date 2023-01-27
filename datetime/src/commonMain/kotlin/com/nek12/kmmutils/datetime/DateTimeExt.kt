@@ -91,3 +91,6 @@ fun Month.length(year: Int): Int {
 }
 
 fun String.toTimeOrNull() = runCatching { Time.of(this) }.getOrNull()
+
+val Iterable<Time?>.totalDuration
+    get() = Time.fromSecondsSinceMidnight(sumOf { it?.totalSeconds?.toLong() ?: 0L })

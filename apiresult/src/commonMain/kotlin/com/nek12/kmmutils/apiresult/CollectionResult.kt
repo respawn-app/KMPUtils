@@ -35,6 +35,7 @@ inline fun <T, R : Collection<T>> ApiResult<R>.errorIfEmpty(
     exception: () -> Exception = { ConditionNotSatisfiedException("Collection was empty") },
 ) = errorIf(exception) { it.isEmpty() }
 
+@JvmName("sequenceErrorIfEmpty")
 inline fun <T, R : Sequence<T>> ApiResult<R>.errorIfEmpty(
     exception: () -> Exception = { ConditionNotSatisfiedException("Sequence was empty") },
 ) = errorIf(exception) { it.none() }
@@ -47,4 +48,5 @@ inline fun <T, R> ApiResult<Iterable<T>>.mapValues(transform: (T) -> R) = map { 
 /**
  * Executes [ApiResult.map] on each value of the sequence
  */
+@JvmName("sequenceMapValues")
 inline fun <T, R> ApiResult<Sequence<T>>.mapValues(noinline transform: (T) -> R) = map { it.map(transform) }
