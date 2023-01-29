@@ -1,4 +1,4 @@
-package com.nek12.kmmutils.datetime
+package pro.respawn.kmmutils.datetime
 
 import java.time.Instant
 import java.time.LocalTime

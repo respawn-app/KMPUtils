@@ -459,7 +459,7 @@ naming:
   InvalidPackageDeclaration:
     active: true
     excludes: [ '**/*.kts' ]
-    rootPackage: 'com.nek12.respawn'
+    rootPackage: 'pro.respawn.respawn'
   MatchingDeclarationName:
     active: false
     mustBeFirst: true

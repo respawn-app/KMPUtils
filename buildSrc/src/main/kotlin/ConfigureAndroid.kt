@@ -51,7 +51,7 @@ fun Project.configureAndroid(
                     useJUnitPlatform()
                     maxHeapSize = "1G"
                     setForkEvery(100)
-                    jvmArgs!!.addAll(listOf("-Xmx1g", "-Xms512m"))
+                    setJvmArgs(listOf("-Xmx1g", "-Xms512m"))
                 }
             }
         }

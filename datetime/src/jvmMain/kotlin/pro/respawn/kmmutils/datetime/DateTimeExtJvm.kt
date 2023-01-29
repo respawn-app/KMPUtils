@@ -1,6 +1,6 @@
 @file:Suppress("unused", "MemberVisibilityCanBePrivate", "NewApi")
 
-package com.nek12.kmmutils.datetime
+package pro.respawn.kmmutils.datetime
 
 import java.time.DayOfWeek
 import java.time.Instant

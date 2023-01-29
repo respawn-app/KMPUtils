@@ -21,12 +21,8 @@ buildscript {
 }
 
 allprojects {
-    group = "com.nek12"
+    group = Config.artifactId
     version = Config.versionName
-
-    tasks.registering(Jar::class) {
-        archiveClassifier.set("javadoc")
-    }
 }
 
 doctor {

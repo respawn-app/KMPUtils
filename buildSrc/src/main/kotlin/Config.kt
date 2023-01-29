@@ -4,10 +4,10 @@ import org.gradle.api.JavaVersion
 
 object Config  {
 
-    const val group = "com.nek12"
+    const val group = "pro.respawn"
     const val artifact = "kmmutils"
 
-    const val applicationId = "$group.$artifact"
+    const val artifactId = "$group.$artifact"
     const val versionCode = 1
 
     const val majorRelease = 0

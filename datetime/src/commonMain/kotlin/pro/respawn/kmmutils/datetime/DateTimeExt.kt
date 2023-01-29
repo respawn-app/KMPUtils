@@ -1,6 +1,6 @@
 @file:Suppress("TooManyFunctions", "unused")
 
-package com.nek12.kmmutils.datetime
+package pro.respawn.kmmutils.datetime
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit

@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.findByType
@@ -6,38 +7,50 @@ import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
-import org.gradle.kotlin.dsl.provideDelegate
+import org.gradle.kotlin.dsl.register
 
 fun Project.configurePublication() {
+    val properties = gradleLocalProperties(rootDir)
 
-    val isReleaseBuild = properties["release"] == "true"
+    val isReleaseBuild = properties["release"]?.toString().toBoolean()
+
+    val javadocJar = tasks.register("javadocJar", Jar::class) {
+        archiveClassifier.set("javadoc")
+    }
 
     afterEvaluate {
 
         extensions.findByType<PublishingExtension>()?.apply {
             repositories {
                 maven {
+                    name = "sonatype"
                     url = uri(
                         if (isReleaseBuild) {
-                            "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                            "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
                         } else {
-                            "https://oss.sonatype.org/content/repositories/snapshots"
+                            "https://s01.oss.sonatype.org/content/repositories/snapshots/"
                         }
                     )
                     credentials {
-                        username = properties["sonatypeUsername"]?.toString()
-                        password = properties["sonatypePassword"]?.toString()
+                        username = requireNotNull(properties["sonatypeUsername"]?.toString())
+                        password = requireNotNull(properties["sonatypePassword"]?.toString())
                     }
                 }
             }
 
             publications.withType<MavenPublication>().configureEach {
-                // TODO: Javadoc
+
+                artifact(javadocJar)
+
+                version = buildString {
+                    append(Config.versionName)
+                    if (!isReleaseBuild) append("-SNAPSHOT")
+                }
 
                 pom {
-                    name.set("KMMUtils")
+                    name.set(Config.artifact)
                     description.set("A collection of Kotlin Multiplatform essentials")
-                    url.set("https://github.com/nek-12/kmmutils")
+                    url.set("https://github.com/respawn-app/kmmutils")
 
                     licenses {
                         license {
@@ -48,12 +61,16 @@ fun Project.configurePublication() {
                     }
                     developers {
                         developer {
-                            id.set("nek-12")
-                            name.set("Nikita Vaizin")
+                            id.set("respawn-app")
+                            name.set("Respawn")
+                            email.set("hello@respawn.pro")
+                            url.set("https://respawn.pro")
+                            organization.set("Respawn")
+                            organizationUrl.set(url)
                         }
                     }
                     scm {
-                        url.set("https://github.com/nek-12/kmmutils")
+                        url.set("https://github.com/respawn-app/kmmutils.git")
                     }
                 }
             }
@@ -61,15 +78,13 @@ fun Project.configurePublication() {
 
         extensions.findByType<SigningExtension>()?.apply {
             val publishing = extensions.findByType<PublishingExtension>() ?: return@apply
-            val key = properties["signingKey"]?.toString()?.replace("\\n", "\n")
-            val password = properties["signingPassword"]?.toString()
+            val keyId = requireNotNull(properties["signing.keyId"]?.toString())
+            val password = requireNotNull(properties["signing.password"]?.toString())
 
-            useInMemoryPgpKeys(key, password)
+            isRequired = isReleaseBuild
+            useGpgCmd()
+            useInMemoryPgpKeys(keyId, password)
             sign(publishing.publications)
-        }
-
-        tasks.withType<Sign>().configureEach {
-            onlyIf { isReleaseBuild }
         }
     }
 }

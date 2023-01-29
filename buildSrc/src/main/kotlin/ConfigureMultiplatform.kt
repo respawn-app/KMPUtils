@@ -37,9 +37,9 @@ fun Project.configureMultiplatform(
             iosSimulatorArm64()
         ).forEach {
             it.binaries.framework {
-                binaryOption("bundleId", Config.applicationId)
+                binaryOption("bundleId", Config.artifactId)
                 binaryOption("bundleVersion", Config.versionName)
-                baseName = Config.applicationId
+                baseName = Config.artifactId
             }
         }
 

@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.nek12.kmmutils.common
+package pro.respawn.kmmutils.common
 
 import java.math.BigDecimal
 import java.sql.Time

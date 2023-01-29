@@ -1,4 +1,4 @@
-package com.nek12.kmmutils.common
+package pro.respawn.kmmutils.common
 
 import kotlin.random.Random
 

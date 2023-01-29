@@ -1,6 +1,6 @@
 @file:Suppress("unused", "MemberVisibilityCanBePrivate", "NewApi", "MagicNumber")
 
-package com.nek12.kmmutils.datetime
+package pro.respawn.kmmutils.datetime
 
 import kotlin.jvm.Throws
 

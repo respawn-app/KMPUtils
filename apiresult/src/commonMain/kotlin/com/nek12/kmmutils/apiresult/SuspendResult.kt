@@ -1,10 +1,10 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "unused", "NOTHING_TO_INLINE", "TooManyFunctions", "FunctionName")
 
-package com.nek12.kmmutils.apiresult
+package pro.respawn.kmmutils.apiresult
 
-import com.nek12.kmmutils.apiresult.ApiResult.Error
-import com.nek12.kmmutils.apiresult.ApiResult.Loading
-import com.nek12.kmmutils.apiresult.ApiResult.Success
+import pro.respawn.kmmutils.apiresult.ApiResult.Error
+import pro.respawn.kmmutils.apiresult.ApiResult.Loading
+import pro.respawn.kmmutils.apiresult.ApiResult.Success
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow

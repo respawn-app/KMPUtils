@@ -7,11 +7,11 @@
 )
 @file:OptIn(ExperimentalContracts::class)
 
-package com.nek12.kmmutils.apiresult
+package pro.respawn.kmmutils.apiresult
 
-import com.nek12.kmmutils.apiresult.ApiResult.Success
-import com.nek12.kmmutils.apiresult.ApiResult.Error
-import com.nek12.kmmutils.apiresult.ApiResult.Loading
+import pro.respawn.kmmutils.apiresult.ApiResult.Success
+import pro.respawn.kmmutils.apiresult.ApiResult.Error
+import pro.respawn.kmmutils.apiresult.ApiResult.Loading
 import kotlinx.coroutines.CancellationException
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
