@@ -1,0 +1,36 @@
+on:
+  push:
+    branches: [ master ]
+
+
+    workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - name: set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          check-latest: true
+          java-version: 19
+          cache: 'gradle'
+
+      - name: Validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Create local properties
+        env:
+          LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
+        run: echo "$LOCAL_PROPERTIES" > local.properties
+
+# TODO: Waiting for Dokka gradle 8.0 support https://github.com/Kotlin/dokka/pull/2816
+#      - name: Generate docs
+#        run: ./gradlew dokkaHtmlMultiModule --no-configuration-cache

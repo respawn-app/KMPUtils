@@ -14,6 +14,7 @@ uuid = "0.5.0"
 versionCatalogUpdatePlugin = "0.7.0"
 composeDetektPlugin = "1.2.2"
 versionsPlugin = "0.44.0"
+dokka = "1.7.20"
 
 [libraries]
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradleAndroid" }
@@ -30,6 +31,7 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref =
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 version-gradle = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "versionsPlugin" }
+dokka-android = { module = "org.jetbrains.dokka:android-documentation-plugin", version.ref = "dokka" }
 
 [bundles]
 unittest = [
@@ -39,6 +41,7 @@ unittest = [
 ]
 
 [plugins]
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 atomicfu = { id = "kotlinx-atomicfu", version.ref = "atomicfu" }
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysisPlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

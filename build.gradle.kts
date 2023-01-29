@@ -1,8 +1,12 @@
+import org.jetbrains.dokka.DokkaDefaults.jdkVersion
+import org.jetbrains.dokka.DokkaDefaults.reportUndocumented
+
 plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.gradleDoctor)
     alias(libs.plugins.versions)
     alias(libs.plugins.version.catalog.update)
+    alias(libs.plugins.dokka)
     alias(libs.plugins.dependencyAnalysis)
     kotlin("plugin.serialization") version libs.versions.kotlin.get() apply false
 }
@@ -24,6 +28,14 @@ buildscript {
 allprojects {
     group = Config.artifactId
     version = Config.versionName
+}
+
+subprojects {
+    apply(plugin = rootProject.libs.plugins.dokka.id)
+
+    dependencies {
+        dokkaPlugin(rootProject.libs.dokka.android)
+    }
 }
 
 doctor {
@@ -54,6 +66,10 @@ versionCatalogUpdate {
         keepUnusedLibraries.set(true)
         keepUnusedPlugins.set(true)
     }
+}
+
+tasks.dokkaHtmlMultiModule.configure {
+    outputDirectory.set(buildDir.resolve("dokka"))
 }
 
 tasks {
