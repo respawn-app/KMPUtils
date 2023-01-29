@@ -82,7 +82,6 @@ fun Project.configurePublication() {
             val password = properties["signing.password"]?.toString()
 
             isRequired = isReleaseBuild
-            useGpgCmd()
             useInMemoryPgpKeys(keyId, password)
             sign(publishing.publications)
 

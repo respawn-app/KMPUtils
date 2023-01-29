@@ -20,8 +20,8 @@ public fun CoroutineScope.launchCatching(
     onError: CoroutineContext.(Throwable) -> Unit,
     block: suspend CoroutineScope.() -> Unit,
 ): Job {
-    val handler = CoroutineExceptionHandler { context, e ->
-        onError(context, e)
+    val handler = CoroutineExceptionHandler { it, e ->
+        onError(it, e)
     }
     val scope = this + handler + SupervisorJob()
     return scope.launch(context, start, block)
