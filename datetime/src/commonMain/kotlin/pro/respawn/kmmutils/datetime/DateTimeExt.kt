@@ -15,7 +15,12 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.until
 
-fun LocalDateTime.withPreviousOrSameDayOfWeek(
+/**
+ *  ISO8601 value of the day of the week, from 1 (Monday) to 7 (Sunday).
+ */
+public val DayOfWeek.value: Int get() = ordinal + 1
+
+public fun LocalDateTime.withPreviousOrSameDayOfWeek(
     dayOfWeek: DayOfWeek,
     zone: TimeZone,
 ): LocalDateTime {
@@ -26,37 +31,40 @@ fun LocalDateTime.withPreviousOrSameDayOfWeek(
     return minusDays(daysToAdd, zone)
 }
 
-fun LocalDateTime.asStartOfWeek(zone: TimeZone) =
+public fun LocalDateTime.asStartOfWeek(zone: TimeZone): LocalDateTime =
     withPreviousOrSameDayOfWeek(DayOfWeek.MONDAY, zone).asMidnight()
 
-fun LocalDateTime.asStartOfMonth() = LocalDateTime(year, month, 1, 0, 0, 0, 0)
+public fun LocalDateTime.asStartOfMonth(): LocalDateTime = LocalDateTime(year, month, 1, 0, 0, 0, 0)
 
-fun LocalDateTime.asStartOfYear() = LocalDateTime(year, Month.JANUARY, 1, 0, 0, 0, 0)
+public fun LocalDateTime.asStartOfYear(): LocalDateTime = LocalDateTime(year, Month.JANUARY, 1, 0, 0, 0, 0)
 
-fun LocalDateTime.plus(value: Int, unit: DateTimeUnit, zone: TimeZone) =
+public fun LocalDateTime.plus(value: Int, unit: DateTimeUnit, zone: TimeZone): LocalDateTime =
     toInstant(zone).plus(value, unit, zone).toLocalDateTime(zone)
 
-fun LocalDateTime.withDayOfMonth(day: Int) = LocalDateTime(year, month, day, hour, minute, second, nanosecond)
+public fun LocalDateTime.withDayOfMonth(day: Int): LocalDateTime =
+    LocalDateTime(year, month, day, hour, minute, second, nanosecond)
 
-fun LocalDateTime.plusDays(days: Int, zone: TimeZone) = plus(days, DateTimeUnit.DAY, zone)
+public fun LocalDateTime.plusDays(days: Int, zone: TimeZone): LocalDateTime = plus(days, DateTimeUnit.DAY, zone)
 
-fun LocalDateTime.minusDays(days: Int, zone: TimeZone) = plus(-days, DateTimeUnit.DAY, zone)
+public fun LocalDateTime.minusDays(days: Int, zone: TimeZone): LocalDateTime = plus(-days, DateTimeUnit.DAY, zone)
 
-fun LocalDateTime.withMonth(month: Month) = LocalDateTime(year, month, dayOfMonth, hour, minute, second, nanosecond)
+public fun LocalDateTime.withMonth(month: Month): LocalDateTime =
+    LocalDateTime(year, month, dayOfMonth, hour, minute, second, nanosecond)
 
-fun LocalDateTime.plusMonths(months: Int, zone: TimeZone) = plus(months, DateTimeUnit.MONTH, zone)
+public fun LocalDateTime.plusMonths(months: Int, zone: TimeZone): LocalDateTime = plus(months, DateTimeUnit.MONTH, zone)
 
-fun LocalDateTime.minusMonths(months: Int, zone: TimeZone) = plus(-months, DateTimeUnit.MONTH, zone)
+public fun LocalDateTime.minusMonths(months: Int, zone: TimeZone): LocalDateTime =
+    plus(-months, DateTimeUnit.MONTH, zone)
 
-val LocalDate.lengthOfMonth get() = month.length(year)
-val LocalDateTime.lengthOfMonth get() = month.length(year)
+public val LocalDate.lengthOfMonth: Int get() = month.length(year)
+public val LocalDateTime.lengthOfMonth: Int get() = month.length(year)
 
-fun LocalDateTime.Companion.now(zone: TimeZone) =
+public fun LocalDateTime.Companion.now(zone: TimeZone): LocalDateTime =
     Clock.System.now().toLocalDateTime(zone)
 
-fun LocalDateTime.onSameDay(other: LocalDateTime): Boolean = date == other.date
+public fun LocalDateTime.onSameDay(other: LocalDateTime): Boolean = date == other.date
 
-fun LocalDateTime.withNextDayOfWeek(
+public fun LocalDateTime.withNextDayOfWeek(
     dayOfWeek: DayOfWeek,
     zone: TimeZone,
 ): LocalDateTime {
@@ -65,14 +73,14 @@ fun LocalDateTime.withNextDayOfWeek(
     return plusDays(daysToAdd, zone)
 }
 
-fun LocalDateTime.asMidnight() = LocalDateTime(year, month, dayOfMonth, 0, 0, 0, 0)
+public fun LocalDateTime.asMidnight(): LocalDateTime = LocalDateTime(year, month, dayOfMonth, 0, 0, 0, 0)
 
-val Instant.Companion.EPOCH: Instant
+public val Instant.Companion.EPOCH: Instant
     get() = fromEpochMilliseconds(0)
 
-operator fun Instant.plus(time: Time) = this + time.duration
+public operator fun Instant.plus(time: Time): Instant = this + time.duration
 
-fun Month.length(year: Int): Int {
+public fun Month.length(year: Int): Int {
     val start = LocalDate(year, this, 1)
     val end = start.plus(DateTimeUnit.MONTH)
     return start.until(end, DateTimeUnit.DAY)

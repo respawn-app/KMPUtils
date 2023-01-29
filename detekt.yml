@@ -149,7 +149,7 @@ complexity:
   TooManyFunctions:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
-    thresholdInFiles: 11
+    thresholdInFiles: 50
     thresholdInClasses: 11
     thresholdInInterfaces: 11
     thresholdInObjects: 11
@@ -730,7 +730,7 @@ style:
   RedundantHigherOrderMapUsage:
     active: true
   RedundantVisibilityModifierRule:
-    active: true
+    active: false # using ExplicitApi
   ReturnCount:
     active: true
     max: 5
@@ -854,16 +854,16 @@ compose:
   ComposableFunctionName:
     active: false # TODO: Broken
 
-#libraries:
-#  ForbiddenPublicDataClass:
-#    active: false
-#    excludes: [ '**' ]
-#    ignorePackages:
-#      - '*.internal'
-#      - '*.internal.*'
-#  LibraryCodeMustSpecifyReturnType:
-#    active: true
-#    excludes: [ '**' ]
-#  LibraryEntitiesShouldNotBePublic:
-#    active: true
-#    excludes: [ '**' ]
+libraries:
+  ForbiddenPublicDataClass:
+    active: false
+    excludes: [ '**' ]
+    ignorePackages:
+      - '*.internal'
+      - '*.internal.*'
+  LibraryCodeMustSpecifyReturnType:
+    active: true
+    excludes: [ '**' ]
+  LibraryEntitiesShouldNotBePublic:
+    active: true
+    excludes: [ '**' ]

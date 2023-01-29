@@ -47,9 +47,9 @@ object Config  {
     const val proguardFile = "proguard-rules.pro"
     const val consumerProguardFile = "consumer-rules.pro"
 
+    val stabilityLevels = listOf("preview", "eap", "alpha", "beta", "m", "cr", "rc")
     object Detekt {
 
-        val stabilityLevels = listOf("preview", "eap", "alpha", "beta", "m", "cr", "rc")
         const val configFile = "detekt.yml"
         val includedFiles = listOf("**/*.kt", "**/*.kts")
         val excludedFiles = listOf("**/resources/**", "**/build/**", "**/.idea/**")

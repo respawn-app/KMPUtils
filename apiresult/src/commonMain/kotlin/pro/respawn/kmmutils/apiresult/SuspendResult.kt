@@ -2,9 +2,6 @@
 
 package pro.respawn.kmmutils.apiresult
 
-import pro.respawn.kmmutils.apiresult.ApiResult.Error
-import pro.respawn.kmmutils.apiresult.ApiResult.Loading
-import pro.respawn.kmmutils.apiresult.ApiResult.Success
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -14,15 +11,18 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
+import pro.respawn.kmmutils.apiresult.ApiResult.Error
+import pro.respawn.kmmutils.apiresult.ApiResult.Loading
+import pro.respawn.kmmutils.apiresult.ApiResult.Success
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * Catches [Exception]s only and rethrows [kotlin.Throwable]s (like [kotlin.Error]s).
  */
-inline fun <T> Flow<T>.catchExceptions(
+public inline fun <T> Flow<T>.catchExceptions(
     crossinline action: suspend FlowCollector<T>.(Exception) -> Unit
-) = catch { action(it as? Exception ?: throw it) }
+): Flow<T> = catch { action(it as? Exception ?: throw it) }
 
 /**
  * Run [block] with a given [context], catching any exceptions both in the block and nested coroutines.
@@ -35,18 +35,18 @@ inline fun <T> Flow<T>.catchExceptions(
  * @see supervisorScope
  * @see kotlinx.coroutines.SupervisorJob
  */
-suspend inline fun <T> SuspendResult(
+public suspend inline fun <T> SuspendResult(
     context: CoroutineContext = EmptyCoroutineContext,
     noinline block: suspend CoroutineScope.() -> T,
-) = withContext(context) { ApiResult { supervisorScope(block) } }
+): ApiResult<T> = withContext(context) { ApiResult { supervisorScope(block) } }
 
 /**
  * Emits [ApiResult.Loading], then executes [call] and [ApiResult]s it.
  * @see Flow.asApiResult
  */
-inline fun <T> ApiResult.Companion.flow(
+public inline fun <T> ApiResult.Companion.flow(
     crossinline call: suspend CoroutineScope.() -> T
-) = kotlinx.coroutines.flow.flow {
+): Flow<ApiResult<T>> = kotlinx.coroutines.flow.flow {
     emit(Loading)
     emit(SuspendResult { call() })
 }
@@ -57,16 +57,17 @@ inline fun <T> ApiResult.Companion.flow(
  * @see ApiResult.Companion.flow
  * @see SuspendResult
  */
-fun <T> Flow<T>.asApiResult() = this
+public inline fun <T> Flow<T>.asApiResult(): Flow<ApiResult<T>> = this
     .map { ApiResult(it) }
     .onStart { emit(Loading) }
     .catchExceptions { emit(Error(it)) }
 
-inline fun <T, R> Flow<ApiResult<T>>.mapResults(
+public inline fun <T, R> Flow<ApiResult<T>>.mapResults(
     crossinline transform: suspend (T) -> R
-) = map { result -> result.map { transform(it) } }
+): Flow<ApiResult<R>> = map { result -> result.map { transform(it) } }
 
 /**
  * Throws [CancellationException]s if this is an [Error]
  */
-inline fun <T> ApiResult<T>.rethrowCancellation() = recover<CancellationException, T> { throw it }
+public inline fun <T> ApiResult<T>.rethrowCancellation(): ApiResult<T> =
+    recover<CancellationException, T> { throw it }

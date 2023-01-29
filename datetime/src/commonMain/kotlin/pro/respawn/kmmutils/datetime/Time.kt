@@ -2,8 +2,6 @@
 
 package pro.respawn.kmmutils.datetime
 
-import kotlin.jvm.Throws
-
 /**
  * A class that represents time, of day as well as a duration.
  * [hour] hour in 24h format
@@ -15,11 +13,11 @@ import kotlin.jvm.Throws
  * object creation time
  */
 @OptIn(ExperimentalStdlibApi::class)
-data class Time(
+public data class Time @Throws(IllegalArgumentException::class) constructor(
     val hour: Int,
     val minute: Int,
     val second: Int = 0,
-) : Cloneable, Comparable<Time> {
+) : Comparable<Time> {
 
     init {
         require(hour in 0 ..< 24 || minute in 0 ..< 60 || second in 0 ..< 60) {
@@ -27,7 +25,7 @@ data class Time(
         }
     }
 
-    override fun toString() = asString()
+    override fun toString(): String = asString()
 
     /** Same as toString but gives you a choice on whether to use 12H scheme.
      * [toString] uses asString(false)
@@ -36,26 +34,26 @@ data class Time(
      * the resulting string back to Time won't result in a valid value, if you have this parameter true
      * true => "17:00:00", false => "17:00"
      * **/
-    fun asString(use12h: Boolean = false, addSecondsIfZero: Boolean = false) = buildString {
+    public fun asString(use12h: Boolean = false, addSecondsIfZero: Boolean = false): String = buildString {
         append("${asString(if (use12h) hourAs12H else hour)}:${asString(minute)}")
         if (addSecondsIfZero || second != 0) append(":${asString(second)}")
         if (use12h) append(" ${if (isPM) "PM" else "AM"}")
     }
 
-    operator fun plus(other: Time) = add(other.hour, other.minute, other.second)
+    public operator fun plus(other: Time): Time = add(other.hour, other.minute, other.second)
 
-    operator fun minus(other: Time) = add(-other.hour, -other.minute, -other.second)
+    public operator fun minus(other: Time): Time = add(-other.hour, -other.minute, -other.second)
 
-    override operator fun compareTo(other: Time) = totalSeconds.compareTo(other.totalSeconds)
+    override operator fun compareTo(other: Time): Int = totalSeconds.compareTo(other.totalSeconds)
 
-    operator fun get(index: Int): Int = when (index) {
+    public operator fun get(index: Int): Int = when (index) {
         0 -> hour
         1 -> minute
         2 -> second
         else -> throw IndexOutOfBoundsException("Only 0, 1 and 2 are valid values")
     }
 
-    companion object {
+    public companion object {
 
         /**
          * Represents this numeric value as if it is a number on the clock
@@ -64,19 +62,19 @@ data class Time(
          * - 1 -> "01"
          * - 15 -> "15"
          */
-        fun asString(value: Int): String = if (value < 10) "0$value" else value.toString()
+        public fun asString(value: Int): String = if (value < 10) "0$value" else value.toString()
 
         /**
          * Parse a new time object using the int representation of it.
          * @see Time.toInt
          */
-        fun fromInt(hms: Int): Time = Time(hms / 10000, hms / 100 % 100, hms % 100)
+        public fun fromInt(hms: Int): Time = Time(hms / 10000, hms / 100 % 100, hms % 100)
 
         /**
          * Create a time from milliseconds since midnight.
          * **[millis] is NOT a timestamp**
          */
-        fun fromMillisSinceMidnight(millis: Long): Time {
+        public fun fromMillisSinceMidnight(millis: Long): Time {
             val totalSeconds = millis / 1000
             val totalMinutes = totalSeconds / 60
             val totalHours = totalMinutes / 60
@@ -88,7 +86,7 @@ data class Time(
          * [seconds] is NOT a timestamp
          * @see totalSeconds
          */
-        fun fromSecondsSinceMidnight(seconds: Int): Time = fromMillisSinceMidnight(seconds * 1000L)
+        public fun fromSecondsSinceMidnight(seconds: Int): Time = fromMillisSinceMidnight(seconds * 1000L)
 
         /**
          * Create a new time using specified [hours], [minutes], or [seconds]
@@ -98,13 +96,13 @@ data class Time(
          * - Time.with(seconds=70) -> 00:01:10
          * - Time.with(hours=25, minutes=60) -> 02:00:00
          */
-        fun with(hours: Int = 0, minutes: Int = 0, seconds: Int = 0) = MIN.add(hours, minutes, seconds)
+        public fun with(hours: Int = 0, minutes: Int = 0, seconds: Int = 0): Time = MIN.add(hours, minutes, seconds)
 
         /** example: 12:45:00, 4:30, 7:00 AM, 24 or 12h format, word separator is " ".
          * On a value that is not a valid time, will throw.
          * **/
         @Throws(IllegalArgumentException::class)
-        fun parse(s: String): Time {
+        public fun parse(s: String): Time {
             try {
                 val words = s.split(" ")
                 require(words.size in 1..2) { "Not a time" }
@@ -127,12 +125,12 @@ data class Time(
         /**
          * 23:59:59
          */
-        val MAX get() = Time(23, 59, 59)
+        public val MAX: Time = Time(23, 59, 59)
 
         /**
          * 00:00:00
          */
-        val MIN get() = Time(0, 0)
+        public val MIN: Time = Time(0, 0)
 
         /** Normalize a set of values for hours, minutes, or seconds, to a valid time value.
          *
@@ -141,7 +139,7 @@ data class Time(
          * around if the resulting time is bigger than [Time.MAX]
          * Example: normalize(25,70,100) -> (2,11,40)
          */
-        fun normalize(hours: Int = 0, minutes: Int = 0, seconds: Int = 0): Triple<Int, Int, Int> {
+        internal fun normalize(hours: Int = 0, minutes: Int = 0, seconds: Int = 0): Triple<Int, Int, Int> {
             val normalizedHours = hours + (minutes + seconds / 60) / 60
             val normalizedMinutes = (minutes + seconds / 60) % 60
             val normalizedSeconds = seconds % 60
@@ -151,7 +149,7 @@ data class Time(
         /**
          * @return whether this [text] is a valid [Time] representation
          */
-        fun isValid(text: String?): Boolean {
+        public fun isValid(text: String?): Boolean {
             if (text.isNullOrBlank()) return false
             return try {
                 parse(text)
@@ -160,7 +158,5 @@ data class Time(
                 false
             }
         }
-
-        private const val serialVersionUID = -29334L
     }
 }
