@@ -1,18 +1,11 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "MissingPackageDeclaration")
 
-import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.plugin.use.PluginDependency
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformCommonOptions
-import java.io.File
-import java.io.IOException
 import java.util.Base64
-import java.util.concurrent.TimeUnit
 
 /**
  * Load version catalog for usage in places where it is not available yet with gradle 7.x.

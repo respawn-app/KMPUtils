@@ -1,6 +1,5 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "MissingPackageDeclaration")
 
-import Config.jvmTarget
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project

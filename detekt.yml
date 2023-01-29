@@ -863,7 +863,7 @@ libraries:
       - '*.internal.*'
   LibraryCodeMustSpecifyReturnType:
     active: true
-    excludes: [ '**' ]
+    excludes: [ ]
   LibraryEntitiesShouldNotBePublic:
     active: true
     excludes: [ '**' ]

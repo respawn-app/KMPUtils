@@ -9,5 +9,4 @@ public fun Float.format(digits: Int, locale: Locale? = null): String = "%.${digi
 public val String.asUUID: UUID
     get() = UUID.fromString(this)
 
-
 public val BigDecimal.sign: String get() = if (signum() < 0) "–" else ""

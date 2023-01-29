@@ -9,10 +9,10 @@
 
 package pro.respawn.kmmutils.apiresult
 
-import pro.respawn.kmmutils.apiresult.ApiResult.Success
+import kotlinx.coroutines.CancellationException
 import pro.respawn.kmmutils.apiresult.ApiResult.Error
 import pro.respawn.kmmutils.apiresult.ApiResult.Loading
-import kotlinx.coroutines.CancellationException
+import pro.respawn.kmmutils.apiresult.ApiResult.Success
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract

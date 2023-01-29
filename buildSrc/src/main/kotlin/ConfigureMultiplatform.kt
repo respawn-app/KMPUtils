@@ -14,7 +14,6 @@ fun Project.configureMultiplatform(
     ios: Boolean = false,
     jvm: Boolean = false,
 ) = ext.apply {
-
     explicitApi()
 
     if (android) {

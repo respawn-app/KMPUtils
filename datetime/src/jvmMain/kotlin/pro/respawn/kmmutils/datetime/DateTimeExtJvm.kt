@@ -6,6 +6,7 @@ import java.time.DayOfWeek
 import java.time.Instant
 import java.time.Month
 import java.time.Year
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -27,13 +28,14 @@ public val ZonedDateTime.midnight: ZonedDateTime get() = truncatedTo(ChronoUnit.
 public fun ZonedDateTime.onSameLocalDay(other: ZonedDateTime): Boolean =
     truncatedTo(ChronoUnit.DAYS) == other.truncatedTo(ChronoUnit.DAYS)
 
-public fun Instant.onSameUTCDay(other: Instant): Boolean = truncatedTo(ChronoUnit.DAYS) == other.truncatedTo(ChronoUnit.DAYS)
+public fun Instant.onSameUTCDay(other: Instant): Boolean =
+    truncatedTo(ChronoUnit.DAYS) == other.truncatedTo(ChronoUnit.DAYS)
 
 public val ZonedDateTime.isToday: Boolean get() = onSameLocalDay(ZonedDateTime.now())
 
 public val ZonedDateTime.weekStart: ZonedDateTime get() = with(ChronoField.DAY_OF_WEEK, 1)
 
-public val Instant.localMonthDay: Int get() = toZDT().dayOfMonth
+public val Instant.localMonthDay: Int get() = toZDT(ZoneId.systemDefault()).dayOfMonth
 
 public val ZonedDateTime.localWeekDay: Int get() = dayOfWeek.value
 

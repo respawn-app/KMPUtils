@@ -1,13 +1,15 @@
+@file:Suppress("MissingPackageDeclaration")
+
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.findByType
+import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningExtension
-import org.gradle.api.Project
-import org.gradle.jvm.tasks.Jar
-import org.gradle.kotlin.dsl.register
 
 fun Project.configurePublication() {
     val properties = gradleLocalProperties(rootDir)
@@ -19,7 +21,6 @@ fun Project.configurePublication() {
     }
 
     afterEvaluate {
-
         extensions.findByType<PublishingExtension>()?.apply {
             repositories {
                 maven {
@@ -39,7 +40,6 @@ fun Project.configurePublication() {
             }
 
             publications.withType<MavenPublication>().configureEach {
-
                 artifact(javadocJar)
 
                 version = buildString {

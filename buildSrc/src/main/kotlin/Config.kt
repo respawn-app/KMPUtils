@@ -3,7 +3,7 @@
 import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-object Config  {
+object Config {
 
     const val group = "pro.respawn"
     const val artifact = "kmmutils"
