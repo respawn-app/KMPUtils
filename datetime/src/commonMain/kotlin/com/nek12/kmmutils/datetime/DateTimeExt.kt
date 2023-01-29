@@ -1,4 +1,4 @@
-@file:Suppress("TooManyFunctions")
+@file:Suppress("TooManyFunctions", "unused")
 
 package com.nek12.kmmutils.datetime
 
@@ -8,14 +8,12 @@ import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalTime
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.until
-import kotlin.time.Duration.Companion.seconds
 
 fun LocalDateTime.withPreviousOrSameDayOfWeek(
     dayOfWeek: DayOfWeek,
@@ -50,12 +48,10 @@ fun LocalDateTime.plusMonths(months: Int, zone: TimeZone) = plus(months, DateTim
 
 fun LocalDateTime.minusMonths(months: Int, zone: TimeZone) = plus(-months, DateTimeUnit.MONTH, zone)
 
-fun LocalTime.toTime(): Time = Time(hour, minute, second)
-
 val LocalDate.lengthOfMonth get() = month.length(year)
 val LocalDateTime.lengthOfMonth get() = month.length(year)
 
-fun LocalDateTime.Companion.now(zone: TimeZone = TimeZone.currentSystemDefault()) =
+fun LocalDateTime.Companion.now(zone: TimeZone) =
     Clock.System.now().toLocalDateTime(zone)
 
 fun LocalDateTime.onSameDay(other: LocalDateTime): Boolean = date == other.date
@@ -74,23 +70,10 @@ fun LocalDateTime.asMidnight() = LocalDateTime(year, month, dayOfMonth, 0, 0, 0,
 val Instant.Companion.EPOCH: Instant
     get() = fromEpochMilliseconds(0)
 
-/**
- * Preserves [nanoseconds] of previous time
- */
-fun LocalDateTime.withTime(time: Time, nanos: Int = nanosecond) =
-    LocalDateTime(year, month, dayOfMonth, time.hour, time.minute, time.second, nanos)
-
 operator fun Instant.plus(time: Time) = this + time.duration
-
-val Time.duration get() = totalSeconds.seconds
 
 fun Month.length(year: Int): Int {
     val start = LocalDate(year, this, 1)
     val end = start.plus(DateTimeUnit.MONTH)
     return start.until(end, DateTimeUnit.DAY)
 }
-
-fun String.toTimeOrNull() = runCatching { Time.of(this) }.getOrNull()
-
-val Iterable<Time?>.totalDuration
-    get() = Time.fromSecondsSinceMidnight(sumOf { it?.totalSeconds?.toLong() ?: 0L })

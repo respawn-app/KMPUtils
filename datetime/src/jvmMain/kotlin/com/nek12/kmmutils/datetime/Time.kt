@@ -26,4 +26,4 @@ fun Time.Companion.fromInstant(instant: Instant, zone: ZoneId): Time = fromZDT(i
  * @return A new Time using current timezone and timestamp.
  * @see fromZDT
  */
-fun now(zoneId: ZoneId = ZoneId.systemDefault()) = Time.fromZDT(ZonedDateTime.now(zoneId))
+fun Time.Companion.now(zoneId: ZoneId = ZoneId.systemDefault()) = Time.fromZDT(ZonedDateTime.now(zoneId))
