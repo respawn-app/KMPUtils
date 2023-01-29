@@ -4,8 +4,10 @@ on:
   push:
     branches: [ master ]
 
-
     workflow_dispatch:
+
+concurrency:
+  cancel-in-progress: true
 
 jobs:
   publish:
