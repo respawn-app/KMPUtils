@@ -14,7 +14,6 @@ app/release
 app/release**/build/
 !src/**/build/
 gradle-app.setting
-!gradle-wrapper.jar
 .gradletasknamecache
 .idea/**/workspace.xml
 .idea/**/tasks.xml
@@ -166,3 +165,4 @@ hs_err_pid*
 checksum.txt
 .firebase-service-account.json
 /.idea/artifacts/**
+!gradle/gradle-wrapper.jar

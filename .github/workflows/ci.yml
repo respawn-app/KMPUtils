@@ -23,16 +23,13 @@ jobs:
         with:
           java-version: 19
 
-      - name: Make files executable
-        run: chmod +x ./gradlew && chmod +x ./scripts/checksum.sh
-
-      - name: Generate cache key
-        run: ./scripts/checksum.sh checksum.txt
-
       - name: Create local properties
         env:
           LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
         run: echo "$LOCAL_PROPERTIES" > local.properties
+
+      - name: Generate cache key
+        run: ./scripts/checksum.sh checksum.txt
 
       - uses: actions/cache@v2
         with:
@@ -41,6 +38,9 @@ jobs:
             ~/.gradle/caches/jars-*
             ~/.gradle/caches/build-cache-*
           key: gradle-${{ hashFiles('checksum.txt') }}
+
+      - name: Make files executable
+        run: chmod +x ./gradlew && chmod +x ./scripts/checksum.sh
 
       - name: Run detekt
         run: ./gradlew detektAll
