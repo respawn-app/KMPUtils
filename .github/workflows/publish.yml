@@ -20,22 +20,13 @@ jobs:
       - name: set up JDK
         uses: actions/setup-java@v3
         with:
+          distribution: 'zulu'
+          check-latest: true
           java-version: 19
+          cache: 'gradle'
 
-      - name: Generate cache key
-        run: ./scripts/checksum.sh checksum.txt
-
-      - uses: actions/cache@v3
-        name: Cache
-        with:
-          path: |
-            ~/.gradle/caches/modules-*
-            ~/.gradle/caches/jars-*
-            ~/.gradle/caches/build-cache-*
-          key: gradle-${{ hashFiles('checksum.txt') }}
-
-      - name: Make files executable
-        run: chmod +x ./gradlew && chmod -r +x ./scripts
+      - name: Validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
 
       - name: Create local properties
         env:

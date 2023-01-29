@@ -18,29 +18,22 @@ jobs:
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - name: set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: 19
-
       - name: Create local properties
         env:
           LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
         run: echo "$LOCAL_PROPERTIES" > local.properties
 
-      - name: Generate cache key
-        run: ./scripts/checksum.sh checksum.txt
-
-      - uses: actions/cache@v3
+      - name: set up JDK
+        uses: actions/setup-java@v3
         with:
-          path: |
-            ~/.gradle/caches/modules-*
-            ~/.gradle/caches/jars-*
-            ~/.gradle/caches/build-cache-*
-          key: gradle-${{ hashFiles('checksum.txt') }}
+          distribution: 'zulu'
+          check-latest: true
+          java-version: 19
+          cache: 'gradle'
 
-      - name: Make files executable
-        run: chmod +x ./gradlew && chmod +x ./scripts/checksum.sh
+      - name: Validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
 
       - name: Run detekt
         run: ./gradlew detektAll
