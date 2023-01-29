@@ -52,7 +52,7 @@ comments:
   KDocReferencesNonPublicProperty:
     active: true
   OutdatedDocumentation:
-    active: true
+    active: false
   AbsentOrWrongFileLicense:
     active: false
     licenseTemplateFile: 'license.template'

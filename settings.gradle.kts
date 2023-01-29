@@ -48,7 +48,6 @@ dependencyResolutionManagement {
             }
             filter { includeModuleByRegex(".*", ".*kotlin-native-prebuilt.*") }
         }
-
     }
 }
 

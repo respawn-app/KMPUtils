@@ -1,4 +1,4 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "MissingPackageDeclaration")
+@file:Suppress("MemberVisibilityCanBePrivate", "MissingPackageDeclaration", "UndocumentedPublicFunction")
 
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension

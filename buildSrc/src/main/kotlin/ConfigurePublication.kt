@@ -11,6 +11,9 @@ import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningExtension
 
+/**
+ * Configures Maven publishing to sonatype for this project
+ */
 fun Project.configurePublication() {
     val properties = gradleLocalProperties(rootDir)
 

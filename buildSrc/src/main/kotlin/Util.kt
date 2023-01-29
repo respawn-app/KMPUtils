@@ -1,4 +1,9 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "MissingPackageDeclaration")
+@file:Suppress(
+    "MemberVisibilityCanBePrivate",
+    "MissingPackageDeclaration",
+    "UndocumentedPublicProperty",
+    "UndocumentedPublicFunction"
+)
 
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog

@@ -28,11 +28,14 @@ public data class Time @Throws(IllegalArgumentException::class) constructor(
     override fun toString(): String = asString()
 
     /** Same as toString but gives you a choice on whether to use 12H scheme.
-     * [toString] uses asString(false)
+     * [toString] uses asString(false).
+     *
      * @param addSecondsIfZero If the seconds value is equal to 0, should include them in the representation? e.g.:
      * @param use12h whether to represent time in 12-hour format (AM/PM letters not added). Mind that deserializing
      * the resulting string back to Time won't result in a valid value, if you have this parameter true
-     * true => "17:00:00", false => "17:00"
+     * true => "17:00:00", false => "17:00".
+     *
+     * @return a string representation of this time
      * **/
     public fun asString(use12h: Boolean = false, addSecondsIfZero: Boolean = false): String = buildString {
         append("${asString(if (use12h) hourAs12H else hour)}:${asString(minute)}")
@@ -40,12 +43,22 @@ public data class Time @Throws(IllegalArgumentException::class) constructor(
         if (use12h) append(" ${if (isPM) "PM" else "AM"}")
     }
 
+    /**
+     * Create a new time with the result of adding [Time] to [other]
+     */
     public operator fun plus(other: Time): Time = add(other.hour, other.minute, other.second)
 
+    /**
+     * Subtract [other] from [Time]
+     */
     public operator fun minus(other: Time): Time = add(-other.hour, -other.minute, -other.second)
 
     override operator fun compareTo(other: Time): Int = totalSeconds.compareTo(other.totalSeconds)
 
+    /**
+     * Get either the hour or minute or second value of this time.
+     * Values more than 2 will throw an [IndexOutOfBoundsException]
+     */
     public operator fun get(index: Int): Int = when (index) {
         0 -> hour
         1 -> minute

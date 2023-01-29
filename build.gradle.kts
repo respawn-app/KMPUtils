@@ -1,5 +1,4 @@
-import org.jetbrains.dokka.DokkaDefaults.jdkVersion
-import org.jetbrains.dokka.DokkaDefaults.reportUndocumented
+
 
 plugins {
     alias(libs.plugins.detekt)

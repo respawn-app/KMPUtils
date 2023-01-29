@@ -10,27 +10,44 @@ import kotlin.math.absoluteValue
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
+/**
+ * Try to parse [this] as [Time] or return null if it fails
+ */
 public fun String?.toTimeOrNull(): Time? = this?.runCatching { Time.parse(this) }?.getOrNull()
 
-public val Iterable<Time?>.totalDuration: Time
-    get() = Time.fromSecondsSinceMidnight(sumOf { it?.totalSeconds ?: 0 })
+/**
+ * Compute total duration of all items in the collection
+ */
+public fun Iterable<Time?>.totalDuration(): Time = Time.fromSecondsSinceMidnight(sumOf { it?.totalSeconds ?: 0 })
 
-@get:JvmName("totalDurationSequence")
-public val Sequence<Time?>.totalDuration: Time
-    get() = Time.fromSecondsSinceMidnight(sumOf { it?.totalSeconds ?: 0 })
+/**
+ * Compute total duration of all items in the sequence
+ */
+@JvmName("totalDurationSequence")
+public fun Sequence<Time?>.totalDuration(): Time = Time.fromSecondsSinceMidnight(sumOf { it?.totalSeconds ?: 0 })
 
+/**
+ * Calculate distance to the [other] between [Time.MIN] and [Time.MAX]
+ */
 public infix fun Time.distanceTo(other: Time): Time = Time.fromSecondsSinceMidnight(
     (other.totalSeconds - totalSeconds).absoluteValue
 )
 
 /**
+ * Create a new [LocalDateTime] with the given [time] and [nanos]
  * Preserves [nanos] of previous time
  */
 public fun LocalDateTime.withTime(time: Time, nanos: Int = nanosecond): LocalDateTime =
     LocalDateTime(year, month, dayOfMonth, time.hour, time.minute, time.second, nanos)
 
+/**
+ * Convert [this] to [Time]
+ */
 public fun LocalTime.toTime(): Time = Time(hour, minute, second)
 
+/**
+ * Create a new [Time] from [localTime]
+ */
 public operator fun Time.Companion.invoke(localTime: LocalTime): Time = localTime.toTime()
 
 /**
@@ -98,6 +115,7 @@ public fun Time.add(hours: Int = 0, minutes: Int = 0, seconds: Int = 0): Time {
 }
 
 /**
+ * Create a new [Time] from [duration].
  * If the [duration] is larger than 24 hours, it will wrap around
  */
 public operator fun Time.Companion.invoke(duration: Duration): Time =

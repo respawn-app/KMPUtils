@@ -62,12 +62,17 @@ public inline fun <T> Flow<T>.asApiResult(): Flow<ApiResult<T>> = this
     .onStart { emit(Loading) }
     .catchExceptions { emit(Error(it)) }
 
+/**
+ * Maps each [Success] value of [this] flow using [transform]
+ */
 public inline fun <T, R> Flow<ApiResult<T>>.mapResults(
     crossinline transform: suspend (T) -> R
 ): Flow<ApiResult<R>> = map { result -> result.map { transform(it) } }
 
 /**
- * Throws [CancellationException]s if this is an [Error]
+ * Throws [CancellationException]s if this is an [Error].
+ * Important to use this with coroutines if you're not using [SuspendResult] or [ApiResult.Companion.invoke]
+ * [ApiResult.Companion.invoke] already throws [CancellationException]s.
  */
 public inline fun <T> ApiResult<T>.rethrowCancellation(): ApiResult<T> =
     recover<CancellationException, T> { throw it }

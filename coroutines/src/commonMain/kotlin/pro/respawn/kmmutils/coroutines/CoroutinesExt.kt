@@ -14,6 +14,11 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
+/**
+ * Launch a new coroutine using [this] scope and [context],
+ * but catch any [Throwables] using [onError] and execute [block].
+ *The coroutines launched inside [block]'s scope will NOT cancel the scope.
+ */
 public fun CoroutineScope.launchCatching(
     context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
@@ -49,6 +54,9 @@ public suspend fun <A, B> Collection<A>.mapParallel(
     map { async(context, start) { block(it) } }.map { it.await() }
 }
 
+/**
+ * Maps values of each collection [this] flow emits.
+ */
 public inline fun <T, R> Flow<Iterable<T>>.mapValues(
     crossinline transform: (T) -> R
 ): Flow<List<R>> = map { it.map(transform) }

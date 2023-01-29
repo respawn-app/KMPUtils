@@ -25,6 +25,9 @@ public class NotFinishedException(
     message: String? = "ApiResult is still in Loading state",
 ) : IllegalArgumentException(message)
 
+/**
+ * Exception representing unsatisfied condition when using [errorIf]
+ */
 public class ConditionNotSatisfiedException(
     message: String? = "ApiResult condition was not satisfied",
 ) : IllegalArgumentException(message)
@@ -49,6 +52,7 @@ public sealed interface ApiResult<out T> {
 
     /**
      * A value of [ApiResult] for its successful state.
+     * @param result a successful result value
      */
     @JvmInline
     public value class Success<out T>(public val result: T) : ApiResult<T> {
@@ -57,20 +61,43 @@ public sealed interface ApiResult<out T> {
     }
 
     /**
-     * The result of [ApiResult] that represents an error.
+     * The state of [ApiResult] that represents an error.
+     * @param e wrapped [Exception]
      */
     @JvmInline
     public value class Error(public val e: Exception) : ApiResult<Nothing> {
 
+        /**
+         * [e]'s message.
+         */
         public val message: String? get() = e.message
+
+        /**
+         * [e]'s stacktrace.
+         */
         public val stacktrace: Array<StackTraceElement> get() = e.stackTrace
 
         override fun toString(): String = "ApiResult.Error: message=$message and cause: $e"
+
+        /**
+         * Gets current stack trace as string
+         */
         public fun asStackTrace(): String = e.stackTraceToString()
     }
 
+    /**
+     * Whether this is [Success]
+     */
     public val isSuccess: Boolean get() = this is Success
+
+    /**
+     *  Whether this is [Error]
+     */
     public val isError: Boolean get() = this is Error
+
+    /**
+     * Whether this is [Loading]
+     */
     public val isLoading: Boolean get() = this is Loading
 
     public companion object {
@@ -128,6 +155,9 @@ public inline fun <T, R : T> ApiResult<T>.or(defaultValue: R): T = orElse { defa
  */
 public inline fun <T> ApiResult<T>.orNull(): T? = or(null)
 
+/**
+ * @return exception if [this] is [Error] or null
+ */
 public inline fun <T> ApiResult<T>.exceptionOrNull(): Exception? = (this as? Error)?.e
 
 /**
@@ -285,6 +315,9 @@ public inline fun <reified T : Exception, R> ApiResult<R>.recover(block: (T) -> 
     is Error -> if (e is T) Success(block(e)) else this
 }
 
+/**
+ * calls [recover] catching and wrapping any exceptions thrown inside [block].
+ */
 public inline fun <reified T : Exception, R> ApiResult<R>.recoverWrapping(block: (T) -> R): ApiResult<R> = when (this) {
     is Success, is Loading -> this
     is Error -> if (e is T) ApiResult { Success(block(e)) }.unwrap() else this
