@@ -161,5 +161,8 @@ hs_err_pid*
 /app/debug/output-metadata.json
 /.idea/deploymentTargetDropDown.xml
 /.idea/other.xml
+
+### Custom rules
 checksum.txt
 .firebase-service-account.json
+/.idea/artifacts/**

@@ -1,12 +1,12 @@
 plugins {
-    id("pro.respawn.shared-library")
+    id("shared-library")
 }
 
 kotlin {
     configureMultiplatform(
         this,
         android = false,
-        ios = false, // TODO: unresolved :kotlin-native-prebuilt-macos-aarch64:1.8.0
+        ios = true,
         jvm = true,
     )
 }

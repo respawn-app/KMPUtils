@@ -32,8 +32,8 @@ fun Project.configurePublication() {
                         }
                     )
                     credentials {
-                        username = requireNotNull(properties["sonatypeUsername"]?.toString())
-                        password = requireNotNull(properties["sonatypePassword"]?.toString())
+                        username = properties["sonatypeUsername"]?.toString()
+                        password = properties["sonatypePassword"]?.toString()
                     }
                 }
             }
@@ -78,13 +78,17 @@ fun Project.configurePublication() {
 
         extensions.findByType<SigningExtension>()?.apply {
             val publishing = extensions.findByType<PublishingExtension>() ?: return@apply
-            val keyId = requireNotNull(properties["signing.keyId"]?.toString())
-            val password = requireNotNull(properties["signing.password"]?.toString())
+            val keyId = properties["signing.keyId"]?.toString()
+            val password = properties["signing.password"]?.toString()
 
             isRequired = isReleaseBuild
             useGpgCmd()
             useInMemoryPgpKeys(keyId, password)
             sign(publishing.publications)
+
+            tasks.withType<Sign>().configureEach {
+                onlyIf { isReleaseBuild }
+            }
         }
     }
 }

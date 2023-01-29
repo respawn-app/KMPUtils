@@ -93,7 +93,7 @@ complexity:
     threshold: 10
     includeStaticDeclarations: false
     includePrivateDeclarations: false
-  ComplexMethod:
+  CyclomaticComplexMethod:
     active: true
     threshold: 15
     ignoreSingleWhenExpression: true
@@ -109,6 +109,8 @@ complexity:
       - 'forEach'
       - 'isNotNull'
       - 'ifNull'
+  CognitiveComplexMethod:
+    active: false # TODO: Maybe enable later
   LabeledExpression:
     active: false
     ignoredLabels: [ ]
@@ -147,7 +149,7 @@ complexity:
   TooManyFunctions:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
-    thresholdInFiles: 50
+    thresholdInFiles: 11
     thresholdInClasses: 11
     thresholdInInterfaces: 11
     thresholdInObjects: 11
@@ -311,7 +313,7 @@ formatting:
     autoCorrect: true
     layout: '*,java.**,javax.**,kotlin.**,^'
   Indentation:
-    active: false
+    active: true
     autoCorrect: true
     indentSize: 4
   MaximumLineLength:
@@ -334,7 +336,7 @@ formatting:
     active: true
     autoCorrect: true
   NoEmptyFirstLineInMethodBlock:
-    active: false # TODO: Enable when formatting is fixed
+    active: true
     autoCorrect: true
   NoLineBreakAfterElse:
     active: true
@@ -459,7 +461,7 @@ naming:
   InvalidPackageDeclaration:
     active: true
     excludes: [ '**/*.kts' ]
-    rootPackage: 'pro.respawn.respawn'
+    rootPackage: 'com.nek12.respawn'
   MatchingDeclarationName:
     active: false
     mustBeFirst: true
@@ -522,6 +524,8 @@ performance:
 
 potential-bugs:
   active: true
+  UnnecessaryNotNullCheck:
+    active: true
   AvoidReferentialEquality:
     active: true
   ElseCaseInsteadOfExhaustiveWhen:
@@ -537,8 +541,6 @@ potential-bugs:
   DontDowncastCollectionTypes:
     active: true
   DoubleMutabilityForCollection:
-    active: true
-  DuplicateCaseInWhenExpression:
     active: true
   EqualsAlwaysReturnsTrueOrFalse:
     active: true
@@ -574,12 +576,7 @@ potential-bugs:
     ignoreOnClassesPattern: ''
   MapGetWithNotNullAssertionOperator:
     active: true
-  MissingWhenCase:
-    active: true
-    allowElseExpression: true
   NullableToStringCall:
-    active: true
-  RedundantElseInWhen:
     active: true
   UnconditionalJumpStatementInLoop:
     active: true
@@ -604,7 +601,11 @@ potential-bugs:
 
 style:
   active: true
+  UseSumOfInsteadOfFlatMapSize:
+    active: true
   CanBeNonNullable:
+    active: true
+  AlsoCouldBeApply:
     active: true
   CascadingCallWrapping:
     active: true
@@ -638,7 +639,7 @@ style:
   ForbiddenComment:
     active: true
     values:
-      - 'STOPSHIP:'
+      - 'STOPSHIP'
     allowedPatterns: ''
   ForbiddenImport:
     active: false
@@ -649,12 +650,6 @@ style:
     methods:
       - 'kotlin.io.println'
       - 'kotlin.io.print'
-  ForbiddenPublicDataClass:
-    active: false
-    excludes: [ '**' ]
-    ignorePackages:
-      - '*.internal'
-      - '*.internal.*'
   ForbiddenVoid:
     active: true
     ignoreOverridden: true
@@ -666,25 +661,21 @@ style:
     excludedFunctions: [ '' ]
     ignoreAnnotated:
       - 'dagger.Provides'
-  LibraryCodeMustSpecifyReturnType:
-    active: true
-    excludes: [ '**' ]
-  LibraryEntitiesShouldNotBePublic:
-    active: true
-    excludes: [ '**' ]
   LoopWithTooManyJumpStatements:
     active: true
     maxJumpCount: 1
   MagicNumber:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
+    ignoreAnnotated:
+      - 'androidx.compose.ui.tooling.preview.Preview'
     ignoreNumbers:
       - '-1'
+      - '2'
       - '24'
       - '12'
       - '0'
       - '1'
-      - '2'
       - '10'
       - '100'
       - '1000'
@@ -860,3 +851,19 @@ compose:
     active: true
   MissingModifierDefaultValue:
     active: true
+  ComposableFunctionName:
+    active: false # TODO: Broken
+
+#libraries:
+#  ForbiddenPublicDataClass:
+#    active: false
+#    excludes: [ '**' ]
+#    ignorePackages:
+#      - '*.internal'
+#      - '*.internal.*'
+#  LibraryCodeMustSpecifyReturnType:
+#    active: true
+#    excludes: [ '**' ]
+#  LibraryEntitiesShouldNotBePublic:
+#    active: true
+#    excludes: [ '**' ]

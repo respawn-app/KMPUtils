@@ -4,7 +4,7 @@ coroutines = "1.6.4"
 datetime = "0.4.0"
 dependencyAnalysisPlugin = "1.18.0"
 detekt = "1.22.0"
-gradleAndroid = "8.0.0-alpha10"
+gradleAndroid = "8.0.0-beta01"
 gradleDoctorPlugin = "0.8.1"
 kotest = "5.5.4"
 # @pin
@@ -12,12 +12,14 @@ kotlin = "1.8.0"
 turbine = "0.12.1"
 uuid = "0.5.0"
 versionCatalogUpdatePlugin = "0.7.0"
+composeDetektPlugin = "1.2.2"
 versionsPlugin = "0.44.0"
 
 [libraries]
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradleAndroid" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+detekt-compose = { module = "ru.kode:detekt-rules-compose", version.ref = "composeDetektPlugin" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }

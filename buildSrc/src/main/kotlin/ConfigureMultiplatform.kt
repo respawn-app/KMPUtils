@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-@Suppress("unused")
+@Suppress("unused", "UNUSED_VARIABLE")
 fun Project.configureMultiplatform(
     ext: KotlinMultiplatformExtension,
     android: Boolean = false,
@@ -15,14 +15,24 @@ fun Project.configureMultiplatform(
     jvm: Boolean = false,
 ) = ext.apply {
 
+    explicitApi()
+
     if (android) {
-        android()
+        android {
+            publishAllLibraryVariants()
+        }
+
+        sourceSets.apply {
+            val androidMain by getting
+            // val androidTest by getting
+        }
     }
 
     if (jvm) {
         jvm {
+            jvmToolchain(Config.jvmTarget.target.toInt())
             compilations.all {
-                kotlinOptions.jvmTarget = Config.jvmTarget
+                kotlinOptions.jvmTarget = Config.jvmTarget.target
             }
             testRuns["test"].executionTask.configure {
                 useJUnitPlatform()
@@ -45,9 +55,10 @@ fun Project.configureMultiplatform(
 
         sourceSets.apply {
             all {
-                languageSettings.apply {
-                    optIn("kotlin.RequiresOptIn")
+                languageSettings {
+                    languageVersion = Config.languageVersion
                     progressiveMode = true
+                    optIn("kotlin.RequiresOptIn")
                 }
             }
 
@@ -57,8 +68,7 @@ fun Project.configureMultiplatform(
                     implementation(kotlin("test"))
                 }
             }
-            val androidMain by getting
-            val androidTest by getting
+
             val iosX64Main by getting
             val iosArm64Main by getting
             val iosSimulatorArm64Main by getting

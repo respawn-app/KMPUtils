@@ -31,3 +31,5 @@ rootProject.name = "kmmutils"
 include(":apiresult")
 include(":common")
 include(":datetime")
+include(":coroutines")
+include(":resources")

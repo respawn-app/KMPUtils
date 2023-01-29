@@ -1,17 +1,19 @@
+import Config.namespace
+
 plugins {
+    id("android-library")
     id("shared-library")
 }
 
 kotlin {
     configureMultiplatform(
         this,
-        android = false,
+        android = true,
         ios = true,
         jvm = true,
     )
 }
 
-
-dependencies {
-    commonMainApi(libs.kotlin.datetime)
+android {
+    namespace = "${Config.namespace}.resources"
 }

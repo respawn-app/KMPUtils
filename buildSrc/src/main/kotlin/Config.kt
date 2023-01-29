@@ -1,6 +1,7 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "MissingPackageDeclaration")
 
 import org.gradle.api.JavaVersion
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 object Config  {
 
@@ -13,8 +14,10 @@ object Config  {
     const val majorRelease = 0
     const val minorRelease = 1
     const val patch = 0
-    const val versionName = "$majorRelease.$minorRelease.$patch-alpha"
+    const val versionName = "$majorRelease.$minorRelease.$patch"
 
+    // kotlin
+    const val languageVersion = "1.8"
     val kotlinCompilerArgs = listOf(
         "-Xjvm-default=all", // enable all jvm optimizations
         "-Xcontext-receivers",
@@ -23,21 +26,20 @@ object Config  {
         "-opt-in=kotlinx.coroutines.FlowPreview",
         "-opt-in=kotlin.Experimental",
         "-opt-in=kotlin.RequiresOptIn",
-        "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-        "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-        "-P",
-        "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
-        // "-Xuse-k2",
+        "-Xuse-k2",
         // "-XXLanguage:+ExplicitBackingFields"
     )
 
+    val jvmTarget = JvmTarget.JVM_11
     val javaVersion = JavaVersion.VERSION_11
-    const val jvmTarget = "11"
     const val compileSdk = 33
     const val targetSdk = compileSdk
     const val minSdk = 26
     const val kotlinVersion = "1.8"
 
+    // android
+    const val namespace = artifactId
+    const val buildToolsVersion = "33.0.0"
     const val testRunner = "androidx.test.runner.AndroidJUnitRunner"
     const val isMinifyEnabledRelease = true
     const val isMinifyEnabledDebug = false
@@ -47,6 +49,7 @@ object Config  {
 
     object Detekt {
 
+        val stabilityLevels = listOf("preview", "eap", "alpha", "beta", "m", "cr", "rc")
         const val configFile = "detekt.yml"
         val includedFiles = listOf("**/*.kt", "**/*.kts")
         val excludedFiles = listOf("**/resources/**", "**/build/**", "**/.idea/**")
