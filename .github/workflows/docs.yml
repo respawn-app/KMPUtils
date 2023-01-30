@@ -2,14 +2,14 @@ on:
   push:
     branches: [ master ]
 
-    workflow_dispatch:
-
 concurrency:
+  group: "docs"
   cancel-in-progress: true
 
 jobs:
   publish:
     runs-on: macos-latest
+    environment: dokka
 
     steps:
       - uses: actions/checkout@v3

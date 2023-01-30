@@ -4,8 +4,11 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
+import org.gradle.api.publish.maven.tasks.PublishToMavenLocal
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.findByType
+import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
@@ -14,6 +17,7 @@ import org.gradle.plugins.signing.SigningExtension
 /**
  * Configures Maven publishing to sonatype for this project
  */
+@Suppress("unused")
 fun Project.configurePublication() {
     val properties = gradleLocalProperties(rootDir)
 
@@ -80,16 +84,27 @@ fun Project.configurePublication() {
         }
 
         extensions.findByType<SigningExtension>()?.apply {
-            val publishing = extensions.findByType<PublishingExtension>() ?: return@apply
-            val keyId = properties["signing.keyId"]?.toString()
-            val password = properties["signing.password"]?.toString()
+            val publishing = requireNotNull(extensions.findByType<PublishingExtension>())
+
+            val signingKey: String? = properties["signing.key"]?.toString()
+            val signingPassword: String? = properties["signing.password"]?.toString()
 
             isRequired = isReleaseBuild
-            useInMemoryPgpKeys(keyId, password)
+
+            if (signingKey != null && signingPassword != null) {
+                println("Using in memory PGP keys for signing")
+                useInMemoryPgpKeys(signingKey, signingPassword)
+            } else {
+                println("Using local.properties for signing")
+            }
+
             sign(publishing.publications)
 
             tasks.withType<Sign>().configureEach {
                 onlyIf { isReleaseBuild }
+            }
+            tasks.withType<AbstractPublishToMaven>().configureEach {
+                dependsOn(tasks.withType<Sign>())
             }
         }
     }

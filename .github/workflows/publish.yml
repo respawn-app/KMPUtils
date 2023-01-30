@@ -4,9 +4,8 @@ on:
   push:
     branches: [ master ]
 
-    workflow_dispatch:
-
 concurrency:
+  group: "publish"
   cancel-in-progress: true
 
 jobs:
@@ -40,4 +39,7 @@ jobs:
         run: echo "$LOCAL_PROPERTIES" > local.properties
 
       - name: Publish to sonatype
+        env:
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
         run: ./gradlew publishAllPublicationsToSonatypeRepository --stacktrace
