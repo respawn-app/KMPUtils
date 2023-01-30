@@ -116,10 +116,15 @@ public sealed interface ApiResult<out T> {
         }
 
         /**
-         * If T is an exception, will produce ApiResult.Error, otherwise ApiResult.Success<T>
+         *  * If T is an exception, will produce [ApiResult.Error]
+         *  * If T is Loading, will produce [ApiResult.Loading]
+         *  * Otherwise [ApiResult.Success]<T>
          */
-        public inline operator fun <T> invoke(value: T): ApiResult<T> =
-            if (value is Exception) Error(value) else Success(value)
+        public inline operator fun <T> invoke(value: T): ApiResult<T> = when (value) {
+            is Loading -> value
+            is Exception -> Error(value)
+            else -> Success(value)
+        }
     }
 }
 
