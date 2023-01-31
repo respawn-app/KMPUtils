@@ -1,5 +1,7 @@
 # KMM Utilities
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8846c438e5534e45b7b70d75ccdc0107)](https://app.codacy.com/gh/respawn-app/kmmutils?utm_source=github.com&utm_medium=referral&utm_content=respawn-app/kmmutils&utm_campaign=Badge_Grade_Settings)
+
 This repository is Work In Progress ⚙️
 
 # Contributing
