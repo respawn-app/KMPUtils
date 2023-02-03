@@ -13,10 +13,11 @@ permissions:
 
 jobs:
   publish:
-    runs-on: macos-latest
-    environment: docs
+    environment:
+      name: docs
       url: ${{ steps.deployment.outputs.page_url }}
 
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
 
