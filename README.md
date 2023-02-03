@@ -3,15 +3,10 @@
 [![CI](https://github.com/respawn-app/kmmutils/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/respawn-app/kmmutils/actions/workflows/ci.yml)
 ![Docs](https://img.shields.io/website?down_color=red&label=Docs&up_color=green&up_message=Online&url=http%3A%2F%2Fopensource.respawn.pro%2Fkmmutils%2F%23%2F)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8846c438e5534e45b7b70d75ccdc0107)](https://app.codacy.com/gh/respawn-app/kmmutils?utm_source=github.com&utm_medium=referral&utm_content=respawn-app/kmmutils&utm_campaign=Badge_Grade_Settings)
-
 [![CodeFactor](https://www.codefactor.io/repository/github/respawn-app/kmmutils/badge)](https://www.codefactor.io/repository/github/respawn-app/kmmutils)
-
 ![GitHub top language](https://img.shields.io/github/languages/top/respawn-app/kmmutils)
-
 ![GitHub](https://img.shields.io/github/license/respawn-app/kmmutils)
-
 ![GitHub issues](https://img.shields.io/github/issues/respawn-app/kmmutils)
-
 ![GitHub last commit](https://img.shields.io/github/last-commit/respawn-app/kmmutils)
 
 KMM Utils is a collection of all the things that are missing from Kotlin STL, popular KMM libraries & platform SDKs.
