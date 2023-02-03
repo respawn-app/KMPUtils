@@ -14,11 +14,10 @@ object Config {
     const val artifact = "kmmutils"
 
     const val artifactId = "$group.$artifact"
-    const val versionCode = 1
 
-    const val majorRelease = 0
-    const val minorRelease = 1
-    const val patch = 0
+    const val majorRelease = 1
+    const val minorRelease = 0
+    const val patch = 1
     const val versionName = "$majorRelease.$minorRelease.$patch"
 
     // kotlin

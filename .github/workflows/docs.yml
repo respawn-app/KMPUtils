@@ -6,10 +6,16 @@ concurrency:
   group: "docs"
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   publish:
     runs-on: macos-latest
-    environment: dokka
+    environment: docs
+    url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - uses: actions/checkout@v3
@@ -33,6 +39,21 @@ jobs:
           LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
         run: echo "$LOCAL_PROPERTIES" > local.properties
 
-# TODO: Waiting for Dokka gradle 8.0 support https://github.com/Kotlin/dokka/pull/2816
-#      - name: Generate docs
-#        run: ./gradlew dokkaHtmlMultiModule --no-configuration-cache
+      - name: Update docs/README.md
+        run: cp ./README.md ./docs/README.md
+
+      # TODO: Waiting for Dokka gradle 8.0 support https://github.com/Kotlin/dokka/pull/2816
+      #      - name: Generate docs
+      #        run: ./gradlew dokkaHtmlMultiModule --no-configuration-cache
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
