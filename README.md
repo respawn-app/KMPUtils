@@ -15,12 +15,13 @@ See documentation at [https://opensource.respawn.pro/kmmutils/](https://opensour
 
 ### Features
 
-* [ApiResult](https://opensource.respawn.pro/kmmutils/apiresult):A monad for wrapping operations that may fail. Similar
+* [ApiResult](https://opensource.respawn.pro/kmmutils/#/apiresult):A monad for wrapping operations that may fail.
+  Similar
   to kotlin.Result, but offers much more.
-* [Common](https://opensource.respawn.pro/kmmutils/common): Kotlin standard library extensions
-* [Datetime](https://opensource.respawn.pro/kmmutils/datetime): All the things missing from kotlinx.datetime and Java
+* [Common](https://opensource.respawn.pro/kmmutils/#/common): Kotlin standard library extensions
+* [Datetime](https://opensource.respawn.pro/kmmutils/#/datetime): All the things missing from kotlinx.datetime and Java
   Calendar & DateTime API.
-* [Coroutines](https://opensource.respawn.pro/kmmutils/coroutines): Things missing from Coroutines & Flows API. Also
+* [Coroutines](https://opensource.respawn.pro/kmmutils/#/coroutines): Things missing from Coroutines & Flows API. Also
   includes platform extensions for Android.
 
 ## Declaring dependencies
@@ -38,7 +39,20 @@ kmmutils-common = { module = "pro.respawn.kmmutils:common", version.ref = "kmmut
 kmmutils-datetime = { module = "pro.respawn.kmmutils:datetime", version.ref = "kmmutils" }
 kmmutils-coroutines = { module = "pro.respawn.kmmutils:coroutines", version.ref = "kmmutils" }
 
+[bundles]
+kmmutils = [
+    "kmmutils-apiresult",
+    "kmmutils-common",
+    "kmmutils-datetime",
+    "kmmutils-coroutines"
+]
+
 ```
+
+### Supported platforms
+
+More will be added soon as all code is multiplatform.
+Android, JVM, iOS
 
 ## License
 

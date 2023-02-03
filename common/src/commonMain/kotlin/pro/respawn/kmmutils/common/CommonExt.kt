@@ -2,25 +2,6 @@
 
 package pro.respawn.kmmutils.common
 
-import kotlin.math.abs
-import kotlin.math.absoluteValue
-import kotlin.math.log10
-import kotlin.math.sign
-
-/**
- * @return The number of digits in this [Int]
- */
-public val Int.length: Int
-    get() = when (this) {
-        0 -> 1
-        else -> log10(abs(this).toDouble()).toInt() + 1
-    }
-
-/**
- * @return 1 if this is true and false otherwise
- */
-public fun Boolean.toInt(): Int = if (this) 1 else 0
-
 /**
  * @return Whether this string is valid
  * Examples:
@@ -116,38 +97,3 @@ public val Long.signChar: String
             else -> ""
         }
     }
-
-/**
- * uses [sign] and prepends it to the value of [this]
- */
-public fun Int.toStringWithSign(): String = "$sign$absoluteValue"
-
-/**
- * @returns null if [this] is equal to 0
- */
-public fun Int?.takeIfNotZero(): Int? = takeIf { it != 0 }
-
-/**
- * @returns null if [this] is equal to 0
- */
-public fun Long?.takeIfNotZero(): Long? = takeIf { it != 0L }
-
-/**
- * @returns null if [this] is equal to 0
- */
-public fun Double?.takeIfNotZero(): Double? = takeIf { it != 0.0 }
-
-/**
- * @returns null if [this] is equal to 0
- */
-public fun Float?.takeIfNotZero(): Float? = takeIf { it != 0.0f }
-
-/**
- * @returns null if [this] is equal to 0
- */
-public fun Short?.takeIfNotZero(): Short? = takeIf { it != 0.toShort() }
-
-/**
- * @returns null if [this] is equal to 0
- */
-public fun Byte?.takeIfNotZero(): Byte? = takeIf { it != 0.toByte() }

@@ -33,14 +33,15 @@ suspend fun getSubscriptions(userId: String): ApiResult<List<SubscriptionRespons
     api.getSubscriptions(userId)
 }
 
+// emits: Loading -> User / Error
 fun getSubscriptionsAsync(userId: String): Flow<Apiresult<List<SubscriptionResponse>>> = ApiResult.flow {
     api.getSubscriptions(id)
-} // emits: Loading -> User / Error
+}
 
+// SuspendResult will wait for the result of nested coroutines and propagate exceptions thrown in them
 suspend fun getVerifiedSubs(userId: String) = SuspendResult { // this: CoroutineScope
     val subs = api.getSubscriptions(userId)
 
-    // SuspendResult will wait for the result of nested coroutines and propagate the exceptions thrown in them
     launch {
         api.verifySubscriptions(subs)
     }
@@ -71,7 +72,7 @@ val state: SubscriptionState = repo.getSubscriptions(userId)
 This is not a comprehensive list of operators as new ones may be added in the future.
 Check out source code for a full list.
 
-### Compute:
+### Create:
 
 * `ApiResult { computation() } ` - wrap the result of a computation
 * `ApiResult.flow { computation() }` - produce a flow
@@ -88,7 +89,7 @@ Check out source code for a full list.
 * `fold(onSuccess = { /* ... */ }, onError = { /* ... */ })` - fold the result to type [T]
 * `onError<CustomExceptionType> { /* ... */ }`
 * `onLoading { setLoading(true) }`
-* `onSuccess { compute(it) }`
+* `onSuccess { computation(it) }`
 
 ### Transform:
 
@@ -97,9 +98,9 @@ Check out source code for a full list.
   but discard it's Success result and continue with the previous result
 * `then { anotherCall(it) }` - execute another ApiResult call and continue with its result type
 * `map { it.transform() }`
-* `mapWrapping { it.transformThrowing() } ` - map, but catch exceptions in the block
+* `mapWrapping { it.transformThrowing() } ` - map, but catch exceptions in the `transform` block
 * `mapLoading { null }`
-* `mapError { e -> e.transform() } `
+* `mapError { e -> e.transform() } `  - map only `Error`s
 * `mapValues { item -> item.transform() } ` - for collection results
 * `errorIf { it.isInvalid }` - error if the predicate is true
 * `errorIfNot { it.isAuthorized }`
@@ -120,7 +121,7 @@ Check out source code for a full list.
 * Same as `kotlin.Result`, ApiResult is not meant to be passed around to the UI layer.
   Be sure not to propagate results everywhere in your code, and handle them on the layer responsible for error handling.
 
-## How ApiResult differs from other wrappers?
+## How does ApiResult differ from other wrappers?
 
 * kotlin.Result is an existing solution for result wrapping,
   however, it's far less efficient, less safe and, most importantly, doesn't offer the declarative api as rich as
@@ -132,4 +133,4 @@ Check out source code for a full list.
   uses `mapErrors` will allow you to transform exceptions to your own error types.
 * ApiResult is different from [EitherNet](https://github.com/slackhq/EitherNet) because once again -
   it doesn't hardcode your error types. ApiResult is multiplatform and lightweight:
-  no crazy mappings that use reflection at a cost of manually wrapping your calls in result blocks.
+  no crazy mappings that use reflection to save you from writing 0.5 lines of code to wrap a call in an ApiResult.
