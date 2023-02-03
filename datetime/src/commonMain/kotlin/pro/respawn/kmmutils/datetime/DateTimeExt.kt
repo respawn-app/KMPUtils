@@ -150,6 +150,12 @@ public fun Month.length(year: Int): Int {
     return start.until(end, DateTimeUnit.DAY)
 }
 
+/**
+ * Get the current date using provided [zone].
+ */
 public fun LocalDate.Companion.now(zone: TimeZone): LocalDate = LocalDateTime.now(zone).date
 
+/**
+ * Get the current time using provided [zone].
+ */
 public fun LocalTime.Companion.now(zone: TimeZone): LocalTime = LocalDateTime.now(zone).time

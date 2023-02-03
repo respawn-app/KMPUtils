@@ -32,7 +32,6 @@ include(":common")
 include(":datetime")
 include(":coroutines")
 
-
 /**
  *  workaround CI pipeline resolution bug
  */
@@ -44,7 +43,6 @@ fun RepositoryHandler.ivyNative() {
             this@ivyNative.ivy("https://download.jetbrains.com/kotlin/native/builds") {
                 name = "Kotlin Native"
                 patternLayout {
-
                     listOf(
                         "macos-x86_64",
                         "macos-aarch64",
