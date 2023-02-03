@@ -12,9 +12,9 @@ permissions:
   id-token: write
 
 jobs:
-  publish:
+  docs:
     environment:
-      name: docs
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     runs-on: macos-latest
@@ -53,7 +53,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: '.'
+          path: './docs/'
 
       - name: Deploy to GitHub Pages
         id: deployment
