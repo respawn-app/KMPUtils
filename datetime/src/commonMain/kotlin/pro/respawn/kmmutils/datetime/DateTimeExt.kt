@@ -8,6 +8,7 @@ import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
@@ -138,7 +139,7 @@ public val Instant.Companion.EPOCH: Instant
 /**
  * Adds a specified [time] to [this]. Returns a new [Instant]
  */
-public operator fun Instant.plus(time: Time): Instant = this + time.duration
+public operator fun Instant.plus(time: Time): Instant = this + time.asDuration
 
 /**
  * Finds the length of a given month based on the year, in days.
@@ -148,3 +149,7 @@ public fun Month.length(year: Int): Int {
     val end = start.plus(DateTimeUnit.MONTH)
     return start.until(end, DateTimeUnit.DAY)
 }
+
+public fun LocalDate.Companion.now(zone: TimeZone): LocalDate = LocalDateTime.now(zone).date
+
+public fun LocalTime.Companion.now(zone: TimeZone): LocalTime = LocalDateTime.now(zone).time
