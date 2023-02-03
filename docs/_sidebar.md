@@ -3,3 +3,4 @@
 * [Common](common.md)
 * [Coroutines](coroutines.md)
 * [Datetime](datetime.md)
+* [Contributing](CONTRIBUTING.md)
