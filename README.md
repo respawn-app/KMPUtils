@@ -38,7 +38,20 @@ kmmutils-common = { module = "pro.respawn.kmmutils:common", version.ref = "kmmut
 kmmutils-datetime = { module = "pro.respawn.kmmutils:datetime", version.ref = "kmmutils" }
 kmmutils-coroutines = { module = "pro.respawn.kmmutils:coroutines", version.ref = "kmmutils" }
 
+[bundles]
+kmmutils = [
+    "kmmutils-apiresult",
+    "kmmutils-common",
+    "kmmutils-datetime",
+    "kmmutils-coroutines"
+]
+
 ```
+
+### Supported platforms
+
+More will be added soon as all code is multiplatform.
+Android, JVM, iOS
 
 ## License
 
