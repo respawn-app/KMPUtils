@@ -55,11 +55,14 @@ public val ClosedRange<Float>.midpoint: Float get() = start / 2 + endInclusive /
 public val ClosedRange<Double>.midpoint: Double get() = start / 2 + endInclusive / 2
 
 /**
+ *
  * A middle point of the range. The value is rounded down.
  */
+@get:JvmName("midpointShort")
 public val ClosedRange<Short>.midpoint: Int get() = start / 2 + endInclusive / 2
 
 /**
  * A middle point of the range. The value is rounded down.
  */
+@get:JvmName("midpointByte")
 public val ClosedRange<Byte>.midpoint: Int get() = start / 2 + endInclusive / 2

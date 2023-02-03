@@ -206,6 +206,7 @@ public inline fun <T> ApiResult<T>.onError(block: (Exception) -> Unit): ApiResul
 /**
  * Invoke a given block if [this] is [Error] and it's [Error.e] is of type [E].
  */
+@JvmName("onErrorTyped")
 public inline fun <T, reified E : Exception> ApiResult<T>.onError(block: (E) -> Unit): ApiResult<T> = apply {
     if (this is Error && e is E) block(e)
 }
