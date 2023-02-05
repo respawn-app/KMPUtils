@@ -50,7 +50,7 @@ fun Project.configureAndroid(
                     useJUnitPlatform()
                     maxHeapSize = "1G"
                     setForkEvery(100)
-                    setJvmArgs(listOf("-Xmx1g", "-Xms512m"))
+                    jvmArgs = listOf("-Xmx1g", "-Xms512m")
                 }
             }
         }
@@ -66,7 +66,7 @@ fun Project.configureAndroidLibrary(variant: LibraryExtension) = variant.apply {
                 "archivesBaseName",
                 project.name
             )
-            isMinifyEnabled = false
+            isMinifyEnabled = Config.isMinifyEnabledRelease
         }
     }
 
