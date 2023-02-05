@@ -1,5 +1,4 @@
-
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.gradleDoctor)
