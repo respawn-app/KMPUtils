@@ -5,11 +5,11 @@ compose-compiler = "1.4.4"
 composeDetektPlugin = "1.2.2"
 core-ktx = "1.9.0"
 coroutines = "1.6.4"
+datetime = "0.4.0"
 dependencyAnalysisPlugin = "1.19.0"
 detekt = "1.22.0"
 detektFormattingPlugin = "1.22.0"
 dokka = "1.8.10"
-datetime = "0.4.0"
 flowExt = "0.3.0"
 fragment = "1.5.6"
 gradleAndroid = "8.0.0-rc01"
@@ -61,9 +61,9 @@ kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
