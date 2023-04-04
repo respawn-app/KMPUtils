@@ -1,5 +1,6 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("shared-library")
+    id("pro.respawn.shared-library")
 }
 
 kotlin {
@@ -8,5 +9,8 @@ kotlin {
         android = false,
         ios = true,
         jvm = true,
+        js = true,
+        linux = true,
+        mingw = true,
     )
 }

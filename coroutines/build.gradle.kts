@@ -1,5 +1,5 @@
 plugins {
-    id("shared-library")
+    id("pro.respawn.shared-library")
 }
 
 kotlin {
@@ -8,9 +8,12 @@ kotlin {
         android = false,
         ios = true,
         jvm = true,
+        js = true,
+        linux = true,
+        mingw = true,
     )
 }
 
 dependencies {
-    commonMainApi(libs.kotlin.coroutines)
+    commonMainApi(libs.kotlinx.coroutines.core)
 }

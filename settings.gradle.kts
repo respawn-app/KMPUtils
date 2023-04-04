@@ -1,8 +1,23 @@
+@file:Suppress("UndocumentedPublicFunction")
+
 pluginManagement {
     repositories {
         google()
         gradlePluginPortal()
         mavenCentral()
+    }
+
+    // TODO: https://github.com/Kotlin/kotlinx-atomicfu/issues/56
+    resolutionStrategy {
+        eachPlugin {
+            val module = when (requested.id.id) {
+                "kotlinx-atomicfu" -> "org.jetbrains.kotlinx:atomicfu-gradle-plugin:${requested.version}"
+                else -> null
+            }
+            if (module != null) {
+                useModule(module)
+            }
+        }
     }
 }
 
@@ -21,22 +36,39 @@ dependencyResolutionManagement {
     repositories {
         google()
         ivyNative()
+        node()
         mavenCentral()
     }
 }
 
-rootProject.name = "kmmutils"
+fun RepositoryHandler.node() {
+    exclusiveContent {
+        forRepository {
+            ivy("https://nodejs.org/dist/") {
+                name = "Node Distributions at $url"
+                patternLayout { artifact("v[revision]/[artifact](-v[revision]-[classifier]).[ext]") }
+                metadataSources { artifact() }
+                content { includeModule("org.nodejs", "node") }
+            }
+        }
+        filter { includeGroup("org.nodejs") }
+    }
 
-include(":apiresult")
-include(":common")
-include(":datetime")
-include(":coroutines")
+    exclusiveContent {
+        forRepository {
+            ivy("https://github.com/yarnpkg/yarn/releases/download") {
+                name = "Yarn Distributions at $url"
+                patternLayout { artifact("v[revision]/[artifact](-v[revision]).[ext]") }
+                metadataSources { artifact() }
+                content { includeModule("com.yarnpkg", "yarn") }
+            }
+        }
+        filter { includeGroup("com.yarnpkg") }
+    }
+}
 
-/**
- *  workaround CI pipeline resolution bug
- */
 fun RepositoryHandler.ivyNative() {
-    ivy { url = java.net.URI("https://download.jetbrains.com") }
+    ivy { url = uri("https://download.jetbrains.com") }
 
     exclusiveContent {
         forRepository {
@@ -62,3 +94,10 @@ fun RepositoryHandler.ivyNative() {
         filter { includeModuleByRegex(".*", ".*kotlin-native-prebuilt.*") }
     }
 }
+
+rootProject.name = "kmmutils"
+
+include(":apiresult")
+include(":common")
+include(":datetime")
+include(":coroutines")

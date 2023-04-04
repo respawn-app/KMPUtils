@@ -66,3 +66,10 @@ public val ClosedRange<Short>.midpoint: Int get() = start / 2 + endInclusive / 2
  */
 @get:JvmName("midpointByte")
 public val ClosedRange<Byte>.midpoint: Int get() = start / 2 + endInclusive / 2
+
+/**
+ * Produces a range where min value is the minimum between [other.start] and [ClosedRange.start]
+ * and max value is maximum between [other.endInclusive] and [ClosedRange.endInclusive]
+ */
+public fun <T : Comparable<T>> ClosedRange<T>.expand(other: ClosedRange<T>): ClosedRange<T> =
+    minOf(other.start, start)..maxOf(other.endInclusive, endInclusive)

@@ -1,5 +1,6 @@
-@file:Suppress("MissingPackageDeclaration")
+@file:Suppress("MissingPackageDeclaration", "unused", "UNUSED_VARIABLE", "UndocumentedPublicFunction", "LongMethod")
 
+import Config.jvmTarget
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.get
@@ -7,43 +8,101 @@ import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-@Suppress("unused", "UNUSED_VARIABLE", "UndocumentedPublicFunction")
 fun Project.configureMultiplatform(
     ext: KotlinMultiplatformExtension,
     android: Boolean = false,
     ios: Boolean = false,
     jvm: Boolean = false,
+    js: Boolean = false,
+    linux: Boolean = false,
+    mingw: Boolean = false,
 ) = ext.apply {
     explicitApi()
 
+    val libs by versionCatalog
+    val commonMain by sourceSets.getting
+    val commonTest by sourceSets.getting {
+        dependencies {
+            implementation(kotlin("test"))
+        }
+    }
+
+    sourceSets.apply {
+        all {
+            languageSettings {
+                progressiveMode = true
+                languageVersion = Config.kotlinVersion.version
+                progressiveMode = true
+                Config.optIns.forEach { optIn(it) }
+            }
+        }
+    }
+
+    if (linux) linuxX64()
+
+    if (mingw) mingwX64()
+
+    if (js) {
+        js(IR) {
+            browser()
+            nodejs()
+            binaries.library()
+            binaries.executable()
+        }
+        // TODO: KMM js <> gradle 8.0 incompatibility
+        tasks.run {
+            val jsLibrary = named("jsProductionLibraryCompileSync")
+            val jsExecutable = named("jsProductionExecutableCompileSync")
+            named("jsBrowserProductionWebpack").configure {
+                dependsOn(jsLibrary)
+            }
+            named("jsBrowserProductionLibraryPrepare").configure {
+                dependsOn(jsExecutable)
+            }
+            named("jsNodeProductionLibraryPrepare").configure {
+                dependsOn(jsExecutable)
+            }
+        }
+    }
+
     if (android) {
         android {
-            publishAllLibraryVariants()
+            publishLibraryVariants(Config.publishingVariant)
         }
 
         sourceSets.apply {
             val androidMain by getting
-            // val androidTest by getting
         }
     }
 
     if (jvm) {
         jvm {
-            jvmToolchain(Config.jvmTarget.target.toInt())
             compilations.all {
-                kotlinOptions.jvmTarget = Config.jvmTarget.target
+                kotlinOptions {
+                    jvmTarget = Config.jvmTarget.target
+                    freeCompilerArgs += Config.jvmCompilerArgs
+                }
             }
             testRuns["test"].executionTask.configure {
                 useJUnitPlatform()
             }
         }
-    }
 
+        sourceSets.apply {
+            val jvmTest by getting {
+                dependencies {
+                    implementation(libs.requireLib("kotest-junit"))
+                }
+            }
+        }
+    }
     if (ios) {
         listOf(
             iosX64(),
             iosArm64(),
-            iosSimulatorArm64()
+            iosSimulatorArm64(),
+            macosArm64(),
+            macosX64(),
         ).forEach {
             it.binaries.framework {
                 binaryOption("bundleId", Config.artifactId)
@@ -51,23 +110,7 @@ fun Project.configureMultiplatform(
                 baseName = Config.artifactId
             }
         }
-
         sourceSets.apply {
-            all {
-                languageSettings {
-                    languageVersion = Config.languageVersion
-                    progressiveMode = true
-                    optIn("kotlin.RequiresOptIn")
-                }
-            }
-
-            val commonMain by getting
-            val commonTest by getting {
-                dependencies {
-                    implementation(kotlin("test"))
-                }
-            }
-
             val iosX64Main by getting
             val iosArm64Main by getting
             val iosSimulatorArm64Main by getting
@@ -87,5 +130,5 @@ fun Project.configureMultiplatform(
                 iosSimulatorArm64Test.dependsOn(this)
             }
         }
-    }
+    } // ios
 }

@@ -4,6 +4,7 @@ package pro.respawn.kmmutils.apiresult
 
 import pro.respawn.kmmutils.apiresult.ApiResult.Error
 import pro.respawn.kmmutils.apiresult.ApiResult.Success
+import kotlin.jvm.JvmName
 
 /**
  * Returns [emptyList] if [this]'s collection is empty

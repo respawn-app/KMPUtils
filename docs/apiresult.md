@@ -123,9 +123,9 @@ Check out source code for a full list.
 
 ## How does ApiResult differ from other wrappers?
 
-* kotlin.Result is an existing solution for result wrapping,
+* `kotlin.Result` is an existing solution for result wrapping,
   however, it's far less efficient, less safe and, most importantly, doesn't offer the declarative api as rich as
-  ApiResult. You could call ApiResult a successor to kotlin.Result.
+  ApiResult. You could call ApiResult a successor to `kotlin.Result`.
 * ApiResult serves a different purpose than [Sandwich](https://github.com/skydoves/sandwich).
   Sandwich specializes in integration with Retrofit and, therefore, is not multiplatform.  
   ApiResult allows you to wrap any computation, be it Ktor, Retrofit, or database call. ApiResult is more lightweight
@@ -134,3 +134,6 @@ Check out source code for a full list.
 * ApiResult is different from [EitherNet](https://github.com/slackhq/EitherNet) because once again -
   it doesn't hardcode your error types. ApiResult is multiplatform and lightweight:
   no crazy mappings that use reflection to save you from writing 0.5 lines of code to wrap a call in an ApiResult.
+* ApiResult is a lighter version of Arrow.kt Monads such as Either. Sometimes you want a monad to wrap your  
+  computations, but don't want to introduce the full complexity and intricacies of Arrow and functional programming.
+  ApiResult is easier to understand and use, although less powerful than Arrow.

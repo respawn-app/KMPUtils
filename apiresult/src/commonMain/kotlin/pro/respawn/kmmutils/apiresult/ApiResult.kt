@@ -9,13 +9,15 @@
 
 package pro.respawn.kmmutils.apiresult
 
-import kotlinx.coroutines.CancellationException
 import pro.respawn.kmmutils.apiresult.ApiResult.Error
 import pro.respawn.kmmutils.apiresult.ApiResult.Loading
 import pro.respawn.kmmutils.apiresult.ApiResult.Success
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import kotlin.coroutines.cancellation.CancellationException
+import kotlin.jvm.JvmInline
+import kotlin.jvm.JvmName
 
 /**
  * An exception that is thrown when an attempt to retrieve a result of an [ApiResult] is being made when the
@@ -71,11 +73,6 @@ public sealed interface ApiResult<out T> {
          * [e]'s message.
          */
         public val message: String? get() = e.message
-
-        /**
-         * [e]'s stacktrace.
-         */
-        public val stacktrace: Array<StackTraceElement> get() = e.stackTrace
 
         override fun toString(): String = "ApiResult.Error: message=$message and cause: $e"
 

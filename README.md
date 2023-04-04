@@ -2,22 +2,23 @@
 
 [![CI](https://github.com/respawn-app/kmmutils/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/respawn-app/kmmutils/actions/workflows/ci.yml)
 ![Docs](https://img.shields.io/website?down_color=red&label=Docs&up_color=green&up_message=Online&url=http%3A%2F%2Fopensource.respawn.pro%2Fkmmutils%2F%23%2F)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8846c438e5534e45b7b70d75ccdc0107)](https://app.codacy.com/gh/respawn-app/kmmutils?utm_source=github.com&utm_medium=referral&utm_content=respawn-app/kmmutils&utm_campaign=Badge_Grade_Settings)
 [![CodeFactor](https://www.codefactor.io/repository/github/respawn-app/kmmutils/badge)](https://www.codefactor.io/repository/github/respawn-app/kmmutils)
 ![GitHub top language](https://img.shields.io/github/languages/top/respawn-app/kmmutils)
 ![GitHub](https://img.shields.io/github/license/respawn-app/kmmutils)
 ![GitHub issues](https://img.shields.io/github/issues/respawn-app/kmmutils)
 ![GitHub last commit](https://img.shields.io/github/last-commit/respawn-app/kmmutils)
+[![AndroidWeekly #556](https://androidweekly.net/issues/issue-556/badge)](https://androidweekly.net/issues/issue-556/)
 
 KMM Utils is a collection of all the things that are missing from Kotlin STL, popular KMM libraries & platform SDKs.
+The library is meant to be a drop-in dependency - no need to study anything (except maybe `ApiResult`) - just add and
+enjoy the expanded API of the things you are used to, relying on autocompletion to come up with suggestions for you.
 
 See documentation at [https://opensource.respawn.pro/kmmutils/](https://opensource.respawn.pro/kmmutils/)
 
 ### Features
 
-* [ApiResult](https://opensource.respawn.pro/kmmutils/#/apiresult):A monad for wrapping operations that may fail.
-  Similar
-  to kotlin.Result, but offers much more.
+* [ApiResult](https://opensource.respawn.pro/kmmutils/#/apiresult): A monad for wrapping operations that may fail.
+  Similar to kotlin.Result, but offers much more.
 * [Common](https://opensource.respawn.pro/kmmutils/#/common): Kotlin standard library extensions
 * [Datetime](https://opensource.respawn.pro/kmmutils/#/datetime): All the things missing from kotlinx.datetime and Java
   Calendar & DateTime API.
@@ -52,7 +53,11 @@ kmmutils = [
 ### Supported platforms
 
 More will be added soon as all code is multiplatform.
-Android, JVM, iOS
+
+* Android [ SDK21+ ],
+* JVM,
+* iOS [ x64, ArmX64, macOSx64, macOSArm64 ]
+* JS [ browser, Node ]
 
 ## License
 

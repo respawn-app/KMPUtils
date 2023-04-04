@@ -1,5 +1,6 @@
+import nl.littlerobots.vcu.plugin.versionCatalogUpdate
 
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.gradleDoctor)
@@ -11,11 +12,6 @@ plugins {
 }
 
 buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-
     dependencies {
         classpath(libs.android.gradle)
         classpath(libs.kotlin.gradle)
@@ -34,6 +30,14 @@ subprojects {
 
     dependencies {
         dokkaPlugin(rootProject.libs.dokka.android)
+    }
+
+    tasks {
+        register<org.gradle.jvm.tasks.Jar>("dokkaJavadocJar") {
+            dependsOn(dokkaJavadoc)
+            from(dokkaJavadoc.flatMap { it.outputDirectory })
+            archiveClassifier.set("javadoc")
+        }
     }
 }
 
@@ -67,11 +71,11 @@ versionCatalogUpdate {
     }
 }
 
-tasks.dokkaHtmlMultiModule.configure {
-    outputDirectory.set(buildDir.resolve("dokka"))
-}
-
 tasks {
+    dokkaHtmlMultiModule.configure {
+        moduleName.set(rootProject.name)
+        outputDirectory.set(buildDir.resolve("dokka"))
+    }
     // needed to generate compose compiler reports. See /scripts
     withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         buildUponDefaultConfig = true

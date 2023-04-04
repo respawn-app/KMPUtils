@@ -162,7 +162,6 @@ hs_err_pid*
 /.idea/other.xml
 
 ### Custom rules
-checksum.txt
 .firebase-service-account.json
 /.idea/artifacts/**
 !gradle/gradle-wrapper.jar
