@@ -77,12 +77,12 @@ public fun Byte?.takeIfNotZero(): Byte? = takeIf { it != 0.toByte() }
 /**
  * @returns null if [this] is NaN or Infinity
  */
-public fun Double.takeIfFinite(): Double? = takeIf { it.isFinite() }
+public fun Double?.takeIfFinite(): Double? = this?.takeIf { it.isFinite() }
 
 /**
  * @returns null if [this] is NaN or Infinity
  */
-public fun Float.takeIfFinite(): Float? = takeIf { it.isFinite() }
+public fun Float?.takeIfFinite(): Float? = this?.takeIf { it.isFinite() }
 
 /**
  * @return The number of digits in this [Int]
