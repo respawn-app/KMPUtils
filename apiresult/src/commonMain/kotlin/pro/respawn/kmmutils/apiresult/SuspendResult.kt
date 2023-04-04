@@ -45,10 +45,10 @@ public suspend inline fun <T> SuspendResult(
  * @see Flow.asApiResult
  */
 public inline fun <T> ApiResult.Companion.flow(
-    crossinline call: suspend CoroutineScope.() -> T
+    crossinline call: suspend () -> T
 ): Flow<ApiResult<T>> = kotlinx.coroutines.flow.flow {
     emit(Loading)
-    emit(SuspendResult { call() })
+    emit(ApiResult { call() })
 }
 
 /**
