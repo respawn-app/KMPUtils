@@ -21,25 +21,33 @@ object Config {
     const val versionName = "$majorRelease.$minorRelease.$patch"
 
     // kotlin
-    const val languageVersion = "1.8"
-    val kotlinCompilerArgs = listOf(
-        "-Xjvm-default=all", // enable all jvm optimizations
-        "-Xcontext-receivers",
-        "-Xbackend-threads=0", // parallel IR compilation
-        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-        "-opt-in=kotlinx.coroutines.FlowPreview",
-        "-opt-in=kotlin.Experimental",
-        "-opt-in=kotlin.RequiresOptIn",
-        "-Xuse-k2",
-        // "-XXLanguage:+ExplicitBackingFields"
+
+    val optIns = listOf(
+        "kotlinx.coroutines.ExperimentalCoroutinesApi",
+        "kotlinx.coroutines.FlowPreview",
+        "kotlin.RequiresOptIn",
+        "kotlin.experimental.ExperimentalTypeInference",
+        "kotlin.contracts.ExperimentalContracts"
     )
+    val compilerArgs = listOf(
+        "-Xbackend-threads=0", // parallel IR compilation
+    )
+    val jvmCompilerArgs = buildList {
+        addAll(compilerArgs)
+        add("-Xjvm-default=all") // enable all jvm optimizations
+        add("-Xcontext-receivers")
+        // add("-Xuse-k2")
+        addAll(optIns.map { "-opt-in=$it" })
+    }
 
     val jvmTarget = JvmTarget.JVM_11
     val javaVersion = JavaVersion.VERSION_11
+    val kotlinVersion = org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_8
     const val compileSdk = 33
     const val targetSdk = compileSdk
-    const val minSdk = 26
-    const val kotlinVersion = "1.8"
+    const val minSdk = 21
+    const val appMinSdk = 26
+    const val publishingVariant = "release"
 
     // android
     const val namespace = artifactId

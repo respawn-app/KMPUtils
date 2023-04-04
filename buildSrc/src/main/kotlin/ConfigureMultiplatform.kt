@@ -1,17 +1,13 @@
-@file:Suppress("MissingPackageDeclaration")
+@file:Suppress("MissingPackageDeclaration", "unused", "UNUSED_VARIABLE", "UndocumentedPublicFunction", "LongMethod")
 
-import gradle.kotlin.dsl.accessors._23673d25a43a3ae0349f048e5ad21ead.commonMain
-import gradle.kotlin.dsl.accessors._23673d25a43a3ae0349f048e5ad21ead.commonTest
+import Config.jvmTarget
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
-@Suppress("unused", "UNUSED_VARIABLE", "UndocumentedPublicFunction")
 fun Project.configureMultiplatform(
     ext: KotlinMultiplatformExtension,
     android: Boolean = false,
@@ -21,11 +17,9 @@ fun Project.configureMultiplatform(
     linux: Boolean = false,
     mingw: Boolean = false,
 ) = ext.apply {
-
     explicitApi()
 
     val libs by versionCatalog
-
     val commonMain by sourceSets.getting
     val commonTest by sourceSets.getting {
         dependencies {
@@ -36,44 +30,58 @@ fun Project.configureMultiplatform(
     sourceSets.apply {
         all {
             languageSettings {
-                languageVersion = Config.kotlinVersion
                 progressiveMode = true
-                optIn("kotlin.RequiresOptIn")
+                languageVersion = Config.kotlinVersion.version
+                progressiveMode = true
+                Config.optIns.forEach { optIn(it) }
             }
         }
     }
 
-    if (linux) {
-        linuxX64()
-    }
+    if (linux) linuxX64()
 
-    if (mingw) {
-        mingwX64()
-    }
+    if (mingw) mingwX64()
 
     if (js) {
         js(IR) {
             browser()
             nodejs()
+            binaries.library()
+            binaries.executable()
+        }
+        // TODO: KMM js <> gradle 8.0 incompatibility
+        tasks.run {
+            val jsLibrary = named("jsProductionLibraryCompileSync")
+            val jsExecutable = named("jsProductionExecutableCompileSync")
+            named("jsBrowserProductionWebpack").configure {
+                dependsOn(jsLibrary)
+            }
+            named("jsBrowserProductionLibraryPrepare").configure {
+                dependsOn(jsExecutable)
+            }
+            named("jsNodeProductionLibraryPrepare").configure {
+                dependsOn(jsExecutable)
+            }
         }
     }
 
     if (android) {
         android {
-            publishAllLibraryVariants()
+            publishLibraryVariants(Config.publishingVariant)
         }
 
         sourceSets.apply {
             val androidMain by getting
-            // val androidTest by getting
         }
     }
 
     if (jvm) {
         jvm {
-            jvmToolchain(Config.jvmTarget.target.toInt())
             compilations.all {
-                kotlinOptions.jvmTarget = Config.jvmTarget.target
+                kotlinOptions {
+                    jvmTarget = Config.jvmTarget.target
+                    freeCompilerArgs += Config.jvmCompilerArgs
+                }
             }
             testRuns["test"].executionTask.configure {
                 useJUnitPlatform()

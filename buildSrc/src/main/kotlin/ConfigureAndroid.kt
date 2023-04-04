@@ -30,6 +30,12 @@ fun Project.configureAndroid(
         targetCompatibility = Config.javaVersion
     }
 
+    kotlinOptions {
+        freeCompilerArgs += Config.jvmCompilerArgs
+        jvmTarget = Config.jvmTarget.target
+        languageVersion = Config.kotlinVersion.version
+    }
+
     buildFeatures {
         aidl = false
         buildConfig = false
@@ -39,6 +45,21 @@ fun Project.configureAndroid(
         shaders = false
         viewBinding = false
         compose = false
+    }
+
+    val libs by versionCatalog
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.requireVersion("compose-compiler")
+    }
+
+    packaging {
+        resources {
+            excludes += setOf(
+                "DebugProbesKt.bin",
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/META-INF/versions/9/previous-compilation-data.bin"
+            )
+        }
     }
 
     testOptions {
@@ -60,23 +81,21 @@ fun Project.configureAndroid(
 fun Project.configureAndroidLibrary(variant: LibraryExtension) = variant.apply {
     configureAndroid(this)
 
+    kotlinOptions {
+        freeCompilerArgs += "-Xexplicit-api=strict"
+    }
+
     buildTypes {
         release {
             setProperty(
                 "archivesBaseName",
                 project.name
             )
-            isMinifyEnabled = Config.isMinifyEnabledRelease
         }
     }
 
     defaultConfig {
         consumerProguardFiles(file(Config.consumerProguardFile))
-    }
-
-    buildFeatures {
-        buildConfig = false
-        androidResources = true // required for R8 to work
     }
 
     libraryVariants.all {

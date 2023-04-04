@@ -1,6 +1,7 @@
 plugins {
-    id("shared-library")
+    id("pro.respawn.shared-library")
 }
+
 
 kotlin {
     configureMultiplatform(
@@ -8,9 +9,21 @@ kotlin {
         android = false,
         ios = true,
         jvm = true,
+        js = true,
+        linux = true,
+        mingw = true,
     )
+
+    sourceSets.apply {
+        val jvmTest by getting {
+            dependencies {
+                implementation(libs.bundles.unittest)
+            }
+        }
+    }
 }
 
+
 dependencies {
-    commonMainApi(libs.kotlin.datetime)
+    commonMainApi(libs.kotlinx.datetime)
 }
