@@ -42,7 +42,7 @@ public fun avg(vararg values: Byte): Int = values.average().roundToInt()
 /**
  * uses [sign] and prepends it to the value of [this]
  */
-public fun Int.toStringWithSign(): String = "$sign$absoluteValue"
+public fun Int.toStringWithSign(): String = "$signChar$absoluteValue"
 
 /**
  * @returns null if [this] is equal to 0
