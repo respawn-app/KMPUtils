@@ -159,3 +159,6 @@ public fun LocalDate.Companion.now(zone: TimeZone): LocalDate = LocalDateTime.no
  * Get the current time using provided [zone].
  */
 public fun LocalTime.Companion.now(zone: TimeZone): LocalTime = LocalDateTime.now(zone).time
+
+public fun LocalDate.withDayOfMonth(day: Int): LocalDate = LocalDate(year, month, day)
+public fun LocalDate.plusDays(days: Int): LocalDate = plus(days, DateTimeUnit.DAY)

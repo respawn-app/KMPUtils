@@ -1,10 +1,12 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "NewApi", "MagicNumber")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate", "NewApi", "MagicNumber", "TooManyFunctions")
 
 package pro.respawn.kmmutils.datetime
 
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atTime
 import kotlin.jvm.JvmName
 import kotlin.math.abs
 import kotlin.math.absoluteValue
@@ -17,6 +19,21 @@ import kotlin.time.Duration.Companion.seconds
  * Convert [this] to [Time]
  */
 public fun LocalTime.toTime(): Time = Time(hour, minute, second)
+
+/**
+ * Make a new [LocalTime] using this Time and a 0 nanosecond value
+ */
+public fun Time.toLocalTime(): LocalTime = LocalTime(hour, minute, second, 0)
+
+/**
+ * Create a [LocalDateTime] with the specified [time]
+ */
+public fun LocalDate.atTime(time: Time): LocalDateTime = atTime(time.hour, time.minute, time.second)
+
+/**
+ * Create a new [LocalDateTime] using given [date]
+ */
+public fun Time.atDate(date: LocalDate): LocalDateTime = LocalDateTime(date, toLocalTime())
 
 /**
  * Returns an integer that represents this time, like a string, but without the ":"
@@ -178,7 +195,7 @@ public fun Time.Companion.parseOrNull(s: String): Time? = s.runCatching { parse(
 public fun Time.Companion.isValid(time: String): Boolean = parseOrNull(time) != null
 
 /**
- * Returns true if [time] is a valid time string
+ * Returns true if this is a valid time string
  */
 public val String?.isValidTime: Boolean get() = this?.let { Time.isValid(it) } ?: false
 
