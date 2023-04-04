@@ -1,3 +1,5 @@
+@file:Suppress("UndocumentedPublicFunction")
+
 pluginManagement {
     repositories {
         google()

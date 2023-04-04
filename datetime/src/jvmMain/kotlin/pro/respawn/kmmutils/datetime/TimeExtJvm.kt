@@ -13,7 +13,8 @@ public fun LocalTime.toTime(): Time = Time(hour, minute, second)
 /**
  * Returns a new [LocalTime] with values of [this]
  */
-public fun Time.toLocalTime(): LocalTime = LocalTime.of(hour, minute, second)
+@JvmName("toJavaLocalTime")
+public fun Time.toJavaLocaltime(): LocalTime = LocalTime.of(hour, minute, second)
 
 /**
  * Creates a new [Time] using values of [this] zoned date time.

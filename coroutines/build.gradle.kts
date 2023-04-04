@@ -2,7 +2,6 @@ plugins {
     id("pro.respawn.shared-library")
 }
 
-
 kotlin {
     configureMultiplatform(
         this,
@@ -13,14 +12,6 @@ kotlin {
         linux = true,
         mingw = true,
     )
-
-    sourceSets.apply {
-        val jvmTest by getting {
-            dependencies {
-                implementation(libs.bundles.unittest)
-            }
-        }
-    }
 }
 
 dependencies {

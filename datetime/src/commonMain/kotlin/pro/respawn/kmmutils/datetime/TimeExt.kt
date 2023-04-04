@@ -217,4 +217,7 @@ public fun Iterable<Time?>.totalDuration(): Time = Time.ofSeconds(sumOf { it?.to
 @JvmName("totalDurationSequence")
 public fun Sequence<Time?>.totalDuration(): Time = Time.ofSeconds(sumOf { it?.totalSeconds ?: 0 })
 
+/**
+ * Convert this duration to [Time]. If this duration is larger than 24 hours, clock will wrap around.
+ */
 public val Duration.asTime: Time get() = Time.ofSeconds(inWholeSeconds.toInt())
