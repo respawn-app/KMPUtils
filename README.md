@@ -14,6 +14,7 @@ The library is meant to be a drop-in dependency - no need to study anything (exc
 enjoy the expanded API of the things you are used to, relying on autocompletion to come up with suggestions for you.
 
 See documentation at [https://opensource.respawn.pro/kmmutils/](https://opensource.respawn.pro/kmmutils/)
+Javadocs are at [/kmmutils/javadocs](https://opensource.respawn.pro/kmmutils/javadocs/)
 
 ### Features
 
@@ -54,10 +55,10 @@ kmmutils = [
 
 More will be added soon as all code is multiplatform.
 
-* Android [ SDK21+ ],
-* JVM,
-* iOS [ x64, ArmX64, macOSx64, macOSArm64 ]
-* JS [ browser, Node ]
+* Android [ `SDK21+` ],
+* JVM [ `8+` ],
+* iOS [ `x64`, `ArmX64`, `macOSx64`, `macOSArm64` ]
+* JS [ `browser`, `node.js` ]
 
 ## License
 
