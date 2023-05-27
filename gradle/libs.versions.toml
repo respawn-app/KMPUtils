@@ -1,26 +1,27 @@
 [versions]
 activity = "1.7.0"
+arrow = "1.2.0-RC"
 compose = "1.4.0"
 compose-compiler = "1.4.4"
 composeDetektPlugin = "1.2.2"
 core-ktx = "1.9.0"
-coroutines = "1.6.4"
+coroutines = "1.7.1"
 datetime = "0.4.0"
-dependencyAnalysisPlugin = "1.19.0"
-detekt = "1.22.0"
-detektFormattingPlugin = "1.22.0"
+dependencyAnalysisPlugin = "1.20.0"
+detekt = "1.23.0"
+detektFormattingPlugin = "1.23.0"
 dokka = "1.8.10"
 flowExt = "0.3.0"
 fragment = "1.5.6"
-gradleAndroid = "8.0.0-rc01"
+gradleAndroid = "8.0.2"
 gradleDoctorPlugin = "0.8.1"
 junit = "4.13.2"
 koin = "3.4.0"
 koin-compose = "3.4.3"
-kotest = "5.5.5"
+kotest = "5.6.2"
 kotest-plugin = "5.5.5"
 # @pin
-kotlin = "1.8.20"
+kotlin = "1.8.21"
 kotlinx-atomicfu = "0.20.1"
 lifecycle = "2.6.1"
 material = "1.8.0"
@@ -34,6 +35,7 @@ android-gradle = { module = "com.android.tools.build:gradle", version.ref = "gra
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
+arrow = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
