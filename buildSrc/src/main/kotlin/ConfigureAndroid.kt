@@ -8,7 +8,6 @@ fun Project.configureAndroid(
     commonExtension: CommonExtension<*, *, *, *>,
 ) = commonExtension.apply {
     compileSdk = Config.compileSdk
-    buildToolsVersion = Config.buildToolsVersion
 
     defaultConfig {
         minSdk = Config.minSdk
