@@ -34,8 +34,9 @@ subprojects {
 
     tasks {
         register<org.gradle.jvm.tasks.Jar>("dokkaJavadocJar") {
-            dependsOn(dokkaJavadoc)
-            from(dokkaJavadoc.flatMap { it.outputDirectory })
+            // TODO: Dokka does not support javadocs for multiplatform dependencies
+            // dependsOn(dokkaJavadoc)
+            // from(dokkaJavadoc.flatMap { it.outputDirectory })
             archiveClassifier.set("javadoc")
         }
     }
@@ -118,6 +119,18 @@ tasks {
 
         rejectVersionIf {
             stabilityLevel(currentVersion) > stabilityLevel(candidate.version)
+        }
+    }
+}
+
+// TODO: https://github.com/Kotlin/dokka/issues/2977
+val taskClass = "org.jetbrains.kotlin.gradle.targets.native.internal.CInteropMetadataDependencyTransformationTask"
+gradle.taskGraph.whenReady {
+    val hasDokkaTasks = gradle.taskGraph.allTasks.any { it is org.jetbrains.dokka.gradle.AbstractDokkaTask }
+    if (hasDokkaTasks) {
+        @Suppress("UNCHECKED_CAST")
+        tasks.withType(Class.forName(taskClass) as Class<Task>).configureEach {
+            enabled = false
         }
     }
 }

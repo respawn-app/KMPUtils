@@ -44,4 +44,4 @@ public fun Sequence<ValidationError>.fold(value: String): Input =
 /**
  * Returns a new [Rule] instantiated lazily for a given [check].
  */
-public inline fun lazyRule(noinline check: (String) -> Sequence<ValidationError>): Lazy<Rule> = lazy { Rule(check) }
+public fun lazyRule(check: (String) -> Sequence<ValidationError>): Lazy<Rule> = lazy { Rule(check) }
