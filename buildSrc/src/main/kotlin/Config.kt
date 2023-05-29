@@ -18,7 +18,7 @@ object Config {
     const val majorRelease = 1
     const val minorRelease = 1
     const val patch = 0
-    const val versionName = "$majorRelease.$minorRelease.$patch"
+    const val versionName = "$majorRelease.$minorRelease.$patch-alpha01"
 
     // kotlin
 
