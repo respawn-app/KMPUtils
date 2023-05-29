@@ -4,6 +4,7 @@ package pro.respawn.kmmutils.common
 
 /**
  * @return Whether this string is valid
+ *
  * Examples:
  * - null -> false
  * - "null" -> false
@@ -41,22 +42,22 @@ public fun <T> fastLazy(initializer: () -> T): Lazy<T> = lazy(LazyThreadSafetyMo
  * @param substring a string, that must be [String.isValid]
  * @return a resulting list
  */
-public fun Iterable<String>.filterBySubstring(substring: String?): List<String> = if (substring.isValid) asSequence()
-    .filter { it.contains(substring!!, true) }
+public fun Iterable<String>.filterBySubstring(
+    substring: String?,
+    ignoreCase: Boolean = false
+): List<String> = if (!substring.isValid) toList() else asSequence()
+    .filter { it.contains(substring!!, ignoreCase) }
     .toList()
-else this.toList()
 
 /**
  * Returns the sign of the number, as a char
  * @return either +, - or "" (empty string) if this is 0
  */
 public val Int.signChar: String
-    get() {
-        return when {
-            this < 0 -> "-"
-            this > 0 -> "+"
-            else -> ""
-        }
+    get() = when {
+        this < 0 -> "-"
+        this > 0 -> "+"
+        else -> ""
     }
 
 /**
@@ -64,12 +65,10 @@ public val Int.signChar: String
  * @return either +, - or "" (empty string) if this is 0
  */
 public val Float.signChar: String
-    get() {
-        return when {
-            this < 0f -> "-"
-            this > 0f -> "+"
-            else -> ""
-        }
+    get() = when {
+        this < 0f -> "-"
+        this > 0f -> "+"
+        else -> ""
     }
 
 /**
@@ -77,12 +76,10 @@ public val Float.signChar: String
  * @return either +, - or "" (empty string) if this is 0
  */
 public val Double.signChar: String
-    get() {
-        return when {
-            this < 0.0 -> "-"
-            this > 0.0 -> "+"
-            else -> ""
-        }
+    get() = when {
+        this < 0.0 -> "-"
+        this > 0.0 -> "+"
+        else -> ""
     }
 
 /**
@@ -90,10 +87,8 @@ public val Double.signChar: String
  * @return either +, - or "" (empty string) if this is 0
  */
 public val Long.signChar: String
-    get() {
-        return when {
-            this < 0L -> "-"
-            this > 0L -> "+"
-            else -> ""
-        }
+    get() = when {
+        this < 0L -> "-"
+        this > 0L -> "+"
+        else -> ""
     }
