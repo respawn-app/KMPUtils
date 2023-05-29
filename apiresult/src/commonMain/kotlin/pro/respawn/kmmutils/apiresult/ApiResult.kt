@@ -100,9 +100,10 @@ public sealed interface ApiResult<out T> {
     public companion object {
 
         /**
-         * Execute [call], catching any exceptions.
+         * Execute [call], catching any exceptions, and wrap it in an [ApiResult].
+         * Caught exceptions are mapped to [ApiResult.Error]s.
          * [Throwable]s are not caught on purpose.
-         * [CancellationException]s are not caught.
+         * [CancellationException]s are rethrown.
          */
         public inline operator fun <T> invoke(call: () -> T): ApiResult<T> = try {
             Success(call())
@@ -122,6 +123,13 @@ public sealed interface ApiResult<out T> {
             is Exception -> Error(value)
             else -> Success(value)
         }
+
+        /**
+         * Returns an ApiResult(Unit) value.
+         * Use this for applying operators such as `require` and `mapWrapping` to build chains of operators that should
+         * start with an empty value.
+         */
+        public inline operator fun invoke(): ApiResult<Unit> = ApiResult(Unit)
     }
 }
 
@@ -129,31 +137,32 @@ public sealed interface ApiResult<out T> {
  * Execute [block] wrapping it in an [ApiResult]
  * @see ApiResult.invoke
  */
-public inline fun <T, R> T.runResulting(block: (T) -> R): ApiResult<R> = ApiResult { block(this) }
+public inline fun <T, R> T.runResulting(block: T.() -> R): ApiResult<R> = ApiResult { block() }
 
 /**
- * Execute [block] wrapping it in an [ApiResult]
+ * Executes [block], wrapping it in an [ApiResult]
  * @see ApiResult.invoke
  */
 public inline fun <T> runResulting(block: () -> T): ApiResult<T> = ApiResult { block() }
 
 /**
+ * Executes [block] if [this] is an [ApiResult.Error], otherwise returns [ApiResult.Success.result]
  * [Loading] will result in [NotFinishedException]
  */
-public inline fun <T, R : T> ApiResult<T>.orElse(onError: (e: Exception) -> R): T = when (this) {
+public inline infix fun <T, R : T> ApiResult<T>.orElse(block: (e: Exception) -> R): T = when (this) {
     is Success -> result
-    is Error -> onError(e)
-    is Loading -> onError(NotFinishedException())
+    is Error -> block(e)
+    is Loading -> block(NotFinishedException())
 }
 
 /**
  *  If [this] is [Error], returns [defaultValue].
  *  @see orElse
  */
-public inline fun <T, R : T> ApiResult<T>.or(defaultValue: R): T = orElse { defaultValue }
+public inline infix fun <T, R : T> ApiResult<T>.or(defaultValue: R): T = orElse { defaultValue }
 
 /**
- * if [this] is an [Error]
+ * @return null if [this] is an [ApiResult.Error] or [ApiResult.Loading], otherwise return self.
  */
 public inline fun <T> ApiResult<T>.orNull(): T? = or(null)
 
@@ -240,7 +249,7 @@ public inline fun <T> ApiResult<T>.errorIfNot(
  * @see errorIfNot
  */
 public inline fun <T> ApiResult<T>.errorIf(
-    exception: () -> Exception,
+    exception: () -> Exception = { ConditionNotSatisfiedException() },
     predicate: (T) -> Boolean,
 ): ApiResult<T> = if (this is Success && predicate(result)) Error(exception()) else this
 
@@ -250,7 +259,7 @@ public inline fun <T> ApiResult<T>.errorIf(
  * @see map
  * @see mapWrapping
  */
-public inline fun <T, R> ApiResult<T>.map(block: (T) -> R): ApiResult<R> {
+public inline infix fun <T, R> ApiResult<T>.map(block: (T) -> R): ApiResult<R> {
     contract {
         callsInPlace(block, InvocationKind.AT_MOST_ONCE)
     }
@@ -267,7 +276,7 @@ public inline fun <T, R> ApiResult<T>.map(block: (T) -> R): ApiResult<R> {
  * @see map
  * @see mapWrapping
  */
-public inline fun <T, R : T> ApiResult<T>.mapLoading(block: () -> R): ApiResult<T> = when (this) {
+public inline infix fun <T, R : T> ApiResult<T>.mapLoading(block: () -> R): ApiResult<T> = when (this) {
     is Success, is Error -> this
     is Loading -> Success(block())
 }
@@ -275,10 +284,15 @@ public inline fun <T, R : T> ApiResult<T>.mapLoading(block: () -> R): ApiResult<
 /**
  * Change the exception of the [Error] response without affecting loading/success results
  */
-public inline fun <T, R : Exception> ApiResult<T>.mapError(block: (Exception) -> R): ApiResult<T> = when (this) {
+public inline infix fun <T, R : Exception> ApiResult<T>.mapError(block: (Exception) -> R): ApiResult<T> = when (this) {
     is Success, is Loading -> this
     is Error -> Error(block(e))
 }
+
+/**
+ * Maps the error of the result, if present, to its cause, or self if cause is not available
+ */
+public inline fun <T> ApiResult<T>.mapErrorToCause(): ApiResult<T> = mapError { it.cause as? Exception ?: it }
 
 /**
  * Unwrap an ApiResult<ApiResult<T>> to be ApiResult<T>
@@ -296,7 +310,7 @@ public inline fun <T> ApiResult<ApiResult<T>>.unwrap(): ApiResult<T> = fold(
  * @see mapError
  * @see mapLoading
  */
-public inline fun <T, R> ApiResult<T>.mapWrapping(block: (T) -> R): ApiResult<R> =
+public inline infix fun <T, R> ApiResult<T>.mapWrapping(block: (T) -> R): ApiResult<R> =
     map { ApiResult { block(it) } }.unwrap()
 
 /**
@@ -307,7 +321,7 @@ public inline fun <T, R> ApiResult<T>.mapWrapping(block: (T) -> R): ApiResult<R>
  */
 public inline fun <T> ApiResult<T?>.errorOnNull(
     exception: () -> Exception = { ConditionNotSatisfiedException("Value was null") },
-): ApiResult<T & Any> = errorIf(exception) { it == null }.map { it!! }
+): ApiResult<T & Any> = errorIf(exception) { it == null }.map { requireNotNull(it) }
 
 /**
  * Maps [Error] values to nulls
@@ -320,7 +334,7 @@ public inline fun <T> ApiResult<T>.nullOnError(): ApiResult<T?> = if (this is Er
  * Does not affect [Loading]
  * @see recoverIf
  */
-public inline fun <reified T : Exception, R> ApiResult<R>.recover(block: (T) -> R): ApiResult<R> = when (this) {
+public inline infix fun <reified T : Exception, R> ApiResult<R>.recover(block: (T) -> R): ApiResult<R> = when (this) {
     is Success, is Loading -> this
     is Error -> if (e is T) Success(block(e)) else this
 }
@@ -328,10 +342,11 @@ public inline fun <reified T : Exception, R> ApiResult<R>.recover(block: (T) -> 
 /**
  * calls [recover] catching and wrapping any exceptions thrown inside [block].
  */
-public inline fun <reified T : Exception, R> ApiResult<R>.recoverWrapping(block: (T) -> R): ApiResult<R> = when (this) {
-    is Success, is Loading -> this
-    is Error -> if (e is T) ApiResult { Success(block(e)) }.unwrap() else this
-}
+public inline infix fun <reified T : Exception, R> ApiResult<R>.recoverWrapping(block: (T) -> R): ApiResult<R> =
+    when (this) {
+        is Success, is Loading -> this
+        is Error -> if (e is T) ApiResult { Success(block(e)) }.unwrap() else this
+    }
 
 /**
  * Recover from an [Error] only if the [condition] is true, else no-op.
@@ -353,7 +368,7 @@ public inline fun <T> ApiResult<T>.recoverIf(
  * Effectively, requires for another [ApiResult] to succeed before proceeding with this one.
  * @see [ApiResult.then]
  */
-public inline fun <T, R> ApiResult<T>.chain(another: (T) -> ApiResult<R>): ApiResult<T> = when (this) {
+public inline infix fun <T, R> ApiResult<T>.chain(another: (T) -> ApiResult<R>): ApiResult<T> = when (this) {
     is Loading, is Error -> this
     is Success -> another(result).fold(
         onSuccess = { this },
@@ -367,4 +382,22 @@ public inline fun <T, R> ApiResult<T>.chain(another: (T) -> ApiResult<R>): ApiRe
  * Effectively, map to another result.
  * @see [ApiResult.chain]
  */
-public inline fun <T, R> ApiResult<T>.then(another: (T) -> ApiResult<R>): ApiResult<R> = map(another).unwrap()
+public inline infix fun <T, R> ApiResult<T>.then(another: (T) -> ApiResult<R>): ApiResult<R> = map(another).unwrap()
+
+/**
+ * Makes [this] an error with [IllegalArgumentException] using specified [message] if the [predicate] returns false
+ */
+public inline fun <T> ApiResult<T>.require(
+    message: () -> String? = { null },
+    predicate: (T) -> Boolean
+): ApiResult<T> =
+    errorIfNot(
+        exception = { IllegalArgumentException(message()) },
+        predicate = predicate,
+    )
+
+/**
+ * Alias for [errorOnNull]
+ * @see errorOnNull
+ */
+public inline fun <T> ApiResult<T?>.requireNotNull(): ApiResult<T & Any> = errorOnNull()

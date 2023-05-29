@@ -11,5 +11,6 @@
         <option value="$PROJECT_DIR$/../../kmmutils/detekt.yml" />
       </list>
     </option>
+    <option name="enableFormatting" value="true" />
   </component>
 </project>

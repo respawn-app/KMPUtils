@@ -1,4 +1,4 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "NewApi")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate", "NewApi", "TooManyFunctions")
 
 package pro.respawn.kmmutils.datetime
 

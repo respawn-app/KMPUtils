@@ -20,7 +20,7 @@ public data class Time @Throws(IllegalArgumentException::class) constructor(
 ) : Comparable<Time> {
 
     init {
-        require(hour in 0 ..< 24 || minute in 0 ..< 60 || second in 0 ..< 60) {
+        require(hour in 0..<24 || minute in 0..<60 || second in 0..<60) {
             "Invalid time value: $hour:$minute:$second"
         }
     }

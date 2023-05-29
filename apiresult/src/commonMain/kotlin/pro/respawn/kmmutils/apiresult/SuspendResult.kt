@@ -1,4 +1,4 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "unused", "NOTHING_TO_INLINE", "TooManyFunctions", "FunctionName")
+@file:Suppress("MemberVisibilityCanBePrivate", "unused", "TooManyFunctions", "FunctionName", "NOTHING_TO_INLINE")
 
 package pro.respawn.kmmutils.apiresult
 
@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
@@ -16,6 +17,7 @@ import pro.respawn.kmmutils.apiresult.ApiResult.Loading
 import pro.respawn.kmmutils.apiresult.ApiResult.Success
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.jvm.JvmName
 
 /**
  * Catches [Exception]s only and rethrows [kotlin.Throwable]s (like [kotlin.Error]s).
@@ -52,6 +54,18 @@ public inline fun <T> ApiResult.Companion.flow(
 }
 
 /**
+ * Emits [ApiResult.Loading], then executes [call]
+ * @see Flow.asApiResult
+ */
+@JvmName("flowWithResult")
+public inline fun <T> ApiResult.Companion.flow(
+    crossinline call: suspend () -> ApiResult<T>,
+): Flow<ApiResult<T>> = kotlinx.coroutines.flow.flow {
+    emit(Loading)
+    emit(call())
+}
+
+/**
  * Emits [Loading] before this flow starts to be collected.
  * Then maps all values to [Success] and catches [Exception]s and maps them to [Error]s
  * @see ApiResult.Companion.flow
@@ -71,8 +85,16 @@ public inline fun <T, R> Flow<ApiResult<T>>.mapResults(
 
 /**
  * Throws [CancellationException]s if this is an [Error].
- * Important to use this with coroutines if you're not using [SuspendResult] or [ApiResult.Companion.invoke]
+ *
+ * Important to use this with coroutines if you're not using [SuspendResult] or [ApiResult.Companion.invoke].
+ *
  * [ApiResult.Companion.invoke] already throws [CancellationException]s.
  */
 public inline fun <T> ApiResult<T>.rethrowCancellation(): ApiResult<T> =
     recover<CancellationException, T> { throw it }
+
+/**
+ * Invokes [block] each time [this] flow emits an [ApiResult.Success] value
+ */
+public inline fun <T> Flow<ApiResult<T>>.onEachResult(crossinline block: suspend (T) -> Unit): Flow<ApiResult<T>> =
+    onEach { result -> result.onSuccess { block(it) } }

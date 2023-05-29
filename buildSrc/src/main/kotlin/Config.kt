@@ -16,9 +16,9 @@ object Config {
     const val artifactId = "$group.$artifact"
 
     const val majorRelease = 1
-    const val minorRelease = 0
-    const val patch = 2
-    const val versionName = "$majorRelease.$minorRelease.$patch"
+    const val minorRelease = 1
+    const val patch = 0
+    const val versionName = "$majorRelease.$minorRelease.$patch-alpha01"
 
     // kotlin
 
@@ -51,7 +51,6 @@ object Config {
 
     // android
     const val namespace = artifactId
-    const val buildToolsVersion = "33.0.0"
     const val testRunner = "androidx.test.runner.AndroidJUnitRunner"
     const val isMinifyEnabledRelease = false
     const val isMinifyEnabledDebug = false
@@ -59,7 +58,9 @@ object Config {
     const val proguardFile = "proguard-rules.pro"
     const val consumerProguardFile = "consumer-rules.pro"
 
+    // build scripts
     val stabilityLevels = listOf("preview", "eap", "alpha", "beta", "m", "cr", "rc")
+
     object Detekt {
 
         const val configFile = "detekt.yml"
