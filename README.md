@@ -10,7 +10,7 @@
 [![AndroidWeekly #556](https://androidweekly.net/issues/issue-556/badge)](https://androidweekly.net/issues/issue-556/)
 
 KMM Utils is a collection of all the things that are missing from Kotlin STL, popular KMM libraries & platform SDKs.
-The library is meant to be a drop-in dependency - no need to study anything (except maybe `ApiResult`) - just add and
+The library is meant to be a drop-in dependency - no need to study anything - just add and
 enjoy the expanded API of the things you are used to, relying on autocompletion to come up with suggestions for you.
 
 See documentation at [https://opensource.respawn.pro/kmmutils/](https://opensource.respawn.pro/kmmutils/)
@@ -18,20 +18,20 @@ Javadocs are at [/kmmutils/javadocs](https://opensource.respawn.pro/kmmutils/jav
 
 ### Features
 
-* [ApiResult](https://opensource.respawn.pro/kmmutils/#/apiresult): A monad for wrapping operations that may fail.
-  Similar to kotlin.Result, but offers much more.
+* [ApiResult](https://opensource.respawn.pro/kmmutils/#/apiresult): A monad for wrapping operations that may
+  fail. Similar to kotlin.Result, but offers extensive, clean DSL and better performance.
+* [InputForms](https://opensource.respawn.pro/kmmutils/#/inputforms): A stateful and composable text input field
+  validation framework with clean DSL.
 * [Common](https://opensource.respawn.pro/kmmutils/#/common): Kotlin standard library extensions
 * [Datetime](https://opensource.respawn.pro/kmmutils/#/datetime): All the things missing from kotlinx.datetime and Java
   Calendar & DateTime API.
-* [Coroutines](https://opensource.respawn.pro/kmmutils/#/coroutines): Things missing from Coroutines & Flows API. Also
-  includes platform extensions for Android.
+* [Coroutines](https://opensource.respawn.pro/kmmutils/#/coroutines): Things missing from Coroutines & Flows API.
 
-## Declaring dependencies
+## Installation
 
 ![Maven Central](https://img.shields.io/maven-central/v/pro.respawn.kmmutils/apiresult?label=Maven%20Central)
 
 ```toml
-
 [versions]
 kmmutils = "< Badge above 👆🏻 >"
 
@@ -40,20 +40,19 @@ kmmutils-apiresult = { module = "pro.respawn.kmmutils:apiresult", version.ref = 
 kmmutils-common = { module = "pro.respawn.kmmutils:common", version.ref = "kmmutils" }
 kmmutils-datetime = { module = "pro.respawn.kmmutils:datetime", version.ref = "kmmutils" }
 kmmutils-coroutines = { module = "pro.respawn.kmmutils:coroutines", version.ref = "kmmutils" }
+kmmutils-inputforms = { module = "pro.respawn.kmmutils:inputforms", version.ref = "kmmutils" }
 
 [bundles]
 kmmutils = [
     "kmmutils-apiresult",
     "kmmutils-common",
     "kmmutils-datetime",
-    "kmmutils-coroutines"
+    "kmmutils-coroutines",
+    "kmmutils-inputforms"
 ]
-
 ```
 
 ### Supported platforms
-
-More will be added soon as all code is multiplatform.
 
 * Android [ `SDK21+` ],
 * JVM [ `8+` ],
@@ -63,18 +62,18 @@ More will be added soon as all code is multiplatform.
 ## License
 
 ```
-   Copyright 2022 Respawn Team and contributors
+Copyright 2022-2023 Respawn Team and contributors
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+   http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 ```
