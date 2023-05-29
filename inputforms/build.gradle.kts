@@ -16,5 +16,5 @@ kotlin {
 }
 
 dependencies {
-    commonMainImplementation(libs.arrow)
+    commonMainApi(project(":common"))
 }
