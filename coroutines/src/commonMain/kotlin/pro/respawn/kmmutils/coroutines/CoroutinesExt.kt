@@ -35,10 +35,10 @@ public fun CoroutineScope.launchCatching(
 /**
  * Execute [block] in parallel using operator async for each element of the collection
  */
-public suspend fun <T> Collection<T>.forEachParallel(
+public suspend fun <T> Iterable<T>.forEachParallel(
     context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.(T) -> Unit,
+    block: suspend (T) -> Unit,
 ): Unit = withContext(context) {
     map { async(context, start) { block(it) } }.forEach { it.await() }
 }
@@ -46,11 +46,11 @@ public suspend fun <T> Collection<T>.forEachParallel(
 /**
  * Execute [block] in parallel using operator async for each element of the collection
  */
-public suspend fun <A, B> Collection<A>.mapParallel(
+public suspend fun <T, R> Iterable<T>.mapParallel(
     context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.(A) -> B,
-): List<B> = withContext(context) {
+    block: suspend (T) -> R,
+): List<R> = withContext(context) {
     map { async(context, start) { block(it) } }.map { it.await() }
 }
 
