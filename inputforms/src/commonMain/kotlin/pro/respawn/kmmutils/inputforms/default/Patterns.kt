@@ -47,7 +47,7 @@ public object Patterns {
      * - Minimum length at least 8 characters
      * - Maximum can be any. Use other rules to specify max length
      */
-    public val DefaultPassword: Regex by lazy {
+    public val Password: Regex by lazy {
         """^(?=.*\p{Upper})(?=.*\p{Lower})(?=.*\d)[\p{Upper}\p{Lower}\d\p{Punct}]{8,}$""".toRegex()
     }
 }

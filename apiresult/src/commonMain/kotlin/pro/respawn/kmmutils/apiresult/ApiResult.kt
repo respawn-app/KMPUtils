@@ -124,6 +124,11 @@ public sealed interface ApiResult<out T> {
             else -> Success(value)
         }
 
+        /**
+         * Returns an ApiResult(Unit) value.
+         * Use this for applying operators such as `require` and `mapWrapping` to build chains of operators that should
+         * start with an empty value.
+         */
         public inline operator fun invoke(): ApiResult<Unit> = ApiResult(Unit)
     }
 }

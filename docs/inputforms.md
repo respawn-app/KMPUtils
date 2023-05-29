@@ -49,10 +49,10 @@ There are 3 things to do with Inputs:
     val defaultName = "John Doe"
 
     data class DisplayingSignInForm(
-        val email: Input = empty(), // returns Input.Empty("")
-        val password: Input = empty(),
-        val passwordConfirm: Input = empty(),
-        val name: Input = input(defaultName), // returns Input.Valid("John Doe")
+        val email: Input = input(), // Input.Empty("")
+        val password: Input = input(),
+        val passwordConfirm: Input = input(),
+        val name: Input = input(defaultName), // Input.Valid("John Doe")
         val isPasswordVisible: Boolean = false,
     ) : EmailSignInState
     ```
