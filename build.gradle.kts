@@ -1,4 +1,5 @@
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
+import org.jetbrains.dokka.gradle.AbstractDokkaTask
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -33,6 +34,17 @@ subprojects {
     }
 
     tasks {
+        // TODO: https://github.com/Kotlin/dokka/issues/2977
+        val taskClass =
+            "org.jetbrains.kotlin.gradle.targets.native.internal.CInteropMetadataDependencyTransformationTask"
+        withType(Class.forName(taskClass) as Class<Task>) {
+            onlyIf {
+                val executed = gradle.taskGraph.allTasks.none { it is AbstractDokkaTask }
+                if (!executed) println("w: Disabling CInteropCommonization")
+                executed
+            }
+
+        }
         register<org.gradle.jvm.tasks.Jar>("dokkaJavadocJar") {
             // TODO: Dokka does not support javadocs for multiplatform dependencies
             // dependsOn(dokkaJavadoc)
@@ -119,18 +131,6 @@ tasks {
 
         rejectVersionIf {
             stabilityLevel(currentVersion) > stabilityLevel(candidate.version)
-        }
-    }
-}
-
-// TODO: https://github.com/Kotlin/dokka/issues/2977
-val taskClass = "org.jetbrains.kotlin.gradle.targets.native.internal.CInteropMetadataDependencyTransformationTask"
-gradle.taskGraph.whenReady {
-    val hasDokkaTasks = gradle.taskGraph.allTasks.any { it is org.jetbrains.dokka.gradle.AbstractDokkaTask }
-    if (hasDokkaTasks) {
-        @Suppress("UNCHECKED_CAST")
-        tasks.withType(Class.forName(taskClass) as Class<Task>).configureEach {
-            enabled = false
         }
     }
 }
