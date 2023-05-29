@@ -49,7 +49,7 @@ suspend fun getVerifiedSubs(userId: String) = SuspendResult { // this: Coroutine
         storage.saveSubsscriptions(subs)
     }
 
-    user
+    subs
 }
 ```
 
@@ -57,6 +57,7 @@ After you create your ApiResult, apply a variety of transformations on it:
 
 ```kotlin
 val state: SubscriptionState = repo.getSubscriptions(userId)
+    .recover<NotSignedInException, _> { emptyList() } // recover from some or all errors
     .mapValues(::SubscriptionModel) // map list items
     .map { subs -> subs.filter { it.isPurchased } } // map success value to filtered list
     .then { validateSubscriptions(it) } // execute a computation and continue with its result, propagating errors
@@ -105,6 +106,7 @@ Check out source code for a full list.
 * `errorIf { it.isInvalid }` - error if the predicate is true
 * `errorIfNot { it.isAuthorized }`
 * `errorOnNull()`
+* `require()`, `requireNotNull()` - aliases for `errorIfNot`
 * `nullOnError()` - returns `Success<T?>` if the result is an error
 * `recover<MyException, _> { it.handle() }` - recover from a specific exception type
 * `recoverIf(condition = { it.isRecoverable }, block = { null })`
@@ -113,8 +115,8 @@ Check out source code for a full list.
 
 * ApiResult is **not** an async scheduling engine like Rx.
   As soon as you call an operator on the result, it is executed.
-* ApiResult does **not** catch `Throwable`s. This was a purposeful decision. We want to only catch Exceptions that
-  can be handled.
+* ApiResult does **not** catch `Throwable`s. This was a purposeful decision. We want to only catch Exceptions that can
+  be handled. Most `Error`s can not be handled effectively by the application.
 * ApiResult does **not** catch `CancellationException`s as they are not meant to be caught.
   In case you think you might have wrapped a `CancellationException` in your result,
   use `ApiResult.rethrowCancellation()` at the end of the chain.
@@ -124,7 +126,7 @@ Check out source code for a full list.
 ## How does ApiResult differ from other wrappers?
 
 * `kotlin.Result` is an existing solution for result wrapping,
-  however, it's far less efficient, less safe and, most importantly, doesn't offer the declarative api as rich as
+  however, it's far less performant, less type safe and, most importantly, doesn't offer the declarative api as rich as
   ApiResult. You could call ApiResult a successor to `kotlin.Result`.
 * ApiResult serves a different purpose than [Sandwich](https://github.com/skydoves/sandwich).
   Sandwich specializes in integration with Retrofit and, therefore, is not multiplatform.  
@@ -136,4 +138,6 @@ Check out source code for a full list.
   no crazy mappings that use reflection to save you from writing 0.5 lines of code to wrap a call in an ApiResult.
 * ApiResult is a lighter version of Arrow.kt Monads such as Either. Sometimes you want a monad to wrap your  
   computations, but don't want to introduce the full complexity and intricacies of Arrow and functional programming.
+  ApiResult also utilizes existing Exception support in Kotlin instead of trying to wrap any type as an error type. You
+  can still use sealed interfaces and other features if you subclass Exception from that interface.
   ApiResult is easier to understand and use, although less powerful than Arrow.
