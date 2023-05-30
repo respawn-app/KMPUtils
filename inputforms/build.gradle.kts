@@ -17,4 +17,5 @@ kotlin {
 
 dependencies {
     commonMainApi(project(":common"))
+    commonTestImplementation(libs.bundles.unittest)
 }
