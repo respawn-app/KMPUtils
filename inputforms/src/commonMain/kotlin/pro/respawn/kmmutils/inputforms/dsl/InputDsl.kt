@@ -3,6 +3,7 @@
 package pro.respawn.kmmutils.inputforms.dsl
 
 import pro.respawn.kmmutils.common.isValid
+import pro.respawn.kmmutils.common.takeIfValid
 import pro.respawn.kmmutils.inputforms.Form
 import pro.respawn.kmmutils.inputforms.Input
 import pro.respawn.kmmutils.inputforms.Rule
@@ -13,7 +14,7 @@ import kotlin.jvm.JvmName
  * @return [Input.Valid] if this is a non-empty string, or [Input.Empty] if the string is null or blank
  * Use this when building an input for the first time to specify previous (pre-filled) values
  */
-public fun input(value: String?): Input = if (value.isValid) Input.Valid(value!!) else Input.Empty(value ?: "")
+public fun input(value: String? = null): Input = value.input()
 
 /**
  * @return [Input.Empty] with [default] -> [Input.value]
@@ -39,7 +40,7 @@ public fun String?.validate(rule: Rule): Input = (this ?: "").let { rule(it).fol
  * value is a blank string.
  */
 @JvmName("inputString")
-public fun String?.input(): Input = input(this)
+public fun String?.input(): Input = takeIfValid()?.let(Input::Valid) ?: Input.Empty("")
 
 /**
  * Create an [Input.Empty] from this string as a default.

@@ -32,7 +32,7 @@ public sealed interface Input {
      */
     @JvmInline
     public value class Empty internal constructor(
-        override val value: String = ""
+        override val value: String = "",
     ) : Input
 
     /**
@@ -42,4 +42,15 @@ public sealed interface Input {
     public value class Valid internal constructor(
         override val value: String
     ) : Input
+
+    /**
+     * Copy the input. Type and errors are preserved
+     */
+    public fun copy(value: String = this.value): Input = when (this) {
+        is Empty -> Empty(value)
+        is Invalid -> copy(value = value, errors = errors)
+        is Valid -> Valid(value)
+    }
+
+    public companion object
 }

@@ -20,4 +20,6 @@ public sealed interface ValidationStrategy {
      * the list of inputs may contain more than one error.
      */
     public object LazyEval : ValidationStrategy
+
+    public companion object
 }
