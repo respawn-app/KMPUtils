@@ -43,7 +43,6 @@ subprojects {
                 if (!executed) println("w: Disabling CInteropCommonization")
                 executed
             }
-
         }
         register<org.gradle.jvm.tasks.Jar>("dokkaJavadocJar") {
             // TODO: Dokka does not support javadocs for multiplatform dependencies
