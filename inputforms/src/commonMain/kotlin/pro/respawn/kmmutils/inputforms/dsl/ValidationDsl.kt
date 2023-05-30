@@ -34,7 +34,7 @@ public inline infix fun (() -> Boolean).checks(
  * Runs all validations on a given sequence of rules.
  * @return a list of [ValidationError]s resulted from a validation
  */
-internal operator fun Sequence<Rule>.invoke(
+public operator fun Sequence<Rule>.invoke(
     input: String,
     strategy: ValidationStrategy
 ): List<ValidationError> = when (strategy) {
@@ -45,7 +45,7 @@ internal operator fun Sequence<Rule>.invoke(
 /**
  * @see invoke
  */
-internal operator fun Array<out Rule>.invoke(
+public operator fun Array<out Rule>.invoke(
     input: String,
     strategy: ValidationStrategy,
 ): List<ValidationError> = asSequence()(input, strategy)
@@ -53,13 +53,13 @@ internal operator fun Array<out Rule>.invoke(
 /**
  * Fold [this] list of [ValidationError]s to an [Input] value. Use after running validation on a string.
  */
-internal fun Iterable<ValidationError>.fold(value: String): Input = asSequence().fold(value)
+public fun Iterable<ValidationError>.fold(value: String): Input = asSequence().fold(value)
 
 /**
  * Transform these [ValidationError]s into an [Input] value based on whether there are any errors
  * If no errors, returns [Input.Valid] or [Input.Empty]
  */
-internal fun Sequence<ValidationError>.fold(value: String): Input =
+public fun Sequence<ValidationError>.fold(value: String): Input =
     if (none()) input(value) else Input.Invalid(value, toList())
 
 /**

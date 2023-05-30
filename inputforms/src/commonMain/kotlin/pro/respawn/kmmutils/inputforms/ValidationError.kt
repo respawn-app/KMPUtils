@@ -122,4 +122,6 @@ public sealed interface ValidationError {
      * @see pro.respawn.kmmutils.inputforms.default.Rules.Equals
      */
     public data class IsNotEqual(override val value: String, val other: String) : ValidationError
+
+    public companion object
 }

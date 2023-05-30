@@ -12,4 +12,6 @@ public fun interface Rule {
      * **If the validation passed, return an empty sequence**
      */
     public operator fun invoke(value: String): Sequence<ValidationError>
+
+    public companion object
 }

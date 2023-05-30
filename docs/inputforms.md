@@ -20,7 +20,7 @@ The framework comes with a few basic classes you'll need:
 - `ValidationError` - an error that happened during validation.
 - `ValidationStrategy` - either `FailFast` or `LazyEval`, depending on how you want your form errors to be shown.
 
-### Step 1. Understand how to use and create Rules
+### 1. Understand how to use and create Rules
 
 There are quite a few prebuilt Rules. See the `Rules` object to check them out.  
 Rules are a simple `fun interface`s that Specify how to validate a string.  
@@ -36,7 +36,7 @@ A `Rule`'s `invoke` function takes a `String` and returns a `Sequence` of `Valid
 `infix fun (() -> Boolean).checks(error: ()-> ValidationError)` is a syntactic sugar for one-condition -> one error
 validations. When the block returns `false`, an `error` is evaluated lazily and returned.
 
-### Step 2: Choose a ValidationStrategy
+### 2. Choose a ValidationStrategy
 
 There are 2 strategies: `FailFast` and `LazyEval`.
 
@@ -45,7 +45,7 @@ There are 2 strategies: `FailFast` and `LazyEval`.
 - `LazyEval` iterates through all the Rules, collects their `ValidationErrors`, and only then returns an appropriate
   Input. Order of rules is preserved too.
 
-### Step 3: Create your validation Form
+### 3. Create your validation Form
 
 A custom Form is built like this
 
@@ -64,8 +64,16 @@ val EmailForm = Form(
 * The Form instance is usually located in the business logic layer.
     * It can be a static object or a builder function return value.
 * Some prebuilt forms are in the `Forms` object.
-
-### Step 4: Create Input values for string values you want to validate
+* If you want to add custom fields, you can subclass `Form` instead
+    ```kotlin
+    object EmailForm : Form(
+        ValidationStrategy.FailFast,
+        /* ... */
+    ) {
+        val LengthRange = 1..256 // can use on UI
+    }
+   ```
+### 4. Create Input values for string values you want to validate
 
 For example, when building your state, use this to set up blank or default Inputs:
 
@@ -81,7 +89,7 @@ data class DisplayingSignInForm(
 ) : EmailSignInState
 ```
 
-### Step 5: Display `ValidationError`s
+### 5. Display `ValidationError`s
 
 As simple as that, these are validation errors.
 To add your own errors (when writing custom `Rule`s), subclass `ValidationError.Generic` and iterate over types.
@@ -101,7 +109,7 @@ private fun ValidationError.toRepresentation() = when (this) {
 }.let(::stringResource)
 ```
 
-### Step 6: Display the Input in the UI
+### 6. Display the Input in the UI
 
 Each validation will return either an `Input.Valid`, or `Input.Invalid` . An `Invalid` value contains a field
 called `errors`, which is a collection of validation errors . Use that, the function you defined earlier, and the type
@@ -115,12 +123,13 @@ fun InputTextField(input: Input, onTextChange: (String) -> Unit, modifier: Modif
             value = input.value,
             onValueChange = onTextChange,
             isError = input is Input.Invalid,
+            // add max length display, available symbols, etc, coloring as needed.
         )
         // display errors below the text field
         AnimatedVisibility(visible = input is Invalid) {
             if (input !is Invalid) return@AnimatedVisibility
             Text(
-                text = input.errors.toRepresentation(), // define a function that maps ValidationError -> String
+                text = input.errors.toRepresentation(),
                 modifier = Modifier.padding(2.dp),
             )
         }
@@ -128,7 +137,7 @@ fun InputTextField(input: Input, onTextChange: (String) -> Unit, modifier: Modif
 }
 ```
 
-### Step 7: Validate the input when the user changes it
+### 7. Validate the input when the user changes it
 
 Invoke a validation on the user's input (String value) each time the user changes it, or whenever you want to validate
 forms. For example, like this:

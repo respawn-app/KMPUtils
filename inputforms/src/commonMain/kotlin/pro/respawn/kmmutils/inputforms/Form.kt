@@ -9,7 +9,7 @@ import pro.respawn.kmmutils.inputforms.dsl.invoke
  * @param strategy A [ValidationStrategy] to use
  * @param rules A list of rules to use when validating. *Other of rules matters!*
  */
-public class Form(
+public open class Form(
     public val strategy: ValidationStrategy,
     protected vararg val rules: Rule,
 ) {
@@ -22,7 +22,7 @@ public class Form(
     /**
      * Run a validation using [rules].
      */
-    public fun validate(input: String): Input = rules(input, strategy).fold(input)
+    public open fun validate(input: String): Input = rules(input, strategy).fold(input)
 
     public companion object
 }
