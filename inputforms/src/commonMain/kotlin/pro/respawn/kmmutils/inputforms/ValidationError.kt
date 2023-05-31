@@ -3,6 +3,7 @@ package pro.respawn.kmmutils.inputforms
 /**
  * An error that occurred during validation.
  * Presence of ValidationErrors in the resulting [Input.Invalid] indicates
+ * that the value of the input is invalid.
  */
 public sealed interface ValidationError {
 

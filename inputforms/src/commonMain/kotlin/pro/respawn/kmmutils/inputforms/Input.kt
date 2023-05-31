@@ -4,8 +4,7 @@ import kotlin.jvm.JvmInline
 
 /**
  * A user input. An input can have 3 states:
- *
- * - Invalid: contains validation errors
+ * - Invalid: input contains validation errors listed in the [Input.Invalid.errors] field.
  * - Valid: an input that has been validated and is considered valid
  * - Empty: an input that has either a default value, an empty value, or has never been validated.
  *     How you want to handle [Empty] values depends on the business logic of your app.
@@ -18,7 +17,7 @@ public sealed interface Input {
     public val value: String
 
     /**
-     * A value of Input that signifies an invalid input
+     * A value that signifies an invalid input
      * @param errors current validation errors that were produced during input validation
      */
     public data class Invalid internal constructor(

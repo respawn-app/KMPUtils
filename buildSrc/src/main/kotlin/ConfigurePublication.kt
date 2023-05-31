@@ -18,14 +18,15 @@ import org.gradle.plugins.signing.Sign
 fun Project.publishMultiplatform() {
     val properties = gradleLocalProperties(rootDir)
     val isReleaseBuild = properties["release"]?.toString().toBoolean()
-    val dokkaJavadocJar = tasks.named("dokkaJavadocJar")
+    // TODO: Dokka does not support javadocs for multiplatform dependencies
+    val javadocJar = tasks.named("emptyJavadocJar")
 
     afterEvaluate {
         requireNotNull(extensions.findByType<PublishingExtension>()).apply {
             sonatypeRepository(isReleaseBuild, properties)
 
             publications.withType<MavenPublication>().configureEach {
-                artifact(dokkaJavadocJar)
+                artifact(javadocJar)
                 configurePom()
                 configureVersion(isReleaseBuild)
             }
@@ -34,7 +35,7 @@ fun Project.publishMultiplatform() {
     }
 
     tasks.withType<AbstractPublishToMaven> {
-        dependsOn(dokkaJavadocJar)
+        dependsOn(javadocJar)
     }
 }
 

@@ -9,6 +9,9 @@ layer to the business logic layer. A set of abstractions is needed in order to a
 pass the resulting value up and handle it both in the business logic and in the UI layer.
 Forms play very well with our architecture, [FlowMVI](https://opensource.respawn.pro/FlowMVI) and MVI in general.
 
+See [javadocs](https://opensource.respawn.pro/kmmutils/javadocs) for more information, the javadoc contains extensive
+documentation and will be of help to you when using the library.
+
 ## Usage
 
 The framework comes with a few basic classes you'll need:
@@ -88,6 +91,15 @@ data class DisplayingSignInForm(
     val isPasswordVisible: Boolean = false,
 ) : EmailSignInState
 ```
+
+* `Input`s are wrappers for String values that the text form contains, and are basically **results of validation**.
+* Input's type (`Invalid`, `Valid`, `Empty`) can be used to determine whether the input is valid or not.
+* Pass the Input instance to the UI layer when your `Form` returns it after validation, then use it to draw form errors
+  and other information.
+* Use Input value in your business logic to determine what to do with current values. For example, if the input
+  is `Invalid`, you may disable the "Submit" button. If the input is `Empty`, you may or may not consider it an error,
+  depending on your use case.
+* Input can be either created manually as above, or returned when you use `Form.invoke(String)` to run a validation.
 
 ### 5. Display `ValidationError`s
 

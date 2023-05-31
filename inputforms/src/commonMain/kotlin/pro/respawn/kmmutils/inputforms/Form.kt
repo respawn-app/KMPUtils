@@ -7,7 +7,7 @@ import pro.respawn.kmmutils.inputforms.dsl.invoke
  * Form is a combination of a [ValidationStrategy] and a list of rules to use.
  * Use [invoke] to run a validation and produce an [Input].
  * @param strategy A [ValidationStrategy] to use
- * @param rules A list of rules to use when validating. *Other of rules matters!*
+ * @param rules A list of rules to use when validating. *Order of rules matters!*
  */
 public open class Form(
     public val strategy: ValidationStrategy,

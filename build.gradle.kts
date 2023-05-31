@@ -45,9 +45,11 @@ subprojects {
             }
         }
         register<org.gradle.jvm.tasks.Jar>("dokkaJavadocJar") {
-            // TODO: Dokka does not support javadocs for multiplatform dependencies
-            // dependsOn(dokkaJavadoc)
-            // from(dokkaJavadoc.flatMap { it.outputDirectory })
+            dependsOn(dokkaJavadoc)
+            from(dokkaJavadoc.flatMap { it.outputDirectory })
+            archiveClassifier.set("javadoc")
+        }
+        register<org.gradle.jvm.tasks.Jar>("emptyJavadocJar") {
             archiveClassifier.set("javadoc")
         }
     }
