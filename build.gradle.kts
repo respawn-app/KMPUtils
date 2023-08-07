@@ -1,5 +1,7 @@
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
 import org.jetbrains.dokka.gradle.AbstractDokkaTask
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -138,4 +140,10 @@ tasks {
     wrapper {
         distributionType = Wrapper.DistributionType.BIN
     }
+}
+
+extensions.findByType<YarnRootExtension>()?.run {
+    yarnLockMismatchReport = YarnLockMismatchReport.WARNING
+    reportNewYarnLock = true
+    yarnLockAutoReplace = false
 }
