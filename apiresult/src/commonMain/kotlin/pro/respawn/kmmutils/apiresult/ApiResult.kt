@@ -387,6 +387,7 @@ public inline infix fun <reified T : Exception, R> ApiResult<R>.recover(block: (
  * Overload for a lambda that already returns an [ApiResult].
  * @see recover
  */
+@JvmName("recoverResulting")
 @OverloadResolutionByLambdaReturnType
 public inline infix fun <reified T : Exception, R> ApiResult<R>.recover(block: (T) -> ApiResult<R>): ApiResult<R> =
     when (this) {
@@ -452,6 +453,7 @@ public inline infix fun <T, R> ApiResult<T>.chain(another: (T) -> ApiResult<R>):
  * @see [ApiResult.chain]
  * @see [ApiResult.then]
  */
+@JvmName("chainResulting")
 public inline fun <T> ApiResult<T>.chain(block: (T) -> Unit): ApiResult<T> =
     chain(another = { ApiResult { block(it) } })
 
