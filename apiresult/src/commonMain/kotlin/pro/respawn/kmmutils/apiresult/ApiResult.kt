@@ -389,14 +389,14 @@ public inline infix fun <reified T : Exception, R> ApiResult<R>.recover(another:
         is Error -> if (e is T) another(e) else this
     }
 
-/**
- * calls [recover] catching and wrapping any exceptions thrown inside [block].
- */
 @Deprecated("use tryRecover", ReplaceWith("this.tryRecover<T, R>(block)"))
 public inline infix fun <reified T : Exception, R> ApiResult<R>.recoverWrapping(
     block: (T) -> R
 ): ApiResult<R> = tryRecover<T, R>(block)
 
+/**
+ * calls [recover] catching and wrapping any exceptions thrown inside [block].
+ */
 public inline infix fun <reified T : Exception, R> ApiResult<R>.tryRecover(block: (T) -> R): ApiResult<R> =
     when (this) {
         is Success, is Loading -> this
