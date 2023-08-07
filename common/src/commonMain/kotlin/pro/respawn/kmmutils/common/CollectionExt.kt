@@ -132,3 +132,18 @@ public inline fun <T> Iterable<T>.tryReplace(
     newList[i] = replacement(item)
     return newList
 }
+
+/**
+ * Will first put [this]'s elements into chunks of size [chunkSize], then calculate
+ * an [average] of each of the chunks.
+ *
+ */
+public fun Sequence<Float>.chunkedAverage(chunkSize: Int): Sequence<Double> = ifEmpty { emptySequence() }
+    .chunked(chunkSize.coerceAtLeast(1)) { it.average() }
+
+/**
+ * Will first put [this]'s elements into chunks of size [chunkSize], then calculate
+ * an [average] of each of the chunks.
+ */
+public fun Collection<Float>.chunkedAverage(chunkSize: Int): List<Double> = ifEmpty { return emptyList() }
+    .chunked(chunkSize.coerceAtLeast(1)) { it.average() }
