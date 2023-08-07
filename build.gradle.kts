@@ -141,9 +141,10 @@ tasks {
         distributionType = Wrapper.DistributionType.BIN
     }
 }
-
-extensions.findByType<YarnRootExtension>()?.run {
-    yarnLockMismatchReport = YarnLockMismatchReport.WARNING
-    reportNewYarnLock = true
-    yarnLockAutoReplace = false
+plugins.withType(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin::class.java) {
+    extensions.findByType<YarnRootExtension>()!!.run {
+        yarnLockMismatchReport = YarnLockMismatchReport.WARNING
+        reportNewYarnLock = true
+        yarnLockAutoReplace = false
+    }
 }
