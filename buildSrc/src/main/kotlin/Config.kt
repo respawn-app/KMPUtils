@@ -17,8 +17,8 @@ object Config {
 
     const val majorRelease = 1
     const val minorRelease = 1
-    const val patch = 0
-    const val versionName = "$majorRelease.$minorRelease.$patch-alpha02"
+    const val patch = 1
+    const val versionName = "$majorRelease.$minorRelease.$patch"
 
     // kotlin
 
@@ -36,14 +36,13 @@ object Config {
         addAll(compilerArgs)
         add("-Xjvm-default=all") // enable all jvm optimizations
         add("-Xcontext-receivers")
-        // add("-Xuse-k2")
         addAll(optIns.map { "-opt-in=$it" })
     }
 
     val jvmTarget = JvmTarget.JVM_11
     val javaVersion = JavaVersion.VERSION_11
-    val kotlinVersion = org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_8
-    const val compileSdk = 33
+    val kotlinVersion = org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9
+    const val compileSdk = 34
     const val targetSdk = compileSdk
     const val minSdk = 21
     const val appMinSdk = 26
@@ -59,7 +58,7 @@ object Config {
     const val consumerProguardFile = "consumer-rules.pro"
 
     // build scripts
-    val stabilityLevels = listOf("preview", "eap", "alpha", "beta", "m", "cr", "rc")
+    val stabilityLevels = listOf("preview", "eap", "dev", "alpha", "beta", "m", "cr", "rc")
 
     object Detekt {
 
