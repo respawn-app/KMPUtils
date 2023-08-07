@@ -18,8 +18,7 @@ import org.gradle.plugins.signing.Sign
 fun Project.publishMultiplatform() {
     val properties = gradleLocalProperties(rootDir)
     val isReleaseBuild = properties["release"]?.toString().toBoolean()
-    // TODO: Dokka does not support javadocs for multiplatform dependencies
-    val javadocJar = tasks.named("emptyJavadocJar")
+    val javadocJar = tasks.named("dokkaJavadocJar")
 
     afterEvaluate {
         requireNotNull(extensions.findByType<PublishingExtension>()).apply {

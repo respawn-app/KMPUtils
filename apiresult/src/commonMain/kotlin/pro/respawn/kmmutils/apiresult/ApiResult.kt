@@ -347,8 +347,18 @@ public inline fun <T> ApiResult<ApiResult<T>>.unwrap(): ApiResult<T> = fold(
  * @see mapError
  * @see mapLoading
  */
-public inline infix fun <T, R> ApiResult<T>.mapWrapping(block: (T) -> R): ApiResult<R> =
+public inline infix fun <T, R> ApiResult<T>.tryMap(block: (T) -> R): ApiResult<R> =
     map { ApiResult { block(it) } }.unwrap()
+
+/**
+ * Change the type of successful result to [R], also wrapping [block]
+ * in another result then folding it (handling exceptions)
+ * @see map
+ * @see mapError
+ * @see mapLoading
+ */
+@Deprecated("use tryMap", ReplaceWith("this.tryMap<T,R>(block)"))
+public inline infix fun <T, R> ApiResult<T>.mapWrapping(block: (T) -> R): ApiResult<R> = tryMap(block)
 
 /**
  * Make this result an [Error] if [Success] value was null.
@@ -368,40 +378,29 @@ public inline fun <T> ApiResult<T>.nullOnError(): ApiResult<T?> = if (this is Er
 
 /**
  * Recover from an exception of type [R], else no-op.
- * Does not affect [Loading]
- * @see recoverIf
- */
-public inline infix fun <reified T : Exception, R> ApiResult<R>.recover(block: (T) -> R): ApiResult<R> {
-    contract {
-        callsInPlace(block, InvocationKind.AT_MOST_ONCE)
-    }
-    return when (this) {
-        is Success, is Loading -> this
-        is Error -> if (e is T) Success(block(e)) else this
-    }
-}
-
-/**
- * Recover from an exception of type [R], else no-op.
- * Does not affect [Loading]
+ * Does not affect [Loading].
+ *
  * Overload for a lambda that already returns an [ApiResult].
  * @see recover
  */
-@JvmName("recoverResulting")
-@OverloadResolutionByLambdaReturnType
-public inline infix fun <reified T : Exception, R> ApiResult<R>.recover(block: (T) -> ApiResult<R>): ApiResult<R> =
+public inline infix fun <reified T : Exception, R> ApiResult<R>.recover(another: (e: T) -> ApiResult<R>): ApiResult<R> =
     when (this) {
         is Success, is Loading -> this
-        is Error -> if (e is T) block(e) else this
+        is Error -> if (e is T) another(e) else this
     }
+
+@Deprecated("use tryRecover", ReplaceWith("this.tryRecover<T, R>(block)"))
+public inline infix fun <reified T : Exception, R> ApiResult<R>.recoverWrapping(
+    block: (T) -> R
+): ApiResult<R> = tryRecover<T, R>(block)
 
 /**
  * calls [recover] catching and wrapping any exceptions thrown inside [block].
  */
-public inline infix fun <reified T : Exception, R> ApiResult<R>.recoverWrapping(block: (T) -> R): ApiResult<R> =
+public inline infix fun <reified T : Exception, R> ApiResult<R>.tryRecover(block: (T) -> R): ApiResult<R> =
     when (this) {
         is Success, is Loading -> this
-        is Error -> if (e is T) ApiResult { Success(block(e)) }.unwrap() else this
+        is Error -> if (e is T) ApiResult { block(e) } else this
     }
 
 /**
@@ -430,8 +429,7 @@ public inline fun <T> ApiResult<T>.recoverIf(
  * Effectively, requires for another [ApiResult] to succeed before proceeding with this one.
  * @see [ApiResult.then]
  */
-@OverloadResolutionByLambdaReturnType
-public inline infix fun <T, R> ApiResult<T>.chain(another: (T) -> ApiResult<R>): ApiResult<T> {
+public inline infix fun <T> ApiResult<T>.chain(another: (T) -> ApiResult<*>): ApiResult<T> {
     contract {
         callsInPlace(another, InvocationKind.AT_MOST_ONCE)
     }
@@ -449,12 +447,12 @@ public inline infix fun <T, R> ApiResult<T>.chain(another: (T) -> ApiResult<R>):
  *
  * If the result is success, continue (**the result of calling [block] is discarded**).
  * If the result is an error, propagate it to [this].
- * Alias for chain() for calls that do not return an ApiResult already
+ *
+ * Alias for [chain] for calls that do not return an ApiResult already.
  * @see [ApiResult.chain]
  * @see [ApiResult.then]
  */
-@JvmName("chainResulting")
-public inline fun <T> ApiResult<T>.chain(block: (T) -> Unit): ApiResult<T> =
+public inline fun <T> ApiResult<T>.tryChain(block: (T) -> Unit): ApiResult<T> =
     chain(another = { ApiResult { block(it) } })
 
 /**
