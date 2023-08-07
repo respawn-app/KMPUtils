@@ -12,14 +12,14 @@ public sealed interface ValidationStrategy {
      * a single error is encountered, and populates the resulting [Input.Invalid] with that **single** error.
      * So the list of errors will always contain just one element.
      */
-    public object FailFast : ValidationStrategy
+    public data object FailFast : ValidationStrategy
 
     /**
      * LazyEval iterates through all [Rule]s of a [Form] in order until all rules are exhausted, and then returns
      * the list of errors in the resulting [Input.Invalid]. When using this strategy,
      * the list of inputs may contain more than one error.
      */
-    public object LazyEval : ValidationStrategy
+    public data object LazyEval : ValidationStrategy
 
     public companion object
 }

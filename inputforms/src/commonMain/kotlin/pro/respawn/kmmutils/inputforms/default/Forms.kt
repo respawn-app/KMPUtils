@@ -7,7 +7,7 @@ import pro.respawn.kmmutils.inputforms.ValidationStrategy.FailFast
 /**
  * An object that contains predefined [Form]s.
  */
-public object Forms {
+public data object Forms {
 
     /**
      * A form for validating emails
@@ -22,6 +22,7 @@ public object Forms {
         strategy,
         Rules.NonEmpty,
         Rules.LengthInRange(length),
+        Rules.NoWhitespace,
         Rules.Matches(pattern),
     )
 
