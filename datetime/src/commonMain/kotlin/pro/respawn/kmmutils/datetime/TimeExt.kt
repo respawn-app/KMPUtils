@@ -221,3 +221,8 @@ public fun Sequence<Time?>.totalDuration(): Time = Time.ofSeconds(sumOf { it?.to
  * Convert this duration to [Time]. If this duration is larger than 24 hours, clock will wrap around.
  */
 public val Duration.asTime: Time get() = Time.ofSeconds(inWholeSeconds.toInt())
+
+/**
+ * If [this] is [Time.MIN] return null, [this] otherwise
+ */
+public fun Time?.takeIfNotZero(): Time? = takeIf { it != Time.MIN }

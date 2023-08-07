@@ -4,7 +4,7 @@ package pro.respawn.kmmutils.inputforms.default
  * Common regular expressions used for form validation
  */
 @Suppress("MaxLineLength")
-public object Patterns {
+public data object Patterns {
 
     /**
      * An international phone number regex, that does not allow delimiters.

@@ -65,7 +65,7 @@ fun Project.configureMultiplatform(
     }
 
     if (android) {
-        android {
+        androidTarget {
             publishLibraryVariants(Config.publishingVariant)
         }
 

@@ -3,7 +3,7 @@ package pro.respawn.kmmutils.inputforms.default
 /**
  * Default field lengths for common input types used in applications.
  */
-public object FieldLengths {
+public data object FieldLengths {
 
     /**
      * The smallest possible, most commonly used minimum and maximum url lengths in web browsers.

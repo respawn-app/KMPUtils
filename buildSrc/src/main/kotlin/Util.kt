@@ -20,7 +20,7 @@ import java.util.Base64
  * to obtain a version/lib use:
  * ```
  * val libs by versionCatalog
- * libs.findVersion("androidxCompose").get().toString()
+ * libs.requireVersion("androidxCompose")
  * libs.requireLib("androidx.core.ktx")
  * ```
  */
@@ -34,7 +34,7 @@ fun VersionCatalog.requireVersion(alias: String) = findVersion(alias).get().toSt
 
 val org.gradle.api.provider.Provider<PluginDependency>.id: String get() = get().pluginId
 
-fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
+fun CommonExtension<*, *, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 }
 

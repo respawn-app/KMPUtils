@@ -1,5 +1,7 @@
 package pro.respawn.kmmutils.inputforms
 
+import kotlin.jvm.JvmInline
+
 /**
  * An error that occurred during validation.
  * Presence of ValidationErrors in the resulting [Input.Invalid] indicates
@@ -24,7 +26,8 @@ public sealed interface ValidationError {
      * The input is blank.
      * @see pro.respawn.kmmutils.inputforms.default.Rules.NonEmpty
      */
-    public data class Empty(
+    @JvmInline
+    public value class Empty(
         override val value: String
     ) : ValidationError
 
@@ -86,43 +89,124 @@ public sealed interface ValidationError {
      * Input does not contain a [needle]
      * @see pro.respawn.kmmutils.inputforms.default.Rules.Contains
      */
-    public data class DoesNotContain(override val value: String, public val needle: String) : ValidationError
+    public data class DoesNotContain(
+        override val value: String,
+        public val needle: String
+    ) : ValidationError
 
     /**
      * Input is not alpha-numeric
      * @see pro.respawn.kmmutils.inputforms.default.Rules.AlphaNumeric
      */
-    public data class NotAlphaNumeric(override val value: String) : ValidationError
+    @JvmInline
+    public value class NotAlphaNumeric(
+        override val value: String,
+    ) : ValidationError
 
     /**
      * Input has digits
      * @see pro.respawn.kmmutils.inputforms.default.Rules.NoDigits
      */
-    public data class ContainsDigits(override val value: String) : ValidationError
+    public data class ContainsDigits(
+        override val value: String,
+    ) : ValidationError
 
     /**
      * Input has no digits
      * @see pro.respawn.kmmutils.inputforms.default.Rules.HasDigit
      */
-    public data class HasNoDigits(override val value: String) : ValidationError
+    public data class HasNoDigits(
+        override val value: String,
+    ) : ValidationError
 
     /**
      * Input has letters
      * @see pro.respawn.kmmutils.inputforms.default.Rules.NoLetters
      */
-    public data class ContainsLetters(override val value: String) : ValidationError
+    public data class ContainsLetters(
+        override val value: String,
+    ) : ValidationError
 
     /**
      * Input has no letters
      * @see pro.respawn.kmmutils.inputforms.default.Rules.HasLetter
      */
-    public data class HasNoLetters(override val value: String) : ValidationError
+    @JvmInline
+    public value class HasNoLetters(
+        override val value: String
+    ) : ValidationError
 
     /**
      * Input's value was not equal to [other]
      * @see pro.respawn.kmmutils.inputforms.default.Rules.Equals
      */
-    public data class IsNotEqual(override val value: String, val other: String) : ValidationError
+    public data class IsNotEqual(
+        override val value: String,
+        val other: String
+    ) : ValidationError
+
+    /**
+     * Input's value contained anything except letters.
+     * @see pro.respawn.kmmutils.inputforms.default.Rules.LettersOnly
+     */
+    @JvmInline
+    public value class NotLettersOnly(
+        override val value: String,
+    ) : ValidationError
+
+    /**
+     * Input's value contained anything except digits
+     * @see pro.respawn.kmmutils.inputforms.default.Rules.DigitsOnly
+     */
+    @JvmInline
+    public value class NotDigitsOnly(
+        override val value: String
+    ) : ValidationError
+
+    /**
+     * Input's value is not an ascii symbol
+     * @see pro.respawn.kmmutils.inputforms.default.Rules.AsciiOnly
+     */
+    @JvmInline
+    public value class NotAscii(
+        override val value: String,
+    ) : ValidationError
+
+    /**
+     * Input's value is not lowercase
+     * @see pro.respawn.kmmutils.inputforms.default.Rules.LowercaseOnly
+     */
+    @JvmInline
+    public value class NotLowercase(
+        override val value: String,
+    ) : ValidationError
+
+    /**
+     * Input's value is not uppercase
+     * @see pro.respawn.kmmutils.inputforms.default.Rules.UppercaseOnly
+     */
+    @JvmInline
+    public value class NotUppercase(
+        override val value: String,
+    ) : ValidationError
+
+    /**
+     * Input's value has whitespace
+     * @see pro.respawn.kmmutils.inputforms.default.Rules.NoWhitespace
+     */
+    @JvmInline
+    public value class HasWhitespace(
+        override val value: String,
+    ) : ValidationError
+
+    /**
+     * Input's value has newlines ('\n')
+     * @see pro.respawn.kmmutils.inputforms.default.Rules.SingleLine
+     */
+    @JvmInline
+    public value class NotSingleline(
+        override val value: String,
+    ) : ValidationError
 
     public companion object
 }

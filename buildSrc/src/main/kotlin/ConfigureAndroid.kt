@@ -5,7 +5,7 @@ import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project
 
 fun Project.configureAndroid(
-    commonExtension: CommonExtension<*, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *>,
 ) = commonExtension.apply {
     compileSdk = Config.compileSdk
 
@@ -69,7 +69,7 @@ fun Project.configureAndroid(
                 it.apply {
                     useJUnitPlatform()
                     maxHeapSize = "1G"
-                    setForkEvery(100)
+                    forkEvery = 100
                     jvmArgs = listOf("-Xmx1g", "-Xms512m")
                 }
             }

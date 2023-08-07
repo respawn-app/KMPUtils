@@ -134,4 +134,8 @@ tasks {
             stabilityLevel(currentVersion) > stabilityLevel(candidate.version)
         }
     }
+
+    wrapper {
+        distributionType = Wrapper.DistributionType.BIN
+    }
 }
