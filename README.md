@@ -16,10 +16,10 @@ enjoy the expanded API of the things you are used to, relying on autocompletion 
 See documentation at [https://opensource.respawn.pro/kmmutils/](https://opensource.respawn.pro/kmmutils/)
 Javadocs are at [/kmmutils/javadocs](https://opensource.respawn.pro/kmmutils/javadocs/)
 
+## ‼️ ApiResult has moved! Find the new repository and migration guide at https://github.com/respawn-app/ApiResult ‼️
+
 ### Features
 
-* [ApiResult](https://opensource.respawn.pro/kmmutils/#/apiresult): A monad for wrapping operations that may
-  fail. Similar to kotlin.Result, but offers extensive, clean DSL and better performance.
 * [InputForms](https://opensource.respawn.pro/kmmutils/#/inputforms): A stateful and composable text input field
   validation framework with clean DSL.
 * [Common](https://opensource.respawn.pro/kmmutils/#/common): Kotlin standard library extensions
@@ -36,7 +36,6 @@ Javadocs are at [/kmmutils/javadocs](https://opensource.respawn.pro/kmmutils/jav
 kmmutils = "< Badge above 👆🏻 >"
 
 [dependencies]
-kmmutils-apiresult = { module = "pro.respawn.kmmutils:apiresult", version.ref = "kmmutils" }
 kmmutils-common = { module = "pro.respawn.kmmutils:common", version.ref = "kmmutils" }
 kmmutils-datetime = { module = "pro.respawn.kmmutils:datetime", version.ref = "kmmutils" }
 kmmutils-coroutines = { module = "pro.respawn.kmmutils:coroutines", version.ref = "kmmutils" }
@@ -44,7 +43,6 @@ kmmutils-inputforms = { module = "pro.respawn.kmmutils:inputforms", version.ref 
 
 [bundles]
 kmmutils = [
-    "kmmutils-apiresult",
     "kmmutils-common",
     "kmmutils-datetime",
     "kmmutils-coroutines",
@@ -55,7 +53,7 @@ kmmutils = [
 ### Supported platforms
 
 * Android [ `SDK21+` ],
-* JVM [ `8+` ],
+* JVM [ `11+` ],
 * iOS [ `x64`, `ArmX64`, `macOSx64`, `macOSArm64` ]
 * JS [ `browser`, `node.js` ]
 
