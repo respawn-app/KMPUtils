@@ -1,12 +1,12 @@
 # KMPUtils
 
-[![CI](https://github.com/respawn-app/kmmutils/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/respawn-app/kmmutils/actions/workflows/ci.yml)
-![Docs](https://img.shields.io/website?down_color=red&label=Docs&up_color=green&up_message=Online&url=http%3A%2F%2Fopensource.respawn.pro%2Fkmmutils%2F%23%2F)
-[![CodeFactor](https://www.codefactor.io/repository/github/respawn-app/kmmutils/badge)](https://www.codefactor.io/repository/github/respawn-app/kmmutils)
-![GitHub top language](https://img.shields.io/github/languages/top/respawn-app/kmmutils)
-![GitHub](https://img.shields.io/github/license/respawn-app/kmmutils)
-![GitHub issues](https://img.shields.io/github/issues/respawn-app/kmmutils)
-![GitHub last commit](https://img.shields.io/github/last-commit/respawn-app/kmmutils)
+[![CI](https://github.com/respawn-app/KMPUtils/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/respawn-app/kmmutils/actions/workflows/ci.yml)
+![Docs](https://img.shields.io/website?down_color=red&label=Docs&up_color=green&up_message=Online&url=http%3A%2F%2Fopensource.respawn.pro%2FKMPUtils%2F%23%2F)
+[![CodeFactor](https://www.codefactor.io/repository/github/respawn-app/kmmutils/badge)](https://www.codefactor.io/repository/github/respawn-app/KMPUtils)
+![GitHub top language](https://img.shields.io/github/languages/top/respawn-app/KMPUtils)
+![GitHub](https://img.shields.io/github/license/respawn-app/KMPUtils)
+![GitHub issues](https://img.shields.io/github/issues/respawn-app/KMPUtils)
+![GitHub last commit](https://img.shields.io/github/last-commit/respawn-app/KMPUtils)
 [![AndroidWeekly #556](https://androidweekly.net/issues/issue-556/badge)](https://androidweekly.net/issues/issue-556/)
 
 ![badge][badge-android] ![badge][badge-jvm] ![badge][badge-js] ![badge][badge-nodejs] ![badge][badge-linux] ![badge][badge-windows] ![badge][badge-ios] ![badge][badge-mac] ![badge][badge-watchos] ![badge][badge-tvos]
@@ -15,19 +15,19 @@ KMP Utils is a collection of all the things that are missing from Kotlin STL, po
 The library is meant to be a drop-in dependency - no need to study anything - just add and
 enjoy the expanded API of the things you are used to, relying on autocompletion to come up with suggestions for you.
 
-See documentation at [https://opensource.respawn.pro/kmputils/](https://opensource.respawn.pro/kmputils/)
-Javadocs are at [/kmptils/javadocs](https://opensource.respawn.pro/kmputils/javadocs/)
+See documentation at [https://opensource.respawn.pro/KMPUtils](https://opensource.respawn.pro/KMPUtils)
+Javadocs are at [/KMPUtils/javadocs](https://opensource.respawn.pro/KMPUtils/javadocs/)
 
 ## ‼️ ApiResult has moved! Find the new repository and migration guide at https://github.com/respawn-app/ApiResult ‼️
 
 ### Features
 
-* [InputForms](https://opensource.respawn.pro/kmputils/#/inputforms): A stateful and composable text input field
+* [InputForms](https://opensource.respawn.pro/KMPUtils/#/inputforms): A stateful and composable text input field
   validation framework with clean DSL.
-* [Common](https://opensource.respawn.pro/kmputils/#/common): Kotlin standard library extensions
-* [Datetime](https://opensource.respawn.pro/kmputils/#/datetime): All the things missing from kotlinx.datetime and Java
+* [Common](https://opensource.respawn.pro/KMPUtils/#/common): Kotlin standard library extensions
+* [Datetime](https://opensource.respawn.pro/KMPUtils/#/datetime): All the things missing from kotlinx.datetime and Java
   Calendar & DateTime API.
-* [Coroutines](https://opensource.respawn.pro/kmputils/#/coroutines): Things missing from Coroutines & Flows API.
+* [Coroutines](https://opensource.respawn.pro/KMPUtils/#/coroutines): Things missing from Coroutines & Flows API.
 
 ## Installation
 
@@ -70,6 +70,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ```
+
+### Name Change notice
+
+Since the "KMM" abbreviation was deprecated, the repository has been renamed to "KMPUtils" and all the associated urls were changed. Unfortunately there is no way to change the group ID of the library without breaking the resolution of dependencies, so the group ID will stay the same for now. 
+
 
 [badge-android]: http://img.shields.io/badge/-android-6EDB8D.svg?style=flat
 
