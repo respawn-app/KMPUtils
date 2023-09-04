@@ -1,8 +1,8 @@
 # KMPUtils
 
-[![CI](https://github.com/respawn-app/KMPUtils/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/respawn-app/kmmutils/actions/workflows/ci.yml)
+[![CI](https://github.com/respawn-app/KMPUtils/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/respawn-app/KMPUtils/actions/workflows/ci.yml)
 ![Docs](https://img.shields.io/website?down_color=red&label=Docs&up_color=green&up_message=Online&url=http%3A%2F%2Fopensource.respawn.pro%2FKMPUtils%2F%23%2F)
-[![CodeFactor](https://www.codefactor.io/repository/github/respawn-app/kmmutils/badge)](https://www.codefactor.io/repository/github/respawn-app/KMPUtils)
+[![CodeFactor](https://www.codefactor.io/repository/github/respawn-app/KMPUtils/badge)](https://www.codefactor.io/repository/github/respawn-app/KMPUtils)
 ![GitHub top language](https://img.shields.io/github/languages/top/respawn-app/KMPUtils)
 ![GitHub](https://img.shields.io/github/license/respawn-app/KMPUtils)
 ![GitHub issues](https://img.shields.io/github/issues/respawn-app/KMPUtils)
@@ -73,7 +73,7 @@ limitations under the License.
 
 ### Name Change notice
 
-Since the "KMM" abbreviation was deprecated, the repository has been renamed to "KMPUtils" and all the associated urls were changed. Unfortunately there is no way to change the group ID of the library without breaking the resolution of dependencies, so the group ID will stay the same for now. 
+Since the "KMM" abbreviation was deprecated by JetBrains, the repository has been renamed to "KMPUtils" and all the associated urls were changed. Unfortunately there is no way to change the group ID of the library without breaking the resolution of dependencies, so the group ID will stay the same for now. 
 
 
 [badge-android]: http://img.shields.io/badge/-android-6EDB8D.svg?style=flat
@@ -101,3 +101,5 @@ Since the "KMM" abbreviation was deprecated, the repository has been renamed to 
 [badge-mac]: http://img.shields.io/badge/-macos-111111.svg?style=flat
 
 [badge-watchos]: http://img.shields.io/badge/-watchos-C0C0C0.svg?style=flat
+
+[badge-tvos]: http://img.shields.io/badge/-tvos-808080.svg?style=flat
