@@ -16,6 +16,7 @@ The library is meant to be a drop-in dependency - no need to study anything - ju
 enjoy the expanded API of the things you are used to, relying on autocompletion to come up with suggestions for you.
 
 See documentation at [https://opensource.respawn.pro/KMPUtils](https://opensource.respawn.pro/KMPUtils)
+
 Javadocs are at [/KMPUtils/javadocs](https://opensource.respawn.pro/KMPUtils/javadocs/)
 
 ## ‼️ ApiResult has moved! Find the new repository and migration guide at https://github.com/respawn-app/ApiResult ‼️
@@ -35,21 +36,31 @@ Javadocs are at [/KMPUtils/javadocs](https://opensource.respawn.pro/KMPUtils/jav
 
 ```toml
 [versions]
-kmmutils = "< Badge above 👆🏻 >"
+kmputils = "< Badge above 👆🏻 >"
 
 [dependencies]
-kmmutils-common = { module = "pro.respawn.kmmutils:common", version.ref = "kmmutils" }
-kmmutils-datetime = { module = "pro.respawn.kmmutils:datetime", version.ref = "kmmutils" }
-kmmutils-coroutines = { module = "pro.respawn.kmmutils:coroutines", version.ref = "kmmutils" }
-kmmutils-inputforms = { module = "pro.respawn.kmmutils:inputforms", version.ref = "kmmutils" }
+kmputils-common = { module = "pro.respawn.kmmutils:common", version.ref = "kmputils" }
+kmputils-datetime = { module = "pro.respawn.kmmutils:datetime", version.ref = "kmputils" }
+kmputils-coroutines = { module = "pro.respawn.kmmutils:coroutines", version.ref = "kmputils" }
+kmputils-inputforms = { module = "pro.respawn.kmmutils:inputforms", version.ref = "kmputils" }
 
 [bundles]
-kmmutils = [
-    "kmmutils-common",
-    "kmmutils-datetime",
-    "kmmutils-coroutines",
-    "kmmutils-inputforms"
+kmputils = [
+    "kmputils-common",
+    "kmputils-datetime",
+    "kmputils-coroutines",
+    "kmputils-inputforms"
 ]
+```
+
+```kotlin
+dependencies {
+    val kmputils = "< version badge above 👆🏻 >"
+    commonMainImplementation("pro.respawn.kmmutils:common:$kmputils")
+    commonMainImplementation("pro.respawn.kmmutils:datetime:$kmputils")
+    commonMainImplementation("pro.respawn.kmmutils:coroutines:$kmputils")
+    commonMainImplementation("pro.respawn.kmmutils:inputforms:$kmputils")
+}
 ```
 
 ## License
