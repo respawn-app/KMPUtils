@@ -4,15 +4,16 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project
 
-fun Project.configureAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *>,
-) = commonExtension.apply {
+fun CommonExtension<*, *, *, *, *, *>.configureAndroid() {
     compileSdk = Config.compileSdk
-
     defaultConfig {
         minSdk = Config.minSdk
         testInstrumentationRunner = Config.testRunner
         proguardFiles(getDefaultProguardFile(Config.defaultProguardFile), Config.proguardFile)
+    }
+
+    lint {
+        warning += "AutoboxingStateCreation"
     }
 
     buildTypes {
@@ -29,12 +30,6 @@ fun Project.configureAndroid(
         targetCompatibility = Config.javaVersion
     }
 
-    kotlinOptions {
-        freeCompilerArgs += Config.jvmCompilerArgs
-        jvmTarget = Config.jvmTarget.target
-        languageVersion = Config.kotlinVersion.version
-    }
-
     buildFeatures {
         aidl = false
         buildConfig = false
@@ -44,11 +39,6 @@ fun Project.configureAndroid(
         shaders = false
         viewBinding = false
         compose = false
-    }
-
-    val libs by versionCatalog
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.requireVersion("compose-compiler")
     }
 
     packaging {
@@ -67,7 +57,6 @@ fun Project.configureAndroid(
             isReturnDefaultValues = true
             all {
                 it.apply {
-                    useJUnitPlatform()
                     maxHeapSize = "1G"
                     forkEvery = 100
                     jvmArgs = listOf("-Xmx1g", "-Xms512m")
@@ -78,7 +67,7 @@ fun Project.configureAndroid(
 }
 
 fun Project.configureAndroidLibrary(variant: LibraryExtension) = variant.apply {
-    configureAndroid(this)
+    configureAndroid()
 
     kotlinOptions {
         freeCompilerArgs += "-Xexplicit-api=strict"

@@ -1,7 +1,6 @@
 @file:Suppress("MissingPackageDeclaration", "unused")
 
 import com.android.build.api.dsl.LibraryExtension
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.android.build.gradle.tasks.BundleAar
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
@@ -16,7 +15,7 @@ import org.gradle.plugins.signing.Sign
  * Configures Maven publishing to sonatype for this project
  */
 fun Project.publishMultiplatform() {
-    val properties = gradleLocalProperties(rootDir)
+    val properties by localProperties
     val isReleaseBuild = properties["release"]?.toString().toBoolean()
     val javadocJar = tasks.named("dokkaJavadocJar")
 
@@ -42,6 +41,7 @@ fun Project.publishMultiplatform() {
  * Publish the android artifact
  */
 fun Project.publishAndroid() {
+    val properties by localProperties
     requireNotNull(extensions.findByType<LibraryExtension>()).apply {
         publishing {
             singleVariant(Config.publishingVariant) {
@@ -55,7 +55,6 @@ fun Project.publishAndroid() {
     }
 
     afterEvaluate {
-        val properties = gradleLocalProperties(rootDir)
         val isReleaseBuild = properties["release"]?.toString().toBoolean()
 
         requireNotNull(extensions.findByType<PublishingExtension>()).apply {

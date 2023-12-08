@@ -62,10 +62,8 @@ doctor {
 }
 
 dependencyAnalysis {
-    issues {
-        all {
-            ignoreKtx(true)
-        }
+    structure {
+        ignoreKtx(true)
     }
 }
 
