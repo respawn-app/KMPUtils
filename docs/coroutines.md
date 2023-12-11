@@ -12,3 +12,4 @@ Includes various extensions for the kotlinx.coroutines library.
 * `mapParallel` - map a collection in parallel
 * `launchCatching` - launch a coroutines and catch any exceptions safely, including nested coroutines
 * `Flow<Iterable<*>>.mapValues()` - never write `Flow.map { it.map { } }` again
+* `suspendLazy` - like Kotlin lazy, but the initializer is a `suspend` function.

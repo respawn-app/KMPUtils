@@ -94,7 +94,7 @@ public val Int.length: Int
     }
 
 /**
- * @return 1 if this is true and false otherwise
+ * @return 1 if this is `true`, and 0 otherwise.
  */
 public fun Boolean.toInt(): Int = if (this) 1 else 0
 

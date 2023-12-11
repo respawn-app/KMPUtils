@@ -17,7 +17,7 @@ enjoy the expanded API of the things you are used to, relying on autocompletion 
 
 See documentation at [https://opensource.respawn.pro/KMPUtils](https://opensource.respawn.pro/KMPUtils)
 
-Javadocs are at [/KMPUtils/javadocs](https://opensource.respawn.pro/KMPUtils/javadocs/)
+Javadocs are at [/KMPUtils/javadocs](https://opensource.respawn.pro/KMPUtils/#/javadocs/)
 
 ## ‼️ ApiResult has moved! Find the new repository and migration guide at https://github.com/respawn-app/ApiResult ‼️
 
