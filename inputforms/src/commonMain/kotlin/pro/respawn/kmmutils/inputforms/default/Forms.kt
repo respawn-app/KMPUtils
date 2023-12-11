@@ -23,6 +23,7 @@ public data object Forms {
         Rules.NonEmpty,
         Rules.LengthInRange(length),
         Rules.NoWhitespace,
+        Rules.Contains("@"),
         Rules.Matches(pattern),
     )
 
