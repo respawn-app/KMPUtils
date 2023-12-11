@@ -1,5 +1,7 @@
 @file:Suppress("UndocumentedPublicFunction")
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         google()
