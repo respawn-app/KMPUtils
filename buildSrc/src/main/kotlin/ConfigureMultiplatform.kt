@@ -35,15 +35,11 @@ fun Project.configureMultiplatform(
         }
     }
 
-    if (android) {
-        androidTarget {
-            publishAllLibraryVariants()
-        }
+    if (android) androidTarget {
+        publishLibraryVariants("release")
     }
 
-    if (jvm) {
-        jvm()
-    }
+    if (jvm) jvm()
 
     if (iOs) {
         sequence {
