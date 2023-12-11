@@ -35,7 +35,7 @@ dependencyResolutionManagement {
 
     repositories {
         google()
-        // ivyNative()
+        ivyNative()
         node()
         mavenCentral()
     }
