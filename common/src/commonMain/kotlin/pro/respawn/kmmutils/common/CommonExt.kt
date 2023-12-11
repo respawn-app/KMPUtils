@@ -2,6 +2,8 @@
 
 package pro.respawn.kmmutils.common
 
+import kotlin.enums.enumEntries
+
 /**
  * @return Whether this string is valid
  *
@@ -37,58 +39,42 @@ public val String.isAscii: Boolean get() = toCharArray().none { it < ' ' || it >
 public fun <T> fastLazy(initializer: () -> T): Lazy<T> = lazy(LazyThreadSafetyMode.NONE, initializer)
 
 /**
- * Filter [this] by searching for elements that contain [substring],
- * or if string is not [String.isValid], the list itself
- * @param substring a string, that must be [String.isValid]
- * @return a resulting list
+ * Returns the next value of this enum (ordered the same way as declared in code, i.e. by `ordinal`).
+ *
+ * If the current value is the last, returns the first value.
+ * @see nextOrNull
+ * @see previousOrNull
  */
-public fun Iterable<String>.filterBySubstring(
-    substring: String?,
-    ignoreCase: Boolean = false
-): List<String> = if (!substring.isValid) toList() else asSequence()
-    .filter { it.contains(substring!!, ignoreCase) }
-    .toList()
+@ExperimentalStdlibApi
+public inline val <reified T : Enum<T>> Enum<T>.next: T get() = enumEntries<T>().let { it[(ordinal + 1) % it.size] }
 
 /**
- * Returns the sign of the number, as a char
- * @return either +, - or "" (empty string) if this is 0
+ * Returns the next value of this enum (ordered the same way as declared in code, i.e. by `ordinal`).
+ *
+ * If the current value is the last, returns `null`.
+ * @see next
+ * @see previous
  */
-public val Int.signChar: String
-    get() = when {
-        this < 0 -> "-"
-        this > 0 -> "+"
-        else -> ""
-    }
+@ExperimentalStdlibApi
+public inline val <reified T : Enum<T>> Enum<T>.nextOrNull: T? get() = enumEntries<T>().getOrNull(ordinal + 1)
 
 /**
- * Returns the sign of the number, as a char
- * @return either +, - or "" (empty string) if this is 0
+ * Returns the previous value of this enum (ordered the same way as declared in code, i.e. by `ordinal`).
+ *
+ * If the current value is the first, returns the last value.
+ * @see previousOrNull
+ * @see next
  */
-public val Float.signChar: String
-    get() = when {
-        this < 0f -> "-"
-        this > 0f -> "+"
-        else -> ""
-    }
+@ExperimentalStdlibApi
+public inline val <reified T : Enum<T>> Enum<T>.previous: T
+    get() = enumEntries<T>().let { it[(ordinal.takeIfNotZero() ?: it.size) - 1] }
 
 /**
- * Returns the sign of the number, as a char
- * @return either +, - or "" (empty string) if this is 0
+ * Returns the previous value of this enum (ordered the same way as declared in code, i.e. by `ordinal`).
+ *
+ * If the current value is the first, returns `null`.
+ * @see next
+ * @see previous
  */
-public val Double.signChar: String
-    get() = when {
-        this < 0.0 -> "-"
-        this > 0.0 -> "+"
-        else -> ""
-    }
-
-/**
- * Returns the sign of the number, as a char
- * @return either +, - or "" (empty string) if this is 0
- */
-public val Long.signChar: String
-    get() = when {
-        this < 0L -> "-"
-        this > 0L -> "+"
-        else -> ""
-    }
+@ExperimentalStdlibApi
+public inline val <reified T : Enum<T>> Enum<T>.previousOrNull: T? get() = enumEntries<T>().getOrNull(ordinal - 1)

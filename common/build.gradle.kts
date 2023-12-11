@@ -4,13 +4,5 @@ plugins {
 }
 
 kotlin {
-    configureMultiplatform(
-        this,
-        android = false,
-        ios = true,
-        jvm = true,
-        js = true,
-        linux = true,
-        mingw = true,
-    )
+    configureMultiplatform(this, android = false)
 }

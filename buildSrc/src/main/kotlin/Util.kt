@@ -13,7 +13,10 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.plugin.use.PluginDependency
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import java.io.File
+import java.io.FileInputStream
 import java.util.Base64
+import java.util.Properties
 
 /**
  * Load version catalog for usage in places where it is not available yet with gradle 7.x.
@@ -34,7 +37,7 @@ fun VersionCatalog.requireVersion(alias: String) = findVersion(alias).get().toSt
 
 val org.gradle.api.provider.Provider<PluginDependency>.id: String get() = get().pluginId
 
-fun CommonExtension<*, *, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
+fun CommonExtension<*, *, *, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 }
 
@@ -58,3 +61,10 @@ fun List<String>.toJavaArrayString() = buildString {
 }
 
 fun String.toBase64() = Base64.getEncoder().encodeToString(toByteArray())
+
+val Project.localProperties
+    get() = lazy {
+        Properties().apply {
+            load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+        }
+    }

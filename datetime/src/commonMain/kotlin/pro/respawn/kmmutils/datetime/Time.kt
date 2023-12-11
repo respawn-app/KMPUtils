@@ -2,6 +2,11 @@
 
 package pro.respawn.kmmutils.datetime
 
+internal const val DeprecationMessage = """
+All functionality of the Time class was ported to kotlinx.datetime.LocalTime as extension functions and properties.
+You can simply replace this with LocalTime and expect similar functionality to be present.
+"""
+
 /**
  * A class that represents time, of day as well as a asDuration.
  * [hour] hour in 24h format
@@ -12,7 +17,7 @@ package pro.respawn.kmmutils.datetime
  * @throws IllegalArgumentException if the specified values are invalid. Validation happens at
  * object creation time
  */
-@OptIn(ExperimentalStdlibApi::class)
+@Deprecated(DeprecationMessage, ReplaceWith("LocalTime", "kotlinx.datetime.LocalTime"))
 public data class Time @Throws(IllegalArgumentException::class) constructor(
     val hour: Int,
     val minute: Int,
@@ -66,6 +71,7 @@ public data class Time @Throws(IllegalArgumentException::class) constructor(
         else -> throw IndexOutOfBoundsException("Only 0, 1 and 2 are valid values")
     }
 
+    @Deprecated(DeprecationMessage, ReplaceWith("LocalTime", "kotlinx.datetime.LocalTime"))
     public companion object {
 
         /** example: 12:45:00, 4:30, 7:00 AM, 24 or 12h format, word separator is " ".

@@ -1,4 +1,7 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "NewApi", "MagicNumber", "TooManyFunctions")
+@file:Suppress(
+    "unused", "MemberVisibilityCanBePrivate", "NewApi", "MagicNumber", "TooManyFunctions",
+    "DeprecatedCallableAddReplaceWith"
+)
 
 package pro.respawn.kmmutils.datetime
 
@@ -18,11 +21,13 @@ import kotlin.time.Duration.Companion.seconds
 /**
  * Convert [this] to [Time]
  */
+@Deprecated(DeprecationMessage)
 public fun LocalTime.toTime(): Time = Time(hour, minute, second)
 
 /**
  * Make a new [LocalTime] using this Time and a 0 nanosecond value
  */
+@Deprecated(DeprecationMessage)
 public fun Time.toLocalTime(): LocalTime = LocalTime(hour, minute, second, 0)
 
 /**

@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.version.catalog.update)
     alias(libs.plugins.dokka)
     alias(libs.plugins.dependencyAnalysis)
+    alias(libs.plugins.atomicfu)
     kotlin("plugin.serialization") version libs.versions.kotlin.get() apply false
 }
 
@@ -26,6 +27,13 @@ buildscript {
 allprojects {
     group = Config.artifactId
     version = Config.versionName
+}
+
+atomicfu {
+    dependenciesVersion = rootProject.libs.versions.kotlinx.atomicfu.get()
+    transformJvm = false
+    jvmVariant = "VH"
+    transformJs = false
 }
 
 subprojects {
@@ -62,10 +70,8 @@ doctor {
 }
 
 dependencyAnalysis {
-    issues {
-        all {
-            ignoreKtx(true)
-        }
+    structure {
+        ignoreKtx(true)
     }
 }
 

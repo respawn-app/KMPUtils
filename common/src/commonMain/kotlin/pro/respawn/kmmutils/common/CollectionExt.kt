@@ -147,3 +147,16 @@ public fun Sequence<Float>.chunkedAverage(chunkSize: Int): Sequence<Double> = if
  */
 public fun Collection<Float>.chunkedAverage(chunkSize: Int): List<Double> = ifEmpty { return emptyList() }
     .chunked(chunkSize.coerceAtLeast(1)) { it.average() }
+
+/**
+ * Filter [this] by searching for elements that contain [substring],
+ * or if string is not [String.isValid], the list itself
+ * @param substring a string, that must be [String.isValid]
+ * @return a resulting list
+ */
+public fun Iterable<String>.filterBySubstring(
+    substring: String?,
+    ignoreCase: Boolean = false
+): List<String> = if (!substring.isValid) toList() else asSequence()
+    .filter { it.contains(substring!!, ignoreCase) }
+    .toList()

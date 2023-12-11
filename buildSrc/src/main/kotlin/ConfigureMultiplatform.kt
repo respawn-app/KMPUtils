@@ -1,133 +1,91 @@
 @file:Suppress("MissingPackageDeclaration", "unused", "UNUSED_VARIABLE", "UndocumentedPublicFunction", "LongMethod")
 
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.creating
-import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 fun Project.configureMultiplatform(
     ext: KotlinMultiplatformExtension,
-    android: Boolean = false,
-    ios: Boolean = false,
-    jvm: Boolean = false,
-    js: Boolean = false,
-    linux: Boolean = false,
-    mingw: Boolean = false,
+    jvm: Boolean = true,
+    android: Boolean = true,
+    linux: Boolean = true,
+    iOs: Boolean = true,
+    js: Boolean = true,
+    tvOs: Boolean = true,
+    macOs: Boolean = true,
+    watchOs: Boolean = true
 ) = ext.apply {
-    explicitApi()
-
     val libs by versionCatalog
-    val commonMain by sourceSets.getting
-    val commonTest by sourceSets.getting {
-        dependencies {
-            implementation(kotlin("test"))
-        }
+    explicitApi()
+    applyDefaultHierarchyTemplate()
+    withSourcesJar(true)
+
+    if (linux) {
+        linuxX64()
+        linuxArm64()
+        mingwX64()
     }
-
-    sourceSets.apply {
-        all {
-            languageSettings {
-                progressiveMode = true
-                languageVersion = Config.kotlinVersion.version
-                progressiveMode = true
-                Config.optIns.forEach { optIn(it) }
-            }
-        }
-    }
-
-    if (linux) linuxX64()
-
-    if (mingw) mingwX64()
 
     if (js) {
         js(IR) {
             browser()
             nodejs()
             binaries.library()
-            binaries.executable()
-        }
-        // TODO: KMM js <> gradle 8.0 incompatibility
-        tasks.run {
-            val jsLibrary = named("jsProductionLibraryCompileSync")
-            val jsExecutable = named("jsProductionExecutableCompileSync")
-            named("jsBrowserProductionWebpack").configure {
-                dependsOn(jsLibrary)
-            }
-            named("jsBrowserProductionLibraryPrepare").configure {
-                dependsOn(jsExecutable)
-            }
-            named("jsNodeProductionLibraryPrepare").configure {
-                dependsOn(jsExecutable)
-            }
         }
     }
 
-    if (android) {
-        androidTarget {
-            publishLibraryVariants(Config.publishingVariant)
-        }
-
-        sourceSets.apply {
-            val androidMain by getting
-        }
+    if (android) androidTarget {
+        publishLibraryVariants("release")
     }
 
-    if (jvm) {
-        jvm {
-            compilations.all {
-                kotlinOptions {
-                    jvmTarget = Config.jvmTarget.target
-                    freeCompilerArgs += Config.jvmCompilerArgs
-                }
-            }
-            testRuns["test"].executionTask.configure {
-                useJUnitPlatform()
-            }
-        }
+    if (jvm) jvm()
 
-        sourceSets.apply {
-            val jvmTest by getting {
-                dependencies {
-                    implementation(libs.requireLib("kotest-junit"))
-                }
+    if (iOs) {
+        sequence {
+            if (iOs) {
+                yield(iosX64())
+                yield(iosArm64())
+                yield(iosSimulatorArm64())
             }
-        }
-    }
-    if (ios) {
-        listOf(
-            iosX64(),
-            iosArm64(),
-            iosSimulatorArm64(),
-            macosArm64(),
-            macosX64(),
-        ).forEach {
+            if (macOs) {
+                yield(macosArm64())
+                yield(macosX64())
+            }
+            if (tvOs) {
+                yield(tvosX64())
+                yield(tvosArm64())
+                yield(tvosSimulatorArm64())
+            }
+            if (watchOs) {
+                yield(watchosX64())
+                yield(watchosArm64())
+                yield(watchosDeviceArm64())
+                yield(watchosSimulatorArm64())
+            }
+        }.forEach {
             it.binaries.framework {
                 binaryOption("bundleId", Config.artifactId)
                 binaryOption("bundleVersion", Config.versionName)
                 baseName = Config.artifactId
             }
         }
-        sourceSets.apply {
-            val iosX64Main by getting
-            val iosArm64Main by getting
-            val iosSimulatorArm64Main by getting
-            val iosMain by creating {
-                dependsOn(commonMain)
-                iosX64Main.dependsOn(this)
-                iosArm64Main.dependsOn(this)
-                iosSimulatorArm64Main.dependsOn(this)
-            }
-            val iosX64Test by getting
-            val iosArm64Test by getting
-            val iosSimulatorArm64Test by getting
-            val iosTest by creating {
-                dependsOn(commonTest)
-                iosX64Test.dependsOn(this)
-                iosArm64Test.dependsOn(this)
-                iosSimulatorArm64Test.dependsOn(this)
+    }
+
+    sourceSets.apply {
+        if (jvm) {
+            val jvmTest by getting {
+                dependencies {
+                    implementation(libs.requireLib("kotest-junit"))
+                }
             }
         }
-    } // ios
+        all {
+            languageSettings {
+                progressiveMode = true
+                languageVersion = Config.kotlinVersion.version
+                Config.optIns.forEach { optIn(it) }
+            }
+        }
+    }
 }

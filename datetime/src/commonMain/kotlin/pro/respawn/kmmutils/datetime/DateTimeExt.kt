@@ -139,14 +139,14 @@ public val Instant.Companion.EPOCH: Instant
 /**
  * Adds a specified [time] to [this]. Returns a new [Instant]
  */
-public operator fun Instant.plus(time: Time): Instant = this + time.asDuration
+public operator fun Instant.plus(time: LocalTime): Instant = this + time.asDuration
 
 /**
  * Finds the length of a given month based on the year, in days.
  */
 public fun Month.length(year: Int): Int {
     val start = LocalDate(year, this, 1)
-    val end = start.plus(DateTimeUnit.MONTH)
+    val end = start.plus(1, DateTimeUnit.MONTH)
     return start.until(end, DateTimeUnit.DAY)
 }
 
@@ -154,11 +154,6 @@ public fun Month.length(year: Int): Int {
  * Get the current date using provided [zone].
  */
 public fun LocalDate.Companion.now(zone: TimeZone): LocalDate = LocalDateTime.now(zone).date
-
-/**
- * Get the current time using provided [zone].
- */
-public fun LocalTime.Companion.now(zone: TimeZone): LocalTime = LocalDateTime.now(zone).time
 
 /**
  * Returns a new LocalDate with the day of month set to the specified [day]
