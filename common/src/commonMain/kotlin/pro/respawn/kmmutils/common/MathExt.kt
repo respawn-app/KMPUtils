@@ -97,3 +97,47 @@ public val Int.length: Int
  * @return 1 if this is true and false otherwise
  */
 public fun Boolean.toInt(): Int = if (this) 1 else 0
+
+/**
+ * Returns the sign of the number, as a char
+ * @return either +, - or "" (empty string) if this is 0
+ */
+public val Int.signChar: String
+    get() = when {
+        this < 0 -> "-"
+        this > 0 -> "+"
+        else -> ""
+    }
+
+/**
+ * Returns the sign of the number, as a char
+ * @return either +, - or "" (empty string) if this is 0
+ */
+public val Float.signChar: String
+    get() = when {
+        this < 0f -> "-"
+        this > 0f -> "+"
+        else -> ""
+    }
+
+/**
+ * Returns the sign of the number, as a char
+ * @return either +, - or "" (empty string) if this is 0
+ */
+public val Double.signChar: String
+    get() = when {
+        this < 0.0 -> "-"
+        this > 0.0 -> "+"
+        else -> ""
+    }
+
+/**
+ * Returns the sign of the number, as a char
+ * @return either +, - or "" (empty string) if this is 0
+ */
+public val Long.signChar: String
+    get() = when {
+        this < 0L -> "-"
+        this > 0L -> "+"
+        else -> ""
+    }
