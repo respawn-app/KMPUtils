@@ -52,6 +52,7 @@ private class AtomicSuspendLazy<T>(
 
     private val value = atomic<Deferred<T>?>(null)
 
+    @Suppress("Indentation") // conflicts with IDE formatting
     override suspend operator fun invoke(): T = (
             value.value ?: coroutineScope {
                 value.updateAndGet { actual ->
