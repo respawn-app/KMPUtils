@@ -1,14 +1,10 @@
 plugins {
     id("pro.respawn.shared-library")
 }
-
-kotlin {
-    configureMultiplatform(this, android = false)
-    sourceSets.jvmTest.dependencies {
-        implementation(libs.bundles.unittest)
-    }
+android {
+    namespace = "${Config.namespace}.inputforms"
 }
-
 dependencies {
     commonMainApi(projects.common)
+    jvmTestImplementation(libs.bundles.unittest)
 }

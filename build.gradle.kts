@@ -1,7 +1,7 @@
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
-import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -24,9 +24,20 @@ buildscript {
     }
 }
 
+
 allprojects {
     group = Config.artifactId
     version = Config.versionName
+    tasks.withType<KotlinCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(Config.jvmTarget)
+            languageVersion.set(Config.kotlinVersion)
+            freeCompilerArgs.apply {
+                addAll(Config.jvmCompilerArgs)
+            }
+            optIn.addAll(Config.optIns.map { "-opt-in=$it" })
+        }
+    }
 }
 
 atomicfu {
@@ -44,20 +55,17 @@ subprojects {
     }
 
     tasks {
-        withType<AbstractDokkaTask> {
-            val className =
-                "org.jetbrains.kotlin.gradle.targets.native.internal.CInteropMetadataDependencyTransformationTask"
-
-            @Suppress("UNCHECKED_CAST")
-            val taskClass = Class.forName(className) as Class<Task>
-            parent?.subprojects?.forEach {
-                dependsOn(it.tasks.withType(taskClass))
-            }
+        withType<Test>().configureEach {
+            useJUnitPlatform()
+            filter { isFailOnNoMatchingTests = true }
         }
-
         register<org.gradle.jvm.tasks.Jar>("dokkaJavadocJar") {
             dependsOn(dokkaJavadoc)
             from(dokkaJavadoc.flatMap { it.outputDirectory })
+            archiveClassifier.set("javadoc")
+        }
+
+        register<org.gradle.jvm.tasks.Jar>("emptyJavadocJar") {
             archiveClassifier.set("javadoc")
         }
     }
@@ -144,10 +152,8 @@ tasks {
         distributionType = Wrapper.DistributionType.BIN
     }
 }
-plugins.withType(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin::class.java) {
-    extensions.findByType<YarnRootExtension>()!!.run {
-        yarnLockMismatchReport = YarnLockMismatchReport.WARNING
-        reportNewYarnLock = true
-        yarnLockAutoReplace = false
-    }
+extensions.findByType<YarnRootExtension>()?.run {
+    yarnLockMismatchReport = YarnLockMismatchReport.WARNING
+    reportNewYarnLock = true
+    yarnLockAutoReplace = false
 }

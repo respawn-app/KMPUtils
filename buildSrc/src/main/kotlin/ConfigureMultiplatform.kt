@@ -41,7 +41,6 @@ fun Project.configureMultiplatform(
 
     if (jvm) jvm()
 
-    if (iOs) {
         sequence {
             if (iOs) {
                 yield(iosX64())
@@ -69,7 +68,6 @@ fun Project.configureMultiplatform(
                 binaryOption("bundleVersion", Config.versionName)
                 baseName = Config.artifactId
             }
-        }
     }
 
     sourceSets.apply {

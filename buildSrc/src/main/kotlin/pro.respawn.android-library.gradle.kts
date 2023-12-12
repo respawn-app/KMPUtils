@@ -5,8 +5,16 @@ plugins {
     signing
 }
 
-android {
-    configureAndroidLibrary(this)
+kotlin {
+    explicitApi()
 }
 
-publishAndroid()
+android {
+    configureAndroidLibrary(this)
+    publishAndroid(this)
+
+    kotlinOptions {
+        jvmTarget = Config.jvmTarget.target
+        languageVersion = Config.kotlinVersion.version
+    }
+}
