@@ -1,4 +1,4 @@
-@file:Suppress("MissingPackageDeclaration", "unused", "UNUSED_VARIABLE", "UndocumentedPublicFunction", "LongMethod")
+@file:Suppress("MissingPackageDeclaration", "unused", "UndocumentedPublicFunction", "LongMethod")
 
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getValue
@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 fun Project.configureMultiplatform(
     ext: KotlinMultiplatformExtension,
     jvm: Boolean = true,
-    android: Boolean = true,
+    android: Boolean = false,
     linux: Boolean = true,
     iOs: Boolean = true,
     js: Boolean = true,
