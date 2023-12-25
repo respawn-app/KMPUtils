@@ -24,7 +24,6 @@ buildscript {
     }
 }
 
-
 allprojects {
     group = Config.artifactId
     version = Config.versionName
