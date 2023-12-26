@@ -24,7 +24,6 @@ buildscript {
     }
 }
 
-
 allprojects {
     group = Config.artifactId
     version = Config.versionName
@@ -32,10 +31,8 @@ allprojects {
         compilerOptions {
             jvmTarget.set(Config.jvmTarget)
             languageVersion.set(Config.kotlinVersion)
-            freeCompilerArgs.apply {
-                addAll(Config.jvmCompilerArgs)
-            }
-            optIn.addAll(Config.optIns.map { "-opt-in=$it" })
+            freeCompilerArgs.addAll(Config.jvmCompilerArgs)
+            optIn.addAll(Config.optIns)
         }
     }
 }
