@@ -34,8 +34,9 @@ fun Project.publishMultiplatform() {
         signPublications(isReleaseBuild, properties)
     }
 
-    tasks.withType<AbstractPublishToMaven> {
+    tasks.withType<AbstractPublishToMaven>().configureEach {
         dependsOn(javadocTask)
+        dependsOn(tasks.withType<Sign>())
     }
 }
 

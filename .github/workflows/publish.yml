@@ -43,4 +43,4 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
-        run: ./gradlew publishAllPublicationsToSonatypeRepository --stacktrace
+        run: ./gradlew publishAllPublicationsToSonatypeRepository --stacktrace -Dorg.gradle.workers.max=1

@@ -1,6 +1,6 @@
 @file:Suppress(
     "unused", "MemberVisibilityCanBePrivate", "NewApi", "MagicNumber", "TooManyFunctions",
-    "DeprecatedCallableAddReplaceWith"
+    "DeprecatedCallableAddReplaceWith", "DEPRECATION"
 )
 
 package pro.respawn.kmmutils.datetime
