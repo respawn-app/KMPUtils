@@ -1,4 +1,5 @@
 @file:OptIn(ExperimentalContracts::class)
+@file:Suppress("TooManyFunctions")
 
 package pro.respawn.kmmutils.common
 
@@ -88,6 +89,7 @@ public inline fun <T, R> Iterable<T>.reorderBy(order: List<R>, crossinline selec
 
 /**
  * Swaps values [index1] with [index2] in place.
+ * Throws [IndexOutOfBoundsException] when one or both indices are not present in the collection
  */
 public fun <T> MutableList<T>.swap(index1: Int, index2: Int): MutableList<T> {
     val tmp = this[index1]
@@ -97,12 +99,33 @@ public fun <T> MutableList<T>.swap(index1: Int, index2: Int): MutableList<T> {
 }
 
 /**
+ * Swaps values [index1] with [index2] in place.
+ * Returns the original collection if either [index1] or [index2] are not resent
+ */
+public fun <T : Any> MutableList<T>.trySwap(index1: Int, index2: Int): MutableList<T> {
+    val tmp = getOrNull(index1) ?: return this
+    this[index1] = getOrNull(index2) ?: return this
+    this[index2] = tmp
+    return this
+}
+
+/**
  *
  * Returns a shallow copy of this list with the items at [index1] and [index2] swapped.
+ * Throws [IndexOutOfBoundsException] when one or both indices are not present in the collection
  */
 public fun <T> List<T>.swapped(index1: Int, index2: Int): List<T> {
     val list = toMutableList()
     return list.swap(index1, index2)
+}
+
+/**
+ * Returns a shallow copy of this list with the items at [index1] and [index2] swapped.
+ * Returns the original collection if either [index1] or [index2] are not resent
+ */
+public fun <T : Any> List<T>.swappedOrDefault(index1: Int, index2: Int): List<T> {
+    val list = toMutableList()
+    return list.trySwap(index1, index2)
 }
 
 /**
@@ -160,3 +183,80 @@ public fun Iterable<String>.filterBySubstring(
 ): List<String> = if (!substring.isValid) toList() else asSequence()
     .filter { it.contains(substring!!, ignoreCase) }
     .toList()
+
+/**
+ * A [sumOf] variation that returns a float instead of Double
+ */
+public inline fun <T> Collection<T>.sumOf(selector: (T) -> Float): Float {
+    var sum = 0f
+    for (element in this) {
+        sum += selector(element)
+    }
+    return sum
+}
+
+/**
+ * Consume this iterator by taking the first [count] elements
+ */
+public fun <T> Iterator<T>.take(count: Int): List<T> = List(count) { next() }
+
+/**
+ * Returns a [Map] containing key-value pairs provided by [transform] function
+ * applied to elements of the given sequence.
+ *
+ * If any of two pairs would have the same key the first one gets added to the map.
+ *
+ * The returned map preserves the entry iteration order of the original sequence.
+ *
+ * The operation is _terminal_.
+ */
+public inline fun <T, K, V> Sequence<T>.associateFirst(
+    key: (T) -> K,
+    value: (T) -> V,
+): Map<K, V> {
+    val dst = LinkedHashMap<K, V>()
+    for (element in this) {
+        val newKey = key(element)
+        if (!dst.containsKey(newKey)) {
+            dst[newKey] = value(element)
+        }
+    }
+    return dst
+}
+
+/**
+ * Returns a [Map] containing key-value pairs provided by [key] and [value] functions
+ * applied to elements of the given collection.
+ *
+ * If any of two pairs would have the same key the first one gets added to the map.
+ *
+ * The returned map preserves the entry iteration order of the original collection.
+ */
+public inline fun <T, K, V> Iterable<T>.associateFirst(
+    key: (T) -> K,
+    value: (T) -> V,
+): Map<K, V> {
+    val dst = LinkedHashMap<K, V>()
+    for (element in this) {
+        val newKey = key(element)
+        if (!dst.containsKey(newKey)) {
+            dst[newKey] = value(element)
+        }
+    }
+    return dst
+}
+
+/**
+ * Filters the values in this map, leaving only non-null entries
+ */
+@Suppress("UNCHECKED_CAST")
+public fun <K, V> Map<K, V?>.filterNotNullValues(): Map<K, V & Any> = filterValues { it != null } as Map<K, V & Any>
+
+/**
+ * The same as a regular [mapNotNull], but [transform] block contains the previous value of the list.
+ */
+public fun <T, R> List<T>.mapNotNull(transform: (prev: R?, value: T) -> R?): List<R> {
+    val dst = ArrayList<R>()
+    forEach { value -> transform(dst.lastOrNull(), value)?.let { dst.add(it) } }
+    return dst
+}
