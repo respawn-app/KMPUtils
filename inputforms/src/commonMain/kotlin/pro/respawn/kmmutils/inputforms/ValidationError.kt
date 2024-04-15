@@ -41,6 +41,15 @@ public sealed interface ValidationError {
     ) : ValidationError
 
     /**
+     * Length of the input was not exactly [length]
+     * @see pro.respawn.kmmutils.inputforms.default.Rules.LengthExact
+     */
+    public data class LengthIsNotExactly(
+        override val value: String,
+        public val length: Int,
+    ) : ValidationError
+
+    /**
      * Input was shorter than [minLength]
      * @see pro.respawn.kmmutils.inputforms.default.Rules.LongerThan
      */
@@ -207,6 +216,13 @@ public sealed interface ValidationError {
     public value class NotSingleline(
         override val value: String,
     ) : ValidationError
+
+    /**
+     * Input value has no uppercase letters
+     * @see
+     */
+    @JvmInline
+    public value class NoUppercaseLetters(override val value: String) : ValidationError
 
     public companion object
 }

@@ -1,13 +1,12 @@
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
+import nl.littlerobots.vcu.plugin.versionSelector
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.gradleDoctor)
-    alias(libs.plugins.versions)
     alias(libs.plugins.version.catalog.update)
     alias(libs.plugins.dokka)
     alias(libs.plugins.dependencyAnalysis)
@@ -19,7 +18,6 @@ buildscript {
     dependencies {
         classpath(libs.android.gradle)
         classpath(libs.kotlin.gradle)
-        classpath(libs.version.gradle)
         classpath(libs.detekt.gradle)
     }
 }
@@ -87,12 +85,14 @@ dependencies {
 }
 
 versionCatalogUpdate {
-    sortByKey.set(true)
+    sortByKey = true
+
+    versionSelector { stabilityLevel(it.candidate.version) >= Config.minStabilityLevel }
 
     keep {
-        keepUnusedVersions.set(true)
-        keepUnusedLibraries.set(true)
-        keepUnusedPlugins.set(true)
+        keepUnusedVersions = true
+        keepUnusedLibraries = true
+        keepUnusedPlugins = true
     }
 }
 
@@ -127,22 +127,6 @@ tasks {
     register<io.gitlab.arturbosch.detekt.Detekt>("detektAll") {
         description = "Run detekt on whole project"
         autoCorrect = false
-    }
-
-    withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask>().configureEach {
-        outputFormatter = "json"
-
-        fun stabilityLevel(version: String): Int {
-            Config.stabilityLevels.forEachIndexed { index, postfix ->
-                val regex = """.*[.\-]$postfix[.\-\d]*""".toRegex(RegexOption.IGNORE_CASE)
-                if (version.matches(regex)) return index
-            }
-            return Config.stabilityLevels.size
-        }
-
-        rejectVersionIf {
-            stabilityLevel(currentVersion) > stabilityLevel(candidate.version)
-        }
     }
 
     wrapper {

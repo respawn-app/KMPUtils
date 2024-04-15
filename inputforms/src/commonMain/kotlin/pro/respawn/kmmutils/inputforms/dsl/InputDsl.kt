@@ -104,7 +104,7 @@ public val Input.isValidOrEmpty: Boolean get() = this is Input.Valid || this is 
 /**
  * Whether the actual string of this [Input] is blank
  */
-public val Input.isEmptyValue: Boolean get() = !value.isValid
+public val Input.isEmptyValue: Boolean get() = !value.isValid()
 
 /**
  * Returns null if this [Input] is not valid, otherwise returns [Input.value]

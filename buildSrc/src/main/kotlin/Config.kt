@@ -18,7 +18,7 @@ object Config {
 
     const val majorRelease = 1
     const val minorRelease = 3
-    const val patch = 1
+    const val patch = 2
     const val postfix = ""
     const val versionName = "$majorRelease.$minorRelease.$patch$postfix"
 
@@ -67,6 +67,7 @@ object Config {
 
     // build scripts
     val stabilityLevels = listOf("preview", "eap", "dev", "alpha", "beta", "m", "cr", "rc")
+    val minStabilityLevel = stabilityLevels.indexOf("beta")
 
     object Detekt {
 
