@@ -94,6 +94,15 @@ public val Int.length: Int
     }
 
 /**
+ * @return The number of digits in this [Long]
+ */
+public val Long.length: Int
+    get() = when (this) {
+        0L -> 1
+        else -> log10(abs(this).toDouble()).toInt() + 1
+    }
+
+/**
  * @return 1 if this is `true`, and 0 otherwise.
  */
 public fun Boolean.toInt(): Int = if (this) 1 else 0
