@@ -67,6 +67,7 @@ object Config {
 
     // build scripts
     val stabilityLevels = listOf("preview", "eap", "dev", "alpha", "beta", "m", "cr", "rc")
+    val minStabilityLevel = stabilityLevels.indexOf("beta")
 
     object Detekt {
 
