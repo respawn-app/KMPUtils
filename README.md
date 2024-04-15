@@ -26,9 +26,9 @@ enjoy the expanded API of the things you are used to, relying on autocompletion 
 
 ## Quickstart
 
-Documentation: [https://opensource.respawn.pro/KMPUtils](https://opensource.respawn.pro/KMPUtils)
-API Docs: [/KMPUtils/javadocs](https://opensource.respawn.pro/KMPUtils/#/javadocs/)
-![Maven Central](https://img.shields.io/maven-central/v/pro.respawn.kmmutils/apiresult?label=Maven%20Central)
+Documentation: [https://opensource.respawn.pro/KMPUtils](https://opensource.respawn.pro/KMPUtils)  
+API Docs: [/KMPUtils/javadocs](https://opensource.respawn.pro/KMPUtils/#/javadocs/)  
+![Maven Central](https://img.shields.io/maven-central/v/pro.respawn.kmmutils/apiresult?label=Maven%20Central)  
 
 ```toml
 [versions]
