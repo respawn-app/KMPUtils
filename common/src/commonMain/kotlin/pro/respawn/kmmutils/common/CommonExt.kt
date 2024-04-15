@@ -2,7 +2,9 @@
 
 package pro.respawn.kmmutils.common
 
+import kotlin.contracts.contract
 import kotlin.enums.enumEntries
+import kotlin.jvm.JvmName
 
 /**
  * @return Whether this string is valid
@@ -14,14 +16,32 @@ import kotlin.enums.enumEntries
  * - "NULL" -> false
  * - "  " -> false
  */
+@Deprecated("Use the function version as it allows for smart-casting", ReplaceWith("this.isValid()"))
 public val String?.isValid: Boolean
     get() = !isNullOrBlank() && !equals("null", true)
+
+/**
+ * @return Whether this string is valid
+ *
+ * Examples:
+ * - null -> false
+ * - "null" -> false
+ * - "" -> false
+ * - "NULL" -> false
+ * - "  " -> false
+ */
+public inline fun String?.isValid(): Boolean {
+    contract {
+        returns(true) implies (this@isValid != null)
+    }
+    return !isNullOrBlank() && !equals("null", true)
+}
 
 /**
  * Takes this string only if it [isValid]
  * @see isValid
  */
-public fun String?.takeIfValid(): String? = if (isValid) this else null
+public fun String?.takeIfValid(): String? = if (isValid()) this else null
 
 /**
  * Check if this String has length in [range]
@@ -78,3 +98,24 @@ public inline val <reified T : Enum<T>> Enum<T>.previous: T
  */
 @ExperimentalStdlibApi
 public inline val <reified T : Enum<T>> Enum<T>.previousOrNull: T? get() = enumEntries<T>().getOrNull(ordinal - 1)
+
+/**
+ * Calls [requireNotNull] on this value and returns it
+ */
+public fun <T> T?.requireNotNull(): T & Any = requireNotNull(this)
+
+/**
+ * Calls [requireNotNull] on this value and returns it
+ */
+public inline fun <T> T?.requireNotNull(lazyMessage: () -> Unit): T & Any = requireNotNull(this, lazyMessage)
+
+/**
+ * If this is an [Error], throws it, otherwise returns [this] as an [Exception]
+ */
+public fun Throwable?.rethrowErrors(): Exception? = this?.let { it as? Exception? ?: throw it }
+
+/**
+ * If this is an [Error], throws it, otherwise returns [this] as an [Exception]
+ */
+@JvmName("rethrowErrorsNotNull")
+public fun Throwable.rethrowErrors(): Exception = this as? Exception? ?: throw this
