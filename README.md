@@ -9,17 +9,11 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/respawn-app/KMPUtils)
 [![AndroidWeekly #556](https://androidweekly.net/issues/issue-556/badge)](https://androidweekly.net/issues/issue-556/)
 
-![badge][badge-android] ![badge][badge-jvm] ![badge][badge-js] ![badge][badge-nodejs] ![badge][badge-linux] ![badge][badge-windows] ![badge][badge-ios] ![badge][badge-mac] ![badge][badge-watchos] ![badge][badge-tvos]
+![badge][badge-android] ![badge][badge-jvm] ![badge][badge-js] ![badge][badge-nodejs] ![badge][badge-linux] ![badge][badge-windows] ![badge][badge-ios] ![badge][badge-mac] ![badge][badge-watchos] ![badge][badge-tvos] ![badge-wasm]
 
 KMP Utils is a collection of all the things that are missing from Kotlin STL, popular KMP libraries & platform SDKs.
 The library is meant to be a drop-in dependency - no need to study anything - just add and
 enjoy the expanded API of the things you are used to, relying on autocompletion to come up with suggestions for you.
-
-See documentation at [https://opensource.respawn.pro/KMPUtils](https://opensource.respawn.pro/KMPUtils)
-
-Javadocs are at [/KMPUtils/javadocs](https://opensource.respawn.pro/KMPUtils/#/javadocs/)
-
-## ‼️ ApiResult has moved! Find the new repository and migration guide at https://github.com/respawn-app/ApiResult ‼️
 
 ### Features
 
@@ -30,8 +24,10 @@ Javadocs are at [/KMPUtils/javadocs](https://opensource.respawn.pro/KMPUtils/#/j
   Calendar & DateTime API.
 * [Coroutines](https://opensource.respawn.pro/KMPUtils/#/coroutines): Things missing from Coroutines & Flows API.
 
-## Installation
+## Quickstart
 
+Documentation: [https://opensource.respawn.pro/KMPUtils](https://opensource.respawn.pro/KMPUtils)
+API Docs: [/KMPUtils/javadocs](https://opensource.respawn.pro/KMPUtils/#/javadocs/)
 ![Maven Central](https://img.shields.io/maven-central/v/pro.respawn.kmmutils/apiresult?label=Maven%20Central)
 
 ```toml
@@ -66,7 +62,7 @@ dependencies {
 ## License
 
 ```
-Copyright 2022-2023 Respawn Team and contributors
+Copyright 2022-2024 Respawn Team and contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
