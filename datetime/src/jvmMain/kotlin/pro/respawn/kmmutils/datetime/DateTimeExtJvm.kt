@@ -188,7 +188,7 @@ public val ZonedDateTime.lengthOfMonth: Int get() = month.length(Year.isLeap(yea
  * Sets [this]'s time to [time]. Returns a new [ZonedDateTime]
  */
 @Deprecated("Time class is deprecated")
-public fun ZonedDateTime.withTime(time: Time): ZonedDateTime =
+public fun ZonedDateTime.withTime(time: kotlinx.datetime.LocalTime): ZonedDateTime =
     ZonedDateTime.of(year, monthValue, dayOfMonth, time.hour, time.minute, time.second, nano, zone)
 
 /**

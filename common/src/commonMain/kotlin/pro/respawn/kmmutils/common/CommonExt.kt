@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "NOTHING_TO_INLINE")
 
 package pro.respawn.kmmutils.common
 
@@ -17,6 +17,7 @@ import kotlin.jvm.JvmName
  * - "  " -> false
  */
 @Deprecated("Use the function version as it allows for smart-casting", ReplaceWith("this.isValid()"))
+@get:JvmName("getIsValid")
 public val String?.isValid: Boolean
     get() = !isNullOrBlank() && !equals("null", true)
 

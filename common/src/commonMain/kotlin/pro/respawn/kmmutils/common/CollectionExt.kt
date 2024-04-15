@@ -180,8 +180,8 @@ public fun Collection<Float>.chunkedAverage(chunkSize: Int): List<Double> = ifEm
 public fun Iterable<String>.filterBySubstring(
     substring: String?,
     ignoreCase: Boolean = false
-): List<String> = if (!substring.isValid) toList() else asSequence()
-    .filter { it.contains(substring!!, ignoreCase) }
+): List<String> = if (!substring.isValid()) toList() else asSequence()
+    .filter { it.contains(substring, ignoreCase) }
     .toList()
 
 /**
@@ -201,7 +201,7 @@ public inline fun <T> Collection<T>.sumOf(selector: (T) -> Float): Float {
 public fun <T> Iterator<T>.take(count: Int): List<T> = List(count) { next() }
 
 /**
- * Returns a [Map] containing key-value pairs provided by [transform] function
+ * Returns a [Map] containing key-value pairs provided by [key] and [value] functions
  * applied to elements of the given sequence.
  *
  * If any of two pairs would have the same key the first one gets added to the map.
