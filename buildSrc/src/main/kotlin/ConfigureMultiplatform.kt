@@ -8,7 +8,6 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 @OptIn(ExperimentalWasmDsl::class)
 @Suppress("LongParameterList", "CyclomaticComplexMethod")
-
 fun Project.configureMultiplatform(
     ext: KotlinMultiplatformExtension,
     jvm: Boolean = true,

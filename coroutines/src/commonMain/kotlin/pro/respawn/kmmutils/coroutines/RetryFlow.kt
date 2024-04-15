@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
  */
 public interface RetryFlow<T> : Flow<T> {
 
+    /**
+     * Retry the invocation of this flow. The flow that originally was used with this wrapper will be recreated
+     */
     public fun retry()
 }
 
