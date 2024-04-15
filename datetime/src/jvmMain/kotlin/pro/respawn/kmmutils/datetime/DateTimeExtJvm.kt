@@ -207,3 +207,10 @@ public fun Iterable<DayOfWeek>.sortedByLocale(locale: Locale = Locale.getDefault
         all.add(0, first)
     return all
 }
+
+/**
+ * Creates a new [ZonedDateTime] using [this] Instant and a given [zoneId]
+ */
+public fun Instant.toZDT(
+    zoneId: ZoneId,
+): ZonedDateTime = ZonedDateTime.ofInstant(this, zoneId)
