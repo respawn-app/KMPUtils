@@ -50,4 +50,11 @@ public data object Patterns {
     public val Password: Regex by lazy {
         """^(?=.*\p{Upper})(?=.*\p{Lower})(?=.*\d)[\p{Upper}\p{Lower}\d\p{Punct}]{8,}$""".toRegex()
     }
+
+    /**
+     * A web url starting with either http, https, www and then containing a domain-specific part and optionally a path
+     */
+    public val UrlPattern: Regex = Regex(
+        """(http(s)?://.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)"""
+    )
 }

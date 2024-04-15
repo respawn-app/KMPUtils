@@ -84,4 +84,32 @@ public data object Forms {
         Rules.NoLetters,
         Rules.Matches(pattern),
     )
+
+    /**
+     * Arbitrary code with a length of [length] digits.
+     */
+    public fun NumericCode(
+        length: Int,
+        strategy: ValidationStrategy = FailFast,
+    ): Form = Form(
+        strategy,
+        Rules.NonEmpty,
+        Rules.DigitsOnly,
+        Rules.LengthExact(length),
+    )
+
+    /**
+     * Web-based url, starting with either http, https, www and containing a domain part and an optional path and query
+     * parameters
+     */
+    public fun WebUrl(
+        strategy: ValidationStrategy = FailFast,
+        pattern: Regex = Patterns.UrlPattern,
+    ): Form = Form(
+        strategy,
+        Rules.NonEmpty,
+        Rules.NoWhitespace,
+        Rules.SingleLine,
+        Rules.Matches(pattern),
+    )
 }

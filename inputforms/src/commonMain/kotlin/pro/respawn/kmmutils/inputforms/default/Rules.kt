@@ -4,6 +4,7 @@ import pro.respawn.kmmutils.common.isAscii
 import pro.respawn.kmmutils.common.isValid
 import pro.respawn.kmmutils.common.spans
 import pro.respawn.kmmutils.inputforms.Rule
+import pro.respawn.kmmutils.inputforms.ValidationError
 import pro.respawn.kmmutils.inputforms.ValidationError.ContainsDigits
 import pro.respawn.kmmutils.inputforms.ValidationError.ContainsLetters
 import pro.respawn.kmmutils.inputforms.ValidationError.DoesNotContain
@@ -15,6 +16,7 @@ import pro.respawn.kmmutils.inputforms.ValidationError.HasNoDigits
 import pro.respawn.kmmutils.inputforms.ValidationError.HasNoLetters
 import pro.respawn.kmmutils.inputforms.ValidationError.HasWhitespace
 import pro.respawn.kmmutils.inputforms.ValidationError.IsNotEqual
+import pro.respawn.kmmutils.inputforms.ValidationError.LengthIsNotExactly
 import pro.respawn.kmmutils.inputforms.ValidationError.NotAlphaNumeric
 import pro.respawn.kmmutils.inputforms.ValidationError.NotAscii
 import pro.respawn.kmmutils.inputforms.ValidationError.NotDigitsOnly
@@ -41,7 +43,7 @@ public data object Rules {
      */
     public val NonEmpty: Rule = Rule {
         {
-            it.isValid
+            it.isValid()
         } checks { Empty(it) }
     }
 
@@ -250,5 +252,23 @@ public data object Rules {
         {
             it.none { it == '\n' || it == '\r' }
         } checks { NotSingleline(it) }
+    }
+
+    /**
+     * Input must contain at least one uppercase unicode letter
+     */
+    public val HasUppercaseLetter: Rule = Rule {
+        {
+            it.any { it.isLetter() && it.isUpperCase() }
+        } checks { ValidationError.NoUppercaseLetters(it) }
+    }
+
+    /**
+     * Length must be exactly [length] characters
+     */
+    public fun LengthExact(length: Int): Rule = Rule {
+        {
+            it.length == length
+        } checks { LengthIsNotExactly(it, length) }
     }
 }
