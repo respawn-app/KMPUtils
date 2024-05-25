@@ -11,7 +11,9 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.dependencyAnalysis)
     alias(libs.plugins.atomicfu)
-    kotlin("plugin.serialization") version libs.versions.kotlin.get() apply false
+    alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.jetbrainsCompose) apply false
+    alias(libs.plugins.serialization) apply false
 }
 
 buildscript {
@@ -25,10 +27,22 @@ buildscript {
 allprojects {
     group = Config.artifactId
     version = Config.versionName
+    plugins.withType<ComposeCompilerGradleSubplugin>().configureEach {
+        the<ComposeCompilerGradlePluginExtension>().apply {
+            enableIntrinsicRemember = true
+            enableNonSkippingGroupOptimization = true
+            enableStrongSkippingMode = true
+            stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_definitions.txt")
+            if (properties["enableComposeCompilerReports"] == "true") {
+                val metricsDir = layout.buildDirectory.dir("compose_metrics")
+                metricsDestination = metricsDir
+                reportsDestination = metricsDir
+            }
+        }
+    }
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
             jvmTarget.set(Config.jvmTarget)
-            languageVersion.set(Config.kotlinVersion)
             freeCompilerArgs.addAll(Config.jvmCompilerArgs)
             optIn.addAll(Config.optIns)
         }

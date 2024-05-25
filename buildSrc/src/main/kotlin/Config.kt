@@ -7,7 +7,6 @@
 
 import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 object Config {
 
@@ -49,7 +48,6 @@ object Config {
 
     val jvmTarget = JvmTarget.JVM_11
     val javaVersion = JavaVersion.VERSION_11
-    val kotlinVersion = KotlinVersion.KOTLIN_1_9
     const val compileSdk = 34
     const val targetSdk = compileSdk
     const val minSdk = 21
