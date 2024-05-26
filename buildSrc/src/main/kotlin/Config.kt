@@ -55,7 +55,7 @@ object Config {
     val javaVersion = JavaVersion.VERSION_11
     const val compileSdk = 34
     const val targetSdk = compileSdk
-    const val minSdk = 21
+    const val minSdk = 24
     const val appMinSdk = 26
     const val publishingVariant = "release"
 
