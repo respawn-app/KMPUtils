@@ -4,6 +4,8 @@ package pro.respawn.kmmutils.common
 
 import kotlin.contracts.contract
 import kotlin.enums.enumEntries
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.jvm.JvmName
 
 /**
@@ -120,3 +122,8 @@ public fun Throwable?.rethrowErrors(): Exception? = this?.let { it as? Exception
  */
 @JvmName("rethrowErrorsNotNull")
 public fun Throwable.rethrowErrors(): Exception = this as? Exception? ?: throw this
+
+public fun String.toBase64(): String = encodeToByteArray().toBase64()
+
+@OptIn(ExperimentalEncodingApi::class)
+public fun ByteArray.toBase64(): String = Base64.Default.encode(this)
