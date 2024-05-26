@@ -32,16 +32,31 @@ kotlin {
         js = true,
         wasmJs = true,
         windows = false,
-    )
+    ) {
+        common {
+            group("web") {
+                withJs()
+                withWasmJs()
+            }
+        }
+    }
     sourceSets {
         commonMain.dependencies {
             api(compose.components.resources)
 
+            api(libs.lifecycle.runtime)
             implementation(compose.runtime)
             implementation(compose.foundation)
+            implementation(compose.animationGraphics)
+            implementation(compose.animation)
+            implementation(projects.system)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.common)
+        }
+        androidMain.dependencies {
+            api(libs.androidx.lifecycle.viewmodel)
+            api(libs.androidx.activity.compose)
         }
     }
 }

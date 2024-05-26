@@ -127,3 +127,8 @@ public fun String.toBase64(): String = encodeToByteArray().toBase64()
 
 @OptIn(ExperimentalEncodingApi::class)
 public fun ByteArray.toBase64(): String = Base64.Default.encode(this)
+
+@get:JvmName("quotedOrNull")
+public inline val String?.quoted: String? get() = this?.quoted
+
+public inline val String.quoted: String get() = "\"${removeSuffix("")}\""
