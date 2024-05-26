@@ -6,7 +6,7 @@ dependencyAnalysisPlugin = "1.32.0"
 detekt = "1.23.6"
 detektFormattingPlugin = "1.23.6"
 dokka = "1.9.20"
-gradleAndroid = "8.5.0-beta02"
+gradleAndroid = "8.6.0-alpha03"
 gradleDoctorPlugin = "0.10.0"
 junit = "4.13.2"
 kotest = "5.9.0"
@@ -15,9 +15,15 @@ kotlin = "2.0.0"
 kotlinx-atomicfu = "0.24.0"
 turbine = "1.1.0"
 versionCatalogUpdatePlugin = "0.8.4"
+compose = "1.6.10"
+lifecycle = "2.8.0"
+androidx-core = "1.13.1"
+androidx-activity = "1.9.0"
 
 [libraries]
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradleAndroid" }
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 detekt-compose = { module = "ru.kode:detekt-rules-compose", version.ref = "composeDetektPlugin" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektFormattingPlugin" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
@@ -47,6 +53,7 @@ unittest = [
 ]
 
 [plugins]
+androidLibrary = { id = "com.android.library", version.ref = "gradleAndroid" }
 atomicfu = "kotlinx-atomicfu:0.23.2"
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysisPlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
@@ -54,3 +61,7 @@ dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 gradleDoctor = { id = "com.osacky.doctor", version.ref = "gradleDoctorPlugin" }
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionCatalogUpdatePlugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

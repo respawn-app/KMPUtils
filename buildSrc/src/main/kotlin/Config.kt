@@ -21,10 +21,15 @@ object Config {
     const val postfix = ""
     const val versionName = "$majorRelease.$minorRelease.$patch$postfix"
 
+    const val supportEmail = "hello@respawn.pro"
+    const val vendorName = "Respawn Open Source Team"
+    const val vendorId = "respawn-app"
     const val url = "https://github.com/respawn-app/kmputils"
+    const val developerUrl = "https://respawn.pro"
+    const val licenseFile = "LICENSE.txt"
     const val licenseName = "The Apache Software License, Version 2.0"
-    const val licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-    const val scmUrl = "https://github.com/respawn-app/kmmutils.git"
+    const val licenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+    const val scmUrl = "https://github.com/respawn-app/KMPUtils.git"
     const val description = """A collection of Kotlin Multiplatform essentials"""
     // kotlin
 

@@ -1,5 +1,7 @@
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
 import nl.littlerobots.vcu.plugin.versionSelector
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradleSubplugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -12,8 +14,12 @@ plugins {
     alias(libs.plugins.dependencyAnalysis)
     alias(libs.plugins.atomicfu)
     alias(libs.plugins.compose.compiler) apply false
-    alias(libs.plugins.jetbrainsCompose) apply false
+    alias(libs.plugins.compose) apply false
     alias(libs.plugins.serialization) apply false
+    // plugins already on a classpath (conventions)
+    // alias(libs.plugins.androidApplication) apply false
+    // alias(libs.plugins.androidLibrary) apply false
+    // alias(libs.plugins.kotlinMultiplatform) apply false
 }
 
 buildscript {
