@@ -4,6 +4,8 @@ package pro.respawn.kmmutils.common
 
 import kotlin.contracts.contract
 import kotlin.enums.enumEntries
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.jvm.JvmName
 
 /**
@@ -120,3 +122,34 @@ public fun Throwable?.rethrowErrors(): Exception? = this?.let { it as? Exception
  */
 @JvmName("rethrowErrorsNotNull")
 public fun Throwable.rethrowErrors(): Exception = this as? Exception? ?: throw this
+
+/**
+ * Encode this string to Base64
+ */
+public fun String.toBase64(): String = encodeToByteArray().toBase64()
+
+/**
+ * Encode this byte array to base 64
+ */
+@OptIn(ExperimentalEncodingApi::class)
+public fun ByteArray.toBase64(): String = Base64.Default.encode(this)
+
+/**
+ * Add quotes to this string, if not present. Will do nothing to `null`s.
+ *
+ * Will turn :
+ * * `foo` -> `"foo"`,
+ * * `"foo"` -> `"foo"` (no change)
+ * * `null` -> `null` (no change)
+ */
+@get:JvmName("quotedOrNull")
+public inline val String?.quoted: String? get() = this?.quoted
+
+/**
+ * Add quotes to this string, if not present.
+ *
+ * Will turn :
+ * * `foo` -> `"foo"`,
+ * * `"foo"` -> `"foo"` (no change)
+ */
+public inline val String.quoted: String get() = """"${removeSurrounding("\"")}""""

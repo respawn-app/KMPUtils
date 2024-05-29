@@ -1,9 +1,15 @@
-name: publish
+name: Publish a new Release
 
 on:
   push:
     tags:
       - '1.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        type: string
+        description: 'Tag to use for the release and changelog'
 
 concurrency:
   group: "publish"
@@ -12,15 +18,16 @@ concurrency:
 jobs:
   publish:
     runs-on: macos-latest
+    environment: publishing
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
       - name: set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           check-latest: true
@@ -43,4 +50,27 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
-        run: ./gradlew publishAllPublicationsToSonatypeRepository --stacktrace -Dorg.gradle.workers.max=1
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        # It's important to not upload in parallel or duplicate repos will be created
+        # repository creds are broken with gradle 8.6 https://github.com/gradle/gradle/issues/24040
+        run: ./gradlew publishAllPublicationsToSonatypeRepository -Dorg.gradle.parallel=false --stacktrace --no-configuration-cache
+
+      - name: Generate Changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        id: build_changelog
+        with:
+          commitMode: true
+          configuration: ./github/changelog_config.json
+
+      - name: Create GH release
+        uses: ncipollo/release-action@v1.14.0
+        id: create_release
+        with:
+          draft: true
+          artifactErrorsFailBuild: false
+          prerelease: false
+          body: ${{steps.build_changelog.outputs.changelog}}
+          tag: ${{ inputs.tag != '' && inputs.tag || github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

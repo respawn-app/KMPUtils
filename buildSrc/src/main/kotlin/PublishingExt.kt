@@ -32,18 +32,22 @@ internal fun MavenPublication.configurePom() = pom {
     }
     developers {
         developer {
-            id.set("respawn-app")
-            name.set("Respawn")
-            email.set("hello@respawn.pro")
-            url.set("https://respawn.pro")
-            organization.set("Respawn")
+            id.set(Config.vendorId)
+            name.set(Config.vendorName)
+            email.set(Config.supportEmail)
+            url.set(Config.developerUrl)
+            organization.set(Config.vendorName)
             organizationUrl.set(url)
         }
     }
-    scm { url.set(Config.scmUrl) }
+    scm {
+        url.set(Config.scmUrl)
+    }
 }
 
 internal fun PublishingExtension.sonatypeRepository(release: Boolean, localProps: Properties) = repositories {
+    val username = localProps["sonatypeUsername"]?.toString() ?: System.getenv("SONATYPE_USERNAME")
+    val password = localProps["sonatypePassword"]?.toString() ?: System.getenv("SONATYPE_PASSWORD")
     maven {
         name = "sonatype"
         url = URI(
@@ -54,16 +58,15 @@ internal fun PublishingExtension.sonatypeRepository(release: Boolean, localProps
             }
         )
         credentials {
-            username = localProps["sonatypeUsername"]?.toString()
-            password = localProps["sonatypePassword"]?.toString()
+            this.username = username.takeIf { !it.isNullOrBlank() }
+            this.password = password.takeIf { !it.isNullOrBlank() }
         }
     }
 }
 
-internal fun Project.signPublications(isRelease: Boolean, localProps: Properties) =
+internal fun Project.signPublications(isRelease: Boolean, localProps: Properties) {
     requireNotNull(extensions.findByType<SigningExtension>()).apply {
         val publishing = requireNotNull(extensions.findByType<PublishingExtension>())
-
         val signingKey: String? = localProps["signing.key"]?.toString()
         val signingPassword: String? = localProps["signing.password"]?.toString()
 
@@ -85,3 +88,4 @@ internal fun Project.signPublications(isRelease: Boolean, localProps: Properties
             }
         }
     }
+}

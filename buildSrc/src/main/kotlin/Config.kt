@@ -7,7 +7,6 @@
 
 import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 object Config {
 
@@ -17,15 +16,20 @@ object Config {
     const val artifactId = "$group.$artifact"
 
     const val majorRelease = 1
-    const val minorRelease = 3
-    const val patch = 2
+    const val minorRelease = 4
+    const val patch = 0
     const val postfix = ""
     const val versionName = "$majorRelease.$minorRelease.$patch$postfix"
 
+    const val supportEmail = "hello@respawn.pro"
+    const val vendorName = "Respawn Open Source Team"
+    const val vendorId = "respawn-app"
     const val url = "https://github.com/respawn-app/kmputils"
+    const val developerUrl = "https://respawn.pro"
+    const val licenseFile = "LICENSE.txt"
     const val licenseName = "The Apache Software License, Version 2.0"
-    const val licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-    const val scmUrl = "https://github.com/respawn-app/kmmutils.git"
+    const val licenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+    const val scmUrl = "https://github.com/respawn-app/KMPUtils.git"
     const val description = """A collection of Kotlin Multiplatform essentials"""
     // kotlin
 
@@ -49,10 +53,9 @@ object Config {
 
     val jvmTarget = JvmTarget.JVM_11
     val javaVersion = JavaVersion.VERSION_11
-    val kotlinVersion = KotlinVersion.KOTLIN_1_9
     const val compileSdk = 34
     const val targetSdk = compileSdk
-    const val minSdk = 21
+    const val minSdk = 24
     const val appMinSdk = 26
     const val publishingVariant = "release"
 
