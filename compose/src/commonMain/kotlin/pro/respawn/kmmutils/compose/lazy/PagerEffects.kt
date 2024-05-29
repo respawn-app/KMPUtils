@@ -24,10 +24,13 @@ private const val MaxRotationDegrees = 30f
  * and so on...
  */
 @Stable
-private fun PagerState.offsetForPage(
-    page: Int
-) = (currentPage - page + currentPageOffsetFraction) * -1
+public fun PagerState.offsetForPage(page: Int): Float = (currentPage - page + currentPageOffsetFraction) * -1
 
+/**
+ * Applies a scale effect when scrolling through pages.
+ *
+ * The highest scale change factor possible is determined by [scaleFactor], achieved when the item is fully swiped away.
+ */
 public fun Modifier.scalePagerEffect(
     state: PagerState,
     index: Int,
@@ -38,7 +41,6 @@ public fun Modifier.scalePagerEffect(
     //  any effects for both directions
     val pageOffset = state.offsetForPage(index)
 
-    //  We animate the scaleX + scaleY, between 85% and 100%
     lerp(
         start = ScaleFactor(scaleFactor, scaleFactor),
         stop = ScaleFactor(1f, 1f),
@@ -49,16 +51,19 @@ public fun Modifier.scalePagerEffect(
     }
 }
 
+/**
+ * Applies a "spin" (rotate) effect when scrolling through pages.
+ *
+ * The highest angle possible is determined by [maxRotationDeg], achieved when the item is fully swiped away.
+ */
 public fun Modifier.spinPagerEffect(
     state: PagerState,
     index: Int,
     maxRotationDeg: Float = MaxRotationDegrees
 ): Modifier = graphicsLayer {
-    val pageOffset = state.offsetForPage(index)
-
     rotationZ = lerp(
         start = 0f,
         stop = maxRotationDeg,
-        fraction = pageOffset.coerceIn(-1f, 1f)
+        fraction = state.offsetForPage(index).coerceIn(-1f, 1f)
     )
 }

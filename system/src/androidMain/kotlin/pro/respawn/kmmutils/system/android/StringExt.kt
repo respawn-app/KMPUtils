@@ -31,6 +31,9 @@ public fun String.hexToRGB(): Triple<Int, Int, Int> {
  */
 public fun Int.colorToHexString(): String = String.format(Locale.ROOT, "#%06X", -0x1 and this).replace("#FF", "#")
 
+/**
+ * Create an android [Spanned] from this string by parsing it as an html text
+ */
 public val String.asHTML: Spanned
     get() = HtmlCompat.fromHtml(this, 0)
 

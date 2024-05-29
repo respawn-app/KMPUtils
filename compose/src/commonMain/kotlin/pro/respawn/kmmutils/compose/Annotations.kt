@@ -13,41 +13,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 
-public fun String.span(spanStyle: SpanStyle): AnnotatedString = buildAnnotatedString {
+/**
+ * Annotates this string with the [spanStyle] provided. The whole string is annotated.
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.annotate(spanStyle: SpanStyle): AnnotatedString = buildAnnotatedString {
     withStyle(spanStyle) {
-        append(this@span)
+        append(this@annotate)
     }
 }
-
-public fun String.bold(): AnnotatedString = span(SpanStyle(fontWeight = FontWeight.Bold))
-
-public fun String.italic(): AnnotatedString = span(SpanStyle(fontStyle = FontStyle.Italic))
-
-public fun String.strike(): AnnotatedString = span(SpanStyle(textDecoration = TextDecoration.LineThrough))
-
-public fun String.underline(): AnnotatedString = span(SpanStyle(textDecoration = TextDecoration.Underline))
-
-public fun String.decorate(
-    vararg decorations: TextDecoration
-): AnnotatedString = span(SpanStyle(textDecoration = TextDecoration.combine(decorations.asList())))
-
-public fun String.size(size: TextUnit): AnnotatedString = span(SpanStyle(fontSize = size))
-
-public fun String.background(color: Color): AnnotatedString = span(SpanStyle(background = color))
-
-public fun String.color(color: Color): AnnotatedString = span(SpanStyle(color = color))
-
-public fun String.weight(weight: FontWeight): AnnotatedString = span(SpanStyle(fontWeight = weight))
-
-public fun String.style(style: FontStyle): AnnotatedString = span(SpanStyle(fontStyle = style))
-
-public fun String.shadow(
-    color: Color,
-    offset: Offset = Offset.Zero,
-    blurRadius: Float = 0.0f
-): AnnotatedString = span(SpanStyle(shadow = Shadow(color, offset, blurRadius)))
-
-public fun String.fontFamily(fontFamily: FontFamily): AnnotatedString = span(SpanStyle(fontFamily = fontFamily))
 
 /**
  * Produces an annotated string identical to the original string
@@ -55,9 +30,104 @@ public fun String.fontFamily(fontFamily: FontFamily): AnnotatedString = span(Spa
  */
 public fun String.annotate(): AnnotatedString = AnnotatedString(this)
 
-@Suppress("ComposableEventParameterNaming")
-public inline fun String.annotate(builder: AnnotatedString.Builder.(String) -> Unit): AnnotatedString =
-    buildAnnotatedString { builder(this@annotate) }
+/**
+ * Annotates this string using the [builder] provided. The string is the argument of the lambda.
+ *
+ * @return the [AnnotatedString] created
+ */
+public inline fun String.annotate(
+    builder: AnnotatedString.Builder.(String) -> Unit
+): AnnotatedString = buildAnnotatedString { builder(this@annotate) }
+
+/**
+ * Applies [FontWeight.Bold] to `this` string
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.bold(): AnnotatedString = weight(FontWeight.Bold)
+
+/**
+ * Applies [FontStyle.Italic] to `this` string
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.italic(): AnnotatedString = style(FontStyle.Italic)
+
+/**
+ * Strikes through this string
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.strike(): AnnotatedString = annotate(SpanStyle(textDecoration = TextDecoration.LineThrough))
+
+/**
+ * Adds an underline to this string
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.underline(): AnnotatedString = annotate(SpanStyle(textDecoration = TextDecoration.Underline))
+
+/**
+ * Adds text [decorations] provided to this string
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.decorate(
+    vararg decorations: TextDecoration
+): AnnotatedString = annotate(SpanStyle(textDecoration = TextDecoration.combine(decorations.asList())))
+
+/**
+ * Applies absolute [size] to the text
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.size(size: TextUnit): AnnotatedString = annotate(SpanStyle(fontSize = size))
+
+/**
+ * Sets the background [color] to this string
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.background(color: Color): AnnotatedString = annotate(SpanStyle(background = color))
+
+/**
+ * Sets the foreground [color] of this string
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.color(color: Color): AnnotatedString = annotate(SpanStyle(color = color))
+
+/**
+ * Sets the font [weight] for this string
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.weight(weight: FontWeight): AnnotatedString = annotate(SpanStyle(fontWeight = weight))
+
+/**
+ * Applies a [style] [FontStyle] to this string
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.style(style: FontStyle): AnnotatedString = annotate(SpanStyle(fontStyle = style))
+
+/**
+ * Adds a shadow to `this` string. The shadow has a [color], an [offset] and a [blurRadius]
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.shadow(
+    color: Color,
+    offset: Offset = Offset.Zero,
+    blurRadius: Float = 0.0f
+): AnnotatedString = annotate(SpanStyle(shadow = Shadow(color, offset, blurRadius)))
+
+/**
+ * Changes the [fontFamily] of this string
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.font(fontFamily: FontFamily): AnnotatedString = annotate(SpanStyle(fontFamily = fontFamily))
 
 // TODO: Waiting for compose update
 

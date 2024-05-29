@@ -48,9 +48,19 @@ public fun Int.asColor(context: Context): Int = ContextCompat.getColor(context, 
  */
 public fun Int.asDrawable(context: Context): Drawable? = ContextCompat.getDrawable(context, this)
 
+/**
+ * Returns the currently used locale on the device.
+ * Returns the first locale the user has listed in the system settings.
+ */
 public val Resources.currentLocale: Locale
     get() = ConfigurationCompat.getLocales(configuration).get(0)!!
 
+/**
+ * Returns an uri to the given [resourceId].
+ * **This uri is NOT safe to store outside of app lifecycle!**
+ *
+ * The uri may change on app update or relaunch.
+ */
 public fun Context.getResourceUri(resourceId: Int): Uri = Uri.Builder()
     .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
     .authority(resources.getResourcePackageName(resourceId))
@@ -59,7 +69,11 @@ public fun Context.getResourceUri(resourceId: Int): Uri = Uri.Builder()
     .build()
 
 /**
- * Returns an URI to [this] raw resource id
+ * Returns an URI to [this] raw resource id.
+ *
+ * **This uri is NOT safe to store outside of app lifecycle!**
+ *
+ * The uri may change on app update or relaunch.
  */
 public fun Int.raw(context: Context): Uri = Uri.Builder()
     .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)

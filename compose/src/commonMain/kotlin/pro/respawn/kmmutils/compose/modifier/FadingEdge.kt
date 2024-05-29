@@ -11,6 +11,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 
+/**
+ * The edge to use with [fadingEdge] modifier.
+ */
 public enum class FadingEdge {
     Start, End, Top, Bottom
 }

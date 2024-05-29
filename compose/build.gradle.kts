@@ -49,7 +49,6 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.animationGraphics)
             implementation(compose.animation)
-            implementation(projects.system)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.common)
@@ -57,6 +56,7 @@ kotlin {
         androidMain.dependencies {
             api(libs.androidx.lifecycle.viewmodel)
             api(libs.androidx.activity.compose)
+            implementation(projects.system)
         }
     }
 }

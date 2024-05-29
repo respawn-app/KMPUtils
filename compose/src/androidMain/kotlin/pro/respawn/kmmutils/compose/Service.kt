@@ -15,6 +15,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 
+/**
+ * Remembers a reference to a [Service] [BoundService]'s [Binder] [BoundServiceBinder] in composition.
+ * The function will bind to a service while it is in the composition and unbind when it has left the composition.
+ * The function will maintain a [ServiceConnection] and return a [State] with a nullable value of service.
+ *
+ * Binding to the service takes some time and connection breakages can occur,
+ * so the return state value may be null at times.
+ */
 @Composable
 @Suppress("ComposableParametersOrdering")
 public inline fun <reified BoundService : Service, reified BoundServiceBinder : Binder> rememberBoundLocalService(

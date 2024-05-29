@@ -34,7 +34,7 @@ public sealed interface Text {
 
     public companion object {
 
-        public inline operator fun invoke(value: String): Dynamic = Dynamic(value)
-        public inline operator fun invoke(id: StringResource, vararg args: Any): Resource = Resource(id, args = args)
+        public operator fun invoke(value: String): Dynamic = Dynamic(value)
+        public operator fun invoke(id: StringResource, vararg args: Any): Resource = Resource(id, args = args)
     }
 }

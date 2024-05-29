@@ -9,6 +9,9 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 
+/**
+ * Apply 0-saturation color transformation to this composable, rendering it grayscale.
+ */
 public fun Modifier.grayScale(): Modifier = drawWithCache {
     val saturationMatrix = ColorMatrix().apply { setToSaturation(0f) }
     val saturationFilter = ColorFilter.colorMatrix(saturationMatrix)

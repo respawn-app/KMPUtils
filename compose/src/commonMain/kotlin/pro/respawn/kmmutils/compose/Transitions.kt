@@ -37,21 +37,33 @@ public fun slideOutVertically(
     spec: FiniteAnimationSpec<IntOffset> = DefaultSpec
 ): ExitTransition = slideOutVertically(spec) { (it * itemHeightOffsetFraction).roundToInt() }
 
+/**
+ * Returns an exit transition that slides the element to the bottom fully
+ */
 @Stable
 public fun slideToBottom(
     spec: FiniteAnimationSpec<IntOffset> = DefaultSpec
 ): ExitTransition = slideOutVertically(1f, spec)
 
+/**
+ * Returns an exit transition that slides the element to the top fully
+ */
 @Stable
 public fun slideToTop(
     spec: FiniteAnimationSpec<IntOffset> = DefaultSpec
 ): ExitTransition = slideOutVertically(-1f, spec)
 
+/**
+ * Returns an enter transition that slides the element from the bottom fully
+ */
 @Stable
 public fun slideFromBottom(
     spec: FiniteAnimationSpec<IntOffset> = DefaultSpec
 ): EnterTransition = slideInVertically(1f, spec)
 
+/**
+ * Returns an enter transition that slides the element from the top fully
+ */
 @Stable
 public fun slideFromTop(
     spec: FiniteAnimationSpec<IntOffset> = DefaultSpec
@@ -75,21 +87,33 @@ public fun slideOutHorizontally(
     spec: FiniteAnimationSpec<IntOffset> = DefaultSpec
 ): ExitTransition = slideOutHorizontally(spec) { (it * widthOffsetFraction).roundToInt() }
 
+/**
+ * Returns an enter transition that slides the element from the left fully
+ */
 @Stable
 public fun slideFromLeft(
     spec: FiniteAnimationSpec<IntOffset> = DefaultSpec
 ): EnterTransition = slideInHorizontally(-1f, spec)
 
+/**
+ * Returns an enter transition that slides the element from the right fully
+ */
 @Stable
 public fun slideFromRight(
     spec: FiniteAnimationSpec<IntOffset> = DefaultSpec
 ): EnterTransition = slideInHorizontally(1f, spec)
 
+/**
+ * Returns an exit transition that slides the element to the left fully
+ */
 @Stable
 public fun slideToLeft(
     spec: FiniteAnimationSpec<IntOffset> = DefaultSpec
 ): ExitTransition = slideOutHorizontally(-1f, spec)
 
+/**
+ * Returns an exit transition that slides the element to the right fully
+ */
 @Stable
 public fun slideToRight(
     spec: FiniteAnimationSpec<IntOffset> = DefaultSpec

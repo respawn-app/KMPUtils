@@ -17,13 +17,16 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 
-@PublishedApi
-internal const val EXTRA_SYSTEM_ALERT_WINDOW: String = "system_alert_window"
-
+/**
+ * Get the current system [AutofillManager] if present.
+ */
 public val Context.autofillManager: AutofillManager?
     get() = withApiLevel(VERSION_CODES.O, below = { null }) { getSystemService<AutofillManager>() }
 
-public fun Context.restartApplication() {
+/**
+ * Restart the current activity in a new task.
+ */
+public fun Context.restartActivity() {
     // Obtain the startup Intent of the application with the package name of the application
     val intent: Intent? = packageManager.getLaunchIntentForPackage(packageName)?.apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -31,8 +34,14 @@ public fun Context.restartApplication() {
     startActivity(intent)
 }
 
+/**
+ * Returns whether the system is set to 24-hour time format right now.
+ */
 public val Context.isSystem24Hour: Boolean get() = DateFormat.is24HourFormat(this)
 
+/**
+ * Use this [Uri] as a deeplink intent, i.e. open this uri in a new task.
+ */
 public fun Uri.asDeeplinkIntent(
     requestCode: Int,
     context: Context
@@ -44,17 +53,35 @@ public fun Uri.asDeeplinkIntent(
     )!!
 }
 
+/**
+ * Get the uri of this app's package.
+ */
 public val Context.packageUri: Uri get() = "package:$packageName".toUri()
 
+/**
+ * Execute [since] if the current sdk version is at least [versionCode]. Version code comes from [Build.VERSION_CODES].
+ */
 @ChecksSdkIntAtLeast(parameter = 0, lambda = 1)
 public inline fun withApiLevel(versionCode: Int, since: () -> Unit) {
     if (Build.VERSION.SDK_INT >= versionCode) since()
 }
 
+/**
+ * Execute [since] if the current sdk version is at least [versionCode], otherwise execute [below]
+ *
+ * Version code comes from [Build.VERSION_CODES].
+ */
 @ChecksSdkIntAtLeast(parameter = 0, lambda = 2)
 public inline fun <R> withApiLevel(versionCode: Int, below: () -> R, since: () -> R): R =
     if (Build.VERSION.SDK_INT >= versionCode) since() else below()
 
+/**
+ * Execute [ifGranted] if the [permission] has been granted, otherwise execute [ifDenied].
+ *
+ * This function does not request the permission.
+ *
+ * [permission] parameter is defined in [android.Manifest.permission]
+ */
 public inline fun <T> Context.withPermission(
     permission: String,
     ifDenied: Context.(String) -> T,
@@ -62,6 +89,13 @@ public inline fun <T> Context.withPermission(
 ): T = if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED)
     ifGranted(permission) else ifDenied(permission)
 
+/**
+ * Execute [ifGranted] if the [permission] has been granted, otherwise do nothing.
+ *
+ * This function does not request the permission.
+ *
+ * [permission] parameter is defined in [android.Manifest.permission]
+ */
 public inline fun Context.withPermission(
     permission: String,
     ifGranted: Context.(String) -> Unit,
@@ -69,6 +103,9 @@ public inline fun Context.withPermission(
     if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) ifGranted(permission)
 }
 
+/**
+ * Create a view intent from this uri.
+ */
 public fun Uri.intent(): Intent = Intent(Intent.ACTION_VIEW, this)
 
 /**
@@ -85,5 +122,8 @@ public fun Intent.allowBackgroundActivityStart(): Intent = apply {
     }
 }
 
+/**
+ * Get an uri to a google play store page of this app.
+ */
 public fun Context.getGooglePlayUri(): Uri =
     "https://play.google.com/store/apps/details?id=${applicationInfo.packageName}".toUri()

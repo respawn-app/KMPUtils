@@ -45,6 +45,9 @@ public fun FractionalOffset.asAbsolute(size: Size): Offset = Offset(x * size.wid
  */
 public fun Offset.asFractional(size: Size): FractionalOffset = Offset(x / size.width, y / size.height)
 
+/**
+ * Applies an [offset] to this [GraphicsLayerScope]
+ */
 public fun GraphicsLayerScope.offset(offset: Offset) {
     translationX = offset.x
     translationY = offset.y

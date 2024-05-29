@@ -1,37 +1,59 @@
 package pro.respawn.kmmutils.compose.windowsize
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.toSize
 
 /**
- * Whether the device's width is long (longer than most phones **in portrait**)
+ * Whether the window width is long (longer than most phones **in portrait**).
+ *
+ * This is not a real device size (although it matches closely on mobile platforms sometimes), but an app window size,
+ * which can be different when resizing.
+ *
  * @see WindowWidthSizeClass
  */
 public inline val isWideScreen: Boolean
     @Composable get() = calculateWindowSizeClass().widthSizeClass > WindowWidthSizeClass.Compact
 
 /**
- * Whether the device's height is long (longer than most phones **in landscape** have)
- * @see WindowHeightSizeClass
+ * Whether the window height is long (longer than most phones **in portrait**).
+ *
+ * This is not a real device size (although it matches closely on mobile platforms sometimes), but an app window size
+ * which can be different when resizing.
+ *
+ * @see WindowWidthSizeClass
  */
 public inline val isLongScreen: Boolean
     @Composable get() = calculateWindowSizeClass().heightSizeClass > WindowHeightSizeClass.Compact
 
-@ExperimentalComposeUiApi
-public val screenWidth: Dp @Composable get() = withDensity { screenWidthPx.toDp() }
+/**
+ * Get the window size of the current window in pixels.
+ * This matches closely width screen size on mobile devices most of the time, but windows can be resized by the user.
+ */
+public expect val windowSizePx: IntSize @Composable @ReadOnlyComposable get
 
-@ExperimentalComposeUiApi
-public val screenHeight: Dp @Composable get() = withDensity { screenWidthPx.toDp() }
+/**
+ * Get the window size of the current window in dp.
+ * This matches closely width screen size on mobile devices most of the time, but windows can be resized by the user.
+ */
+public val windowSize: DpSize
+    @Composable @ReadOnlyComposable get() = with(LocalDensity.current) {
+        windowSizePx.toSize()
+            .toDpSize()
+    }
 
-@ExperimentalComposeUiApi
-public val screenWidthPx: Int @Composable get() = LocalWindowInfo.current.containerSize.width
+/**
+ * Get the window width of the current window.
+ * This matches closely width screen size on mobile devices most of the time, but windows can be resized by the user.
+ */
+public val windowWidth: Dp @Composable get() = with(LocalDensity.current) { windowSizePx.width.toDp() }
 
-@ExperimentalComposeUiApi
-public val screenHeightPx: Int @Composable get() = LocalWindowInfo.current.containerSize.height
-
-@Composable
-public inline fun <T> withDensity(block: @Composable Density.() -> T): T = with(LocalDensity.current) { block() }
+/**
+ * Get the window height of the current window.
+ * This matches closely width screen size on mobile devices most of the time, but windows can be resized by the user.
+ */
+public val windowHeight: Dp @Composable get() = with(LocalDensity.current) { windowSizePx.height.toDp() }

@@ -3,10 +3,8 @@ package pro.respawn.kmmutils.compose.windowsize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
@@ -20,11 +18,10 @@ import androidx.compose.ui.unit.toSize
  * height of the window to cross a breakpoint, such as when the device is rotated or the window
  * is resized.
  */
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 @ReadOnlyComposable
 public fun calculateWindowSizeClass(): WindowSizeClass = WindowSizeClass.calculateFromSize(
-    size = LocalWindowInfo.current.containerSize.toSize(),
+    size = windowSizePx.toSize(),
     density = LocalDensity.current
 )
 

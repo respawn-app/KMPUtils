@@ -65,18 +65,28 @@ public open class WebClient(
 
     private var webView: WebView? = null
     private var listener: WebClientListener? = null
+
+    /**
+     * Current webview URL, or null if nothing is loaded
+     */
     public val url: String? get() = webView?.url
 
+    /**
+     * Whether the web history is not empty and the user can go back
+     */
     public open val canGoBack: Boolean
         get() = webView?.canGoBack() ?: false
 
     /**
-     * Refresh current page
+     * Refresh current page.
      */
     public open fun reload() {
         webView?.reload()
     }
 
+    /**
+     * Load an [uri]
+     */
     public open fun load(uri: Uri) {
         webView?.loadUrl(uri.toString())
     }
@@ -134,21 +144,33 @@ public open class WebClient(
         listener = null
     }
 
+    /**
+     * Go back through the browser history if possible
+     */
     public open fun goBack() {
         if (canGoBack) webView?.goBack()
     }
 
+    /**
+     * Clear the navigation history
+     */
     public open fun clearHistory() {
         webView?.clearHistory()
     }
 
-    public open fun clearAllData() {
+    /**
+     * Clear all data associated with web views on device.
+     * Clears cookies and localstorage as well if [forAllWebViews] is true
+     */
+    public open fun clearAllData(forAllWebViews: Boolean = false) {
         webView?.clearHistory()
         webView?.clearCache(true)
         webView?.clearFormData()
-        WebStorage.getInstance().deleteAllData()
-        CookieManager.getInstance().removeAllCookies(null)
-        CookieManager.getInstance().flush()
+        if (forAllWebViews) {
+            WebStorage.getInstance().deleteAllData()
+            CookieManager.getInstance().removeAllCookies(null)
+            CookieManager.getInstance().flush()
+        }
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
