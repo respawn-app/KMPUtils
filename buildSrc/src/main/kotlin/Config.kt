@@ -17,7 +17,7 @@ object Config {
 
     const val majorRelease = 1
     const val minorRelease = 4
-    const val patch = 0
+    const val patch = 1
     const val postfix = ""
     const val versionName = "$majorRelease.$minorRelease.$patch$postfix"
 
@@ -55,7 +55,7 @@ object Config {
     val javaVersion = JavaVersion.VERSION_11
     const val compileSdk = 34
     const val targetSdk = compileSdk
-    const val minSdk = 24
+    const val minSdk = 21
     const val appMinSdk = 26
     const val publishingVariant = "release"
 

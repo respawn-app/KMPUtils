@@ -13,6 +13,7 @@ import android.os.Build.VERSION_CODES
 import android.text.format.DateFormat
 import android.view.autofill.AutofillManager
 import androidx.annotation.ChecksSdkIntAtLeast
+import androidx.annotation.RequiresApi
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
@@ -82,6 +83,7 @@ public inline fun <R> withApiLevel(versionCode: Int, below: () -> R, since: () -
  *
  * [permission] parameter is defined in [android.Manifest.permission]
  */
+@RequiresApi(VERSION_CODES.M)
 public inline fun <T> Context.withPermission(
     permission: String,
     ifDenied: Context.(String) -> T,
@@ -96,6 +98,7 @@ public inline fun <T> Context.withPermission(
  *
  * [permission] parameter is defined in [android.Manifest.permission]
  */
+@RequiresApi(VERSION_CODES.M)
 public inline fun Context.withPermission(
     permission: String,
     ifGranted: Context.(String) -> Unit,
