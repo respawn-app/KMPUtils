@@ -1,4 +1,5 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import com.vanniktech.maven.publish.MavenPublishPlugin
 import com.vanniktech.maven.publish.SonatypeHost
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
 import nl.littlerobots.vcu.plugin.versionSelector
@@ -16,10 +17,10 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.dependencyAnalysis)
     alias(libs.plugins.atomicfu)
+    alias(libs.plugins.maven.publish) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.compose) apply false
     alias(libs.plugins.serialization) apply false
-    alias(libs.plugins.maven.publish) apply false
     // plugins already on a classpath (conventions)
     // alias(libs.plugins.androidApplication) apply false
     // alias(libs.plugins.androidLibrary) apply false
@@ -88,33 +89,35 @@ subprojects {
             }
         }
     }
-    extensions.findByType<MavenPublishBaseExtension>()?.apply {
-        val isReleaseBuild = properties["release"]?.toString().toBoolean()
-        publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, false)
-        if (isReleaseBuild) signAllPublications()
-        coordinates(Config.artifactId, name, Config.version(isReleaseBuild))
-        pom {
-            name = Config.name
-            description = Config.description
-            url = Config.url
-            licenses {
-                license {
-                    name = Config.licenseName
-                    url = Config.licenseUrl
-                    distribution = Config.licenseUrl
+    plugins.withType<MavenPublishPlugin>().configureEach {
+        the<MavenPublishBaseExtension>().apply {
+            val isReleaseBuild = properties["release"]?.toString().toBoolean()
+            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, false)
+            if (isReleaseBuild) signAllPublications()
+            coordinates(Config.artifactId, name, Config.version(isReleaseBuild))
+            pom {
+                name = Config.name
+                description = Config.description
+                url = Config.url
+                licenses {
+                    license {
+                        name = Config.licenseName
+                        url = Config.licenseUrl
+                        distribution = Config.licenseUrl
+                    }
                 }
-            }
-            developers {
-                developer {
-                    id = Config.vendorId
-                    name = Config.vendorName
-                    url = Config.developerUrl
-                    email = Config.supportEmail
-                    organizationUrl = Config.developerUrl
+                developers {
+                    developer {
+                        id = Config.vendorId
+                        name = Config.vendorName
+                        url = Config.developerUrl
+                        email = Config.supportEmail
+                        organizationUrl = Config.developerUrl
+                    }
                 }
-            }
-            scm {
-                url = Config.scmUrl
+                scm {
+                    url = Config.scmUrl
+                }
             }
         }
     }
@@ -187,6 +190,7 @@ tasks {
         distributionType = Wrapper.DistributionType.BIN
     }
 }
+
 rootProject.plugins.withType<YarnPlugin>().configureEach {
     rootProject.the<YarnRootExtension>().apply {
         yarnLockMismatchReport = YarnLockMismatchReport.WARNING // NONE | FAIL | FAIL_AFTER_BUILD
