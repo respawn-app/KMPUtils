@@ -1,5 +1,4 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import com.vanniktech.maven.publish.MavenPublishPlugin
 import com.vanniktech.maven.publish.SonatypeHost
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
 import nl.littlerobots.vcu.plugin.versionSelector
@@ -89,8 +88,8 @@ subprojects {
             }
         }
     }
-    plugins.withType<MavenPublishPlugin>().configureEach {
-        the<MavenPublishBaseExtension>().apply {
+    afterEvaluate {
+        extensions.findByType<MavenPublishBaseExtension>()?.run {
             val isReleaseBuild = properties["release"]?.toString().toBoolean()
             publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, false)
             if (isReleaseBuild) signAllPublications()
