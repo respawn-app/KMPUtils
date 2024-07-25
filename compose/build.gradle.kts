@@ -5,8 +5,7 @@ plugins {
     id(libs.plugins.androidLibrary.id)
     alias(libs.plugins.compose)
     alias(libs.plugins.compose.compiler)
-    id("maven-publish")
-    signing
+    alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -60,5 +59,3 @@ kotlin {
         }
     }
 }
-
-publishMultiplatform()

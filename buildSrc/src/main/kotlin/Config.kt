@@ -2,7 +2,8 @@
     "MemberVisibilityCanBePrivate",
     "MissingPackageDeclaration",
     "UndocumentedPublicClass",
-    "UndocumentedPublicProperty"
+    "UndocumentedPublicProperty",
+    "ConstPropertyName"
 )
 
 import org.gradle.api.JavaVersion
@@ -30,6 +31,7 @@ object Config {
     const val licenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt"
     const val scmUrl = "https://github.com/respawn-app/KMPUtils.git"
     const val description = """A collection of Kotlin Multiplatform essentials"""
+    const val name = "KMPUtils"
     // kotlin
 
     val optIns = listOf(

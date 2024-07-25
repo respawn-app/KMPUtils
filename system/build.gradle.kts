@@ -1,8 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("maven-publish")
-    signing
+    alias(libs.plugins.maven.publish)
 }
 
 kotlin {
@@ -21,5 +20,3 @@ android {
     namespace = "${Config.namespace}.system"
     configureAndroidLibrary(this)
 }
-
-publishMultiplatform()

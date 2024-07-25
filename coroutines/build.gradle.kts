@@ -1,6 +1,7 @@
 plugins {
     id("pro.respawn.shared-library")
-    id(libs.plugins.atomicfu.id)
+    alias(libs.plugins.atomicfu)
+    alias(libs.plugins.maven.publish)
 }
 dependencies {
     commonMainApi(libs.kotlinx.coroutines.core)

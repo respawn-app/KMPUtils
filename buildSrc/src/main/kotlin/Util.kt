@@ -5,10 +5,7 @@ import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.plugin.use.PluginDependency
-import java.io.File
-import java.io.FileInputStream
 import java.util.Base64
-import java.util.Properties
 
 /**
  * Load version catalog for usage in places where it is not available yet with gradle 7.x.
@@ -49,16 +46,15 @@ fun List<String>.toJavaArrayString() = buildString {
 
 fun String.toBase64() = Base64.getEncoder().encodeToString(toByteArray())
 
-fun Project.localProperties() = Properties().apply {
-    val file = File(rootProject.rootDir.absolutePath, "local.properties")
-    require(file.exists()) { "Please create root local.properties file" }
-    load(FileInputStream(file))
-}
-
 fun stabilityLevel(version: String): Int {
     Config.stabilityLevels.forEachIndexed { index, postfix ->
         val regex = """.*[.\-]$postfix[.\-\d]*""".toRegex(RegexOption.IGNORE_CASE)
         if (version.matches(regex)) return index
     }
     return Config.stabilityLevels.size
+}
+
+fun Config.version(isRelease: Boolean) = buildString {
+    append(versionName)
+    if (!isRelease) append("-SNAPSHOT")
 }
