@@ -38,6 +38,44 @@ buildscript {
 allprojects {
     group = Config.artifactId
     version = Config.versionName
+    tasks.withType<KotlinCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(Config.jvmTarget)
+            freeCompilerArgs.addAll(Config.jvmCompilerArgs)
+            optIn.addAll(Config.optIns)
+        }
+    }
+}
+
+atomicfu {
+    dependenciesVersion = rootProject.libs.versions.kotlinx.atomicfu.get()
+    transformJvm = false
+    jvmVariant = "VH"
+    transformJs = false
+}
+
+subprojects {
+    apply(plugin = rootProject.libs.plugins.dokka.id)
+
+    dependencies {
+        dokkaPlugin(rootProject.libs.dokka.android)
+    }
+
+    tasks {
+        withType<Test>().configureEach {
+            useJUnitPlatform()
+            filter { isFailOnNoMatchingTests = true }
+        }
+        register<org.gradle.jvm.tasks.Jar>("dokkaJavadocJar") {
+            dependsOn(dokkaJavadoc)
+            from(dokkaJavadoc.flatMap { it.outputDirectory })
+            archiveClassifier.set("javadoc")
+        }
+
+        register<org.gradle.jvm.tasks.Jar>("emptyJavadocJar") {
+            archiveClassifier.set("javadoc")
+        }
+    }
     plugins.withType<ComposeCompilerGradleSubplugin>().configureEach {
         the<ComposeCompilerGradlePluginExtension>().apply {
             enableIntrinsicRemember = true
@@ -81,44 +119,6 @@ allprojects {
                     url = Config.scmUrl
                 }
             }
-        }
-    }
-    tasks.withType<KotlinCompile>().configureEach {
-        compilerOptions {
-            jvmTarget.set(Config.jvmTarget)
-            freeCompilerArgs.addAll(Config.jvmCompilerArgs)
-            optIn.addAll(Config.optIns)
-        }
-    }
-}
-
-atomicfu {
-    dependenciesVersion = rootProject.libs.versions.kotlinx.atomicfu.get()
-    transformJvm = false
-    jvmVariant = "VH"
-    transformJs = false
-}
-
-subprojects {
-    apply(plugin = rootProject.libs.plugins.dokka.id)
-
-    dependencies {
-        dokkaPlugin(rootProject.libs.dokka.android)
-    }
-
-    tasks {
-        withType<Test>().configureEach {
-            useJUnitPlatform()
-            filter { isFailOnNoMatchingTests = true }
-        }
-        register<org.gradle.jvm.tasks.Jar>("dokkaJavadocJar") {
-            dependsOn(dokkaJavadoc)
-            from(dokkaJavadoc.flatMap { it.outputDirectory })
-            archiveClassifier.set("javadoc")
-        }
-
-        register<org.gradle.jvm.tasks.Jar>("emptyJavadocJar") {
-            archiveClassifier.set("javadoc")
         }
     }
 }
