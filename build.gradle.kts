@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import com.vanniktech.maven.publish.SonatypeHost
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
 import nl.littlerobots.vcu.plugin.versionSelector
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
@@ -17,6 +19,7 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.compose) apply false
     alias(libs.plugins.serialization) apply false
+    alias(libs.plugins.maven.publish) apply false
     // plugins already on a classpath (conventions)
     // alias(libs.plugins.androidApplication) apply false
     // alias(libs.plugins.androidLibrary) apply false
@@ -34,19 +37,6 @@ buildscript {
 allprojects {
     group = Config.artifactId
     version = Config.versionName
-    plugins.withType<ComposeCompilerGradleSubplugin>().configureEach {
-        the<ComposeCompilerGradlePluginExtension>().apply {
-            enableIntrinsicRemember = true
-            enableNonSkippingGroupOptimization = true
-            enableStrongSkippingMode = true
-            stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_definitions.txt")
-            if (properties["enableComposeCompilerReports"] == "true") {
-                val metricsDir = layout.buildDirectory.dir("compose_metrics")
-                metricsDestination = metricsDir
-                reportsDestination = metricsDir
-            }
-        }
-    }
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
             jvmTarget.set(Config.jvmTarget)
@@ -83,6 +73,49 @@ subprojects {
 
         register<org.gradle.jvm.tasks.Jar>("emptyJavadocJar") {
             archiveClassifier.set("javadoc")
+        }
+    }
+    plugins.withType<ComposeCompilerGradleSubplugin>().configureEach {
+        the<ComposeCompilerGradlePluginExtension>().apply {
+            enableIntrinsicRemember = true
+            enableNonSkippingGroupOptimization = true
+            enableStrongSkippingMode = true
+            stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_definitions.txt")
+            if (properties["enableComposeCompilerReports"] == "true") {
+                val metricsDir = layout.buildDirectory.dir("compose_metrics")
+                metricsDestination = metricsDir
+                reportsDestination = metricsDir
+            }
+        }
+    }
+    extensions.findByType<MavenPublishBaseExtension>()?.apply {
+        val isReleaseBuild = properties["release"]?.toString().toBoolean()
+        publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, false)
+        if (isReleaseBuild) signAllPublications()
+        coordinates(Config.artifactId, name, Config.version(isReleaseBuild))
+        pom {
+            name = Config.name
+            description = Config.description
+            url = Config.url
+            licenses {
+                license {
+                    name = Config.licenseName
+                    url = Config.licenseUrl
+                    distribution = Config.licenseUrl
+                }
+            }
+            developers {
+                developer {
+                    id = Config.vendorId
+                    name = Config.vendorName
+                    url = Config.developerUrl
+                    email = Config.supportEmail
+                    organizationUrl = Config.developerUrl
+                }
+            }
+            scm {
+                url = Config.scmUrl
+            }
         }
     }
 }

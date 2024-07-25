@@ -2,7 +2,8 @@
     "MemberVisibilityCanBePrivate",
     "MissingPackageDeclaration",
     "UndocumentedPublicClass",
-    "UndocumentedPublicProperty"
+    "UndocumentedPublicProperty",
+    "ConstPropertyName"
 )
 
 import org.gradle.api.JavaVersion
@@ -17,7 +18,7 @@ object Config {
 
     const val majorRelease = 1
     const val minorRelease = 4
-    const val patch = 1
+    const val patch = 2
     const val postfix = ""
     const val versionName = "$majorRelease.$minorRelease.$patch$postfix"
 
@@ -26,11 +27,11 @@ object Config {
     const val vendorId = "respawn-app"
     const val url = "https://github.com/respawn-app/kmputils"
     const val developerUrl = "https://respawn.pro"
-    const val licenseFile = "LICENSE.txt"
     const val licenseName = "The Apache Software License, Version 2.0"
     const val licenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt"
     const val scmUrl = "https://github.com/respawn-app/KMPUtils.git"
     const val description = """A collection of Kotlin Multiplatform essentials"""
+    const val name = "KMPUtils"
     // kotlin
 
     val optIns = listOf(
@@ -53,7 +54,7 @@ object Config {
 
     val jvmTarget = JvmTarget.JVM_11
     val javaVersion = JavaVersion.VERSION_11
-    const val compileSdk = 34
+    const val compileSdk = 35
     const val targetSdk = compileSdk
     const val minSdk = 21
     const val appMinSdk = 26

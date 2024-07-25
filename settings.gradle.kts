@@ -8,16 +8,6 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
     }
-
-    // TODO: https://github.com/Kotlin/kotlinx-atomicfu/issues/56
-    resolutionStrategy {
-        eachPlugin {
-            when (requested.id.id) {
-                "kotlinx-atomicfu" -> "org.jetbrains.kotlinx:atomicfu-gradle-plugin:${requested.version}"
-                else -> null
-            }?.let(::useModule)
-        }
-    }
 }
 
 buildscript {
