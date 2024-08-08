@@ -1,34 +1,33 @@
 [versions]
 androidx-activity = "1.9.1"
 androidx-core = "1.13.1"
-compose = "1.6.10"
+compose = "1.7.0-alpha02"
 composeDetektPlugin = "1.3.0"
 coroutines = "1.9.0-RC"
 datetime = "0.6.0"
 dependencyAnalysisPlugin = "1.32.0"
 detekt = "1.23.6"
-detektFormattingPlugin = "1.23.6"
 dokka = "1.9.20"
-gradleAndroid = "8.6.0-beta02"
+gradleAndroid = "8.6.0-rc01"
 gradleDoctorPlugin = "0.10.0"
 junit = "4.13.2"
 kotest = "5.9.1"
 # @pin
-kotlin = "2.0.0"
+kotlin = "2.0.10"
 kotlinx-atomicfu = "0.25.0"
 lifecycle = "2.8.0"
+maven-publish-plugin = "0.29.0"
 turbine = "1.1.0"
 versionCatalogUpdatePlugin = "0.8.4"
-maven-publish-plugin = "0.29.0"
 
 [libraries]
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradleAndroid" }
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
-androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.4"
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose-android", version.ref = "lifecycle" }
 detekt-compose = { module = "ru.kode:detekt-rules-compose", version.ref = "composeDetektPlugin" }
-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektFormattingPlugin" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 detekt-libraries = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
 dokka-android = { module = "org.jetbrains.dokka:android-documentation-plugin", version.ref = "dokka" }
@@ -68,6 +67,6 @@ dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 gradleDoctor = { id = "com.osacky.doctor", version.ref = "gradleDoctorPlugin" }
 kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish-plugin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionCatalogUpdatePlugin" }
-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish-plugin" }
