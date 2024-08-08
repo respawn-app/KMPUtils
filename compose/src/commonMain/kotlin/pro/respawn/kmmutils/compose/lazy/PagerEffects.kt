@@ -39,12 +39,10 @@ public fun Modifier.scalePagerEffect(
     //  Calculate the absolute offset for the current page from the
     //  scroll position. We use the absolute value which allows us to mirror
     //  any effects for both directions
-    val pageOffset = state.offsetForPage(index)
-
     lerp(
         start = ScaleFactor(scaleFactor, scaleFactor),
         stop = ScaleFactor(1f, 1f),
-        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+        fraction = 1f - state.offsetForPage(index).coerceIn(0f, 1f)
     ).also { scale ->
         scaleX = scale.scaleX
         scaleY = scale.scaleY
