@@ -5,7 +5,12 @@ import androidx.compose.runtime.NonSkippableComposable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.Font
+import org.jetbrains.compose.resources.FontResource
 import org.jetbrains.compose.resources.PluralStringResource
 import org.jetbrains.compose.resources.StringArrayResource
 import org.jetbrains.compose.resources.StringResource
@@ -52,3 +57,10 @@ public fun Text.string(): String = when (this) {
 public fun String.text(): Text.Dynamic = Text.Dynamic(this)
 
 public fun StringResource.text(vararg args: Any): Text.Resource = Text.Resource(this, args = args)
+
+@Composable
+@NonSkippableComposable
+public fun FontResource.font(
+    weight: FontWeight = FontWeight.Normal,
+    style: FontStyle = FontStyle.Normal
+): Font = Font(this, weight, style)

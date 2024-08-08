@@ -18,7 +18,7 @@ object Config {
 
     const val majorRelease = 1
     const val minorRelease = 4
-    const val patch = 2
+    const val patch = 3
     const val postfix = ""
     const val versionName = "$majorRelease.$minorRelease.$patch$postfix"
 
@@ -47,7 +47,6 @@ object Config {
     val jvmCompilerArgs = buildList {
         addAll(compilerArgs)
         add("-Xjvm-default=all") // enable all jvm optimizations
-        add("-Xcontext-receivers")
         add("-Xstring-concat=inline")
         addAll(optIns.map { "-opt-in=$it" })
     }
