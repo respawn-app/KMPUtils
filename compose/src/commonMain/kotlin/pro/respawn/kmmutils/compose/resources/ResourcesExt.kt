@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package pro.respawn.kmmutils.compose.resources
 
 import androidx.compose.runtime.Composable
@@ -39,7 +41,10 @@ public fun StringArrayResource.strings(): List<String> = stringArrayResource(thi
 
 @Composable
 @NonSkippableComposable
-public fun StringResource.string(vararg args: Any): String = stringResource(this, formatArgs = args)
+public fun StringResource.string(
+    vararg args: Any,
+    trim: Boolean = true
+): String = stringResource(this, formatArgs = args).let { if (trim) it.trim() else it }
 
 @Composable
 @NonSkippableComposable
@@ -64,3 +69,8 @@ public fun FontResource.font(
     weight: FontWeight = FontWeight.Normal,
     style: FontStyle = FontStyle.Normal
 ): Font = Font(this, weight, style)
+
+public suspend fun StringResource.getString(
+    vararg args: Any,
+    trim: Boolean = true
+): String = org.jetbrains.compose.resources.getString(this, formatArgs = args).let { if (trim) it.trim() else it }
