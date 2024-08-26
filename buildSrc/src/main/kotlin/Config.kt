@@ -18,7 +18,7 @@ object Config {
 
     const val majorRelease = 1
     const val minorRelease = 4
-    const val patch = 3
+    const val patch = 4
     const val postfix = ""
     const val versionName = "$majorRelease.$minorRelease.$patch$postfix"
 
