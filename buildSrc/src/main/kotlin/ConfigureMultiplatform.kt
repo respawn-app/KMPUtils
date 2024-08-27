@@ -4,9 +4,9 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 @OptIn(ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class)
 fun Project.configureMultiplatform(
@@ -28,6 +28,11 @@ fun Project.configureMultiplatform(
     explicitApi()
     applyDefaultHierarchyTemplate(configure)
     withSourcesJar(true)
+
+    compilerOptions {
+        freeCompilerArgs.addAll(Config.compilerArgs)
+        optIn.addAll(Config.optIns)
+    }
 
     if (linux) {
         linuxX64()
@@ -91,7 +96,6 @@ fun Project.configureMultiplatform(
         all {
             languageSettings {
                 progressiveMode = true
-                Config.optIns.forEach { optIn(it) }
             }
         }
     }

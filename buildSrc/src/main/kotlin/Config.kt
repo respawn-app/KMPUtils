@@ -43,9 +43,9 @@ object Config {
     )
     val compilerArgs = listOf(
         "-Xbackend-threads=0", // parallel IR compilation
+        "-Xconsistent-data-class-copy-visibility",
     )
     val jvmCompilerArgs = buildList {
-        addAll(compilerArgs)
         add("-Xjvm-default=all") // enable all jvm optimizations
         add("-Xstring-concat=inline")
         addAll(optIns.map { "-opt-in=$it" })
