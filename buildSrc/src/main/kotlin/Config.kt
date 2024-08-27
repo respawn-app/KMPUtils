@@ -42,12 +42,12 @@ object Config {
         "kotlin.contracts.ExperimentalContracts"
     )
     val compilerArgs = listOf(
-        "-Xbackend-threads=0", // parallel IR compilation
         "-Xconsistent-data-class-copy-visibility",
     )
     val jvmCompilerArgs = buildList {
         add("-Xjvm-default=all") // enable all jvm optimizations
         add("-Xstring-concat=inline")
+        add("-Xbackend-threads=0") // parallel IR compilation
         addAll(optIns.map { "-opt-in=$it" })
     }
 

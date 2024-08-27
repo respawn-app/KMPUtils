@@ -1,5 +1,9 @@
 package pro.respawn.kmmutils.compose.windowsize
 
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalDensity
@@ -7,6 +11,18 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
+
+/**
+ * Calculates the window's [WindowSizeClass].
+ *
+ * A new [WindowSizeClass] will be returned whenever a change causes the width or
+ * height of the window to cross a breakpoint, such as when the device is rotated or the window
+ * is resized.
+ */
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Composable
+@ReadOnlyComposable
+public fun calculateWindowSizeClass(): WindowSizeClass = WindowSizeClass.calculateFromSize(size = windowSize)
 
 /**
  * Whether the window width is long (longer than most phones **in portrait**).
