@@ -44,6 +44,8 @@ kotlin {
             api(compose.components.resources)
 
             api(libs.lifecycle.runtime)
+            api(libs.lifecycle.compose)
+            implementation(libs.compose.window.size)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.animationGraphics)

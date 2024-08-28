@@ -18,7 +18,7 @@ object Config {
 
     const val majorRelease = 1
     const val minorRelease = 4
-    const val patch = 3
+    const val patch = 4
     const val postfix = ""
     const val versionName = "$majorRelease.$minorRelease.$patch$postfix"
 
@@ -42,12 +42,12 @@ object Config {
         "kotlin.contracts.ExperimentalContracts"
     )
     val compilerArgs = listOf(
-        "-Xbackend-threads=0", // parallel IR compilation
+        "-Xconsistent-data-class-copy-visibility",
     )
     val jvmCompilerArgs = buildList {
-        addAll(compilerArgs)
         add("-Xjvm-default=all") // enable all jvm optimizations
         add("-Xstring-concat=inline")
+        add("-Xbackend-threads=0") // parallel IR compilation
         addAll(optIns.map { "-opt-in=$it" })
     }
 

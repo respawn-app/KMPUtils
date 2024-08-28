@@ -4,6 +4,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -129,12 +130,15 @@ public fun String.shadow(
  */
 public fun String.font(fontFamily: FontFamily): AnnotatedString = annotate(SpanStyle(fontFamily = fontFamily))
 
-// TODO: Waiting for compose update
-
-// public fun String.clickable(onClick: () -> Unit): AnnotatedString = annotate {
-//     pushLink(LinkAnnotation.Clickable("clickable") { onClick() })
-//     pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-//     append(this@clickable)
-//     pop()
-//     pop()
-// }
+/**
+ * Makes this string clickable. When clicked, the [onClick] lambda is invoked
+ *
+ * @return the [AnnotatedString] created
+ */
+public fun String.clickable(onClick: () -> Unit): AnnotatedString = annotate {
+    pushLink(LinkAnnotation.Clickable("clickable") { onClick() })
+    pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+    append(this@clickable)
+    pop()
+    pop()
+}
