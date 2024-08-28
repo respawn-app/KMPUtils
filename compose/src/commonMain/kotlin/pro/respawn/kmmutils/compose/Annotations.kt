@@ -130,6 +130,11 @@ public fun String.shadow(
  */
 public fun String.font(fontFamily: FontFamily): AnnotatedString = annotate(SpanStyle(fontFamily = fontFamily))
 
+/**
+ * Makes this string clickable. When clicked, the [onClick] lambda is invoked
+ *
+ * @return the [AnnotatedString] created
+ */
 public fun String.clickable(onClick: () -> Unit): AnnotatedString = annotate {
     pushLink(LinkAnnotation.Clickable("clickable") { onClick() })
     pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))

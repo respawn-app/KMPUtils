@@ -53,7 +53,7 @@ public inline fun <reified T : Any> TypeCrossfade(
 @PublishedApi
 internal fun <T> Transition<T>.Crossfade(
     modifier: Modifier = Modifier,
-    contentAlignment: Alignment,
+    contentAlignment: Alignment = Alignment.Center,
     animationSpec: FiniteAnimationSpec<Float> = tween(),
     contentKey: (targetState: T) -> Any? = { it },
     content: @Composable BoxScope.(targetState: T) -> Unit
