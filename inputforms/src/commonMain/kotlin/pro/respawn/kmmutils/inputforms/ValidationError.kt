@@ -224,5 +224,6 @@ public sealed interface ValidationError {
     @JvmInline
     public value class NoUppercaseLetters(override val value: String) : ValidationError
 
+    @Suppress("UndocumentedPublicClass") // what's here to document?
     public companion object
 }

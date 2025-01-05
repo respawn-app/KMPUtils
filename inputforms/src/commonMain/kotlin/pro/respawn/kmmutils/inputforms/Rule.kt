@@ -13,5 +13,6 @@ public fun interface Rule {
      */
     public operator fun invoke(value: String): Sequence<ValidationError>
 
+    @Suppress("UndocumentedPublicClass") // what's here to document?
     public companion object
 }

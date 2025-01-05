@@ -24,5 +24,6 @@ public open class Form(
      */
     public open fun validate(input: String): Input = rules(input, strategy).fold(input)
 
+    @Suppress("UndocumentedPublicClass") // what's here to document?
     public companion object
 }

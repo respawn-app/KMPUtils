@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.LayoutDirection
 /**
  * The edge to use with [fadingEdge] modifier.
  */
+@Suppress("UndocumentedPublicProperty") // what's here to document?
 public enum class FadingEdge {
     Start, End, Top, Bottom
 }
