@@ -1,12 +1,16 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     kotlin("multiplatform")
-    // id("com.android.library")
+    id("com.android.library")
 }
 
 kotlin {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
     configureMultiplatform(this)
 }
 
-// android {
-//     configureAndroidLibrary(this)
-// }
+android {
+    namespace = namespaceByPath()
+    configureAndroidLibrary(this)
+}

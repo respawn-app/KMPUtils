@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     alias(libs.plugins.maven.publish)
+    dokkaDocumentation
 }
 
 kotlin {
@@ -17,6 +18,6 @@ kotlin {
 }
 
 android {
-    namespace = "${Config.namespace}.system"
+    namespace = namespaceByPath()
     configureAndroidLibrary(this)
 }

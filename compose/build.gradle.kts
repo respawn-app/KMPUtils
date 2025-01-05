@@ -6,11 +6,12 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.maven.publish)
+    dokkaDocumentation
 }
 
 android {
     configureAndroidLibrary(this)
-    namespace = "${Config.namespace}.compose"
+    namespace = namespaceByPath()
 
     buildFeatures {
         compose = true
@@ -31,6 +32,7 @@ kotlin {
         js = true,
         wasmJs = true,
         windows = false,
+        wasmWasi = false,
     ) {
         common {
             group("web") {

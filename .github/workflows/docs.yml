@@ -29,7 +29,7 @@ jobs:
         with:
           distribution: 'zulu'
           check-latest: true
-          java-version: 22
+          java-version: 23
           cache: 'gradle'
 
       - name: Validate gradle wrapper
@@ -39,10 +39,13 @@ jobs:
         run: cp ./README.md ./docs/README.md
 
       - name: Generate docs
-        run: ./gradlew :dokkaHtmlMultiModule --no-configuration-cache
+        run: ./gradlew dokkaGenerate
+
+      - name: Make javadoc dir
+        run: mkdir -p ./docs/javadocs
 
       - name: Move docs to the parent docs dir
-        run: cp -r ./build/dokka/htmlMultiModule/ ./docs/javadocs/
+        run: cp -r ./build/dokka/html/ ./docs/javadocs
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
