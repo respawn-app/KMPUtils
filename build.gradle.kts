@@ -1,86 +1,42 @@
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinMultiplatform
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import com.vanniktech.maven.publish.MavenPublishBasePlugin
 import com.vanniktech.maven.publish.SonatypeHost
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
 import nl.littlerobots.vcu.plugin.versionSelector
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradleSubplugin
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag.Companion.OptimizeNonSkippingGroups
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.gradleDoctor)
     alias(libs.plugins.version.catalog.update)
-    alias(libs.plugins.dokka)
-    alias(libs.plugins.dependencyAnalysis)
-    alias(libs.plugins.atomicfu)
-    alias(libs.plugins.maven.publish) apply false
     alias(libs.plugins.compose.compiler) apply false
-    alias(libs.plugins.compose) apply false
-    alias(libs.plugins.serialization) apply false
+    alias(libs.plugins.maven.publish) apply false
+    // alias(libs.plugins.atomicfu) apply false
+    dokkaDocumentation
     // plugins already on a classpath (conventions)
+    // alias(libs.plugins.dokka) apply false
     // alias(libs.plugins.androidApplication) apply false
     // alias(libs.plugins.androidLibrary) apply false
     // alias(libs.plugins.kotlinMultiplatform) apply false
 }
 
-buildscript {
-    dependencies {
-        classpath(libs.android.gradle)
-        classpath(libs.kotlin.gradle)
-        classpath(libs.detekt.gradle)
-    }
-}
-
 allprojects {
     group = Config.artifactId
     version = Config.versionName
-
-    tasks.withType<KotlinCompile>().configureEach {
-        compilerOptions {
-            jvmTarget.set(Config.jvmTarget)
-            freeCompilerArgs.addAll(Config.jvmCompilerArgs)
-            optIn.addAll(Config.optIns)
-        }
-    }
-}
-
-atomicfu {
-    dependenciesVersion = rootProject.libs.versions.kotlinx.atomicfu.get()
-    transformJvm = false
-    jvmVariant = "VH"
-    transformJs = false
 }
 
 subprojects {
-    apply(plugin = rootProject.libs.plugins.dokka.id)
-
-    dependencies {
-        dokkaPlugin(rootProject.libs.dokka.android)
-    }
-
-    tasks {
-        withType<Test>().configureEach {
-            useJUnitPlatform()
-            filter { isFailOnNoMatchingTests = true }
-        }
-        register<org.gradle.jvm.tasks.Jar>("dokkaJavadocJar") {
-            dependsOn(dokkaJavadoc)
-            from(dokkaJavadoc.flatMap { it.outputDirectory })
-            archiveClassifier.set("javadoc")
-        }
-
-        register<org.gradle.jvm.tasks.Jar>("emptyJavadocJar") {
-            archiveClassifier.set("javadoc")
-        }
-    }
     plugins.withType<ComposeCompilerGradleSubplugin>().configureEach {
         the<ComposeCompilerGradlePluginExtension>().apply {
-            featureFlags.addAll(OptimizeNonSkippingGroups)
-            stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_definitions.txt")
+            featureFlags.addAll(ComposeFeatureFlag.OptimizeNonSkippingGroups)
+            stabilityConfigurationFiles.add(rootProject.layout.projectDirectory.file("stability_definitions.txt"))
             if (properties["enableComposeCompilerReports"] == "true") {
                 val metricsDir = layout.buildDirectory.dir("compose_metrics")
                 metricsDestination = metricsDir
@@ -88,9 +44,16 @@ subprojects {
             }
         }
     }
-    afterEvaluate {
-        extensions.findByType<MavenPublishBaseExtension>()?.run {
+    plugins.withType<MavenPublishBasePlugin> {
+        the<MavenPublishBaseExtension>().apply {
             val isReleaseBuild = properties["release"]?.toString().toBoolean()
+            configure(
+                KotlinMultiplatform(
+                    javadocJar = JavadocJar.Empty(),
+                    sourcesJar = true,
+                    androidVariantsToPublish = listOf("release"),
+                )
+            )
             publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, false)
             if (isReleaseBuild) signAllPublications()
             coordinates(Config.artifactId, name, Config.version(isReleaseBuild))
@@ -120,17 +83,17 @@ subprojects {
             }
         }
     }
+    tasks {
+        withType<Test>().configureEach {
+            useJUnitPlatform()
+            filter { isFailOnNoMatchingTests = true }
+        }
+    }
 }
 
 doctor {
     javaHome {
         ensureJavaHomeMatches.set(false)
-    }
-}
-
-dependencyAnalysis {
-    structure {
-        ignoreKtx(true)
     }
 }
 
@@ -152,11 +115,12 @@ versionCatalogUpdate {
     }
 }
 
+// atomicfu {
+//     dependenciesVersion = libs.versions.atomicfu.get()
+//     jvmVariant = "VH"
+// }
+
 tasks {
-    dokkaHtmlMultiModule.configure {
-        moduleName.set(rootProject.name)
-    }
-    // needed to generate compose compiler reports. See /scripts
     withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         buildUponDefaultConfig = true
         parallel = true
@@ -195,5 +159,16 @@ rootProject.plugins.withType<YarnPlugin>().configureEach {
         yarnLockMismatchReport = YarnLockMismatchReport.WARNING // NONE | FAIL | FAIL_AFTER_BUILD
         reportNewYarnLock = true
         yarnLockAutoReplace = true
+    }
+}
+
+dependencies {
+    detektPlugins(rootProject.libs.detekt.formatting)
+    detektPlugins(rootProject.libs.detekt.compose)
+    detektPlugins(rootProject.libs.detekt.libraries)
+    projects.run {
+        listOf(
+            common, compose, coroutines, datetime, inputforms
+        ).forEach { dokka(it) }
     }
 }

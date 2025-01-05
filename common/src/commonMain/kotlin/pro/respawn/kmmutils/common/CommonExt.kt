@@ -110,7 +110,7 @@ public fun <T> T?.requireNotNull(): T & Any = requireNotNull(this)
 /**
  * Calls [requireNotNull] on this value and returns it
  */
-public inline fun <T> T?.requireNotNull(lazyMessage: () -> Unit): T & Any = requireNotNull(this, lazyMessage)
+public inline fun <T> T?.requireNotNull(lazyMessage: () -> Any): T & Any = requireNotNull(this, lazyMessage)
 
 /**
  * If this is an [Error], throws it, otherwise returns [this] as an [Exception]

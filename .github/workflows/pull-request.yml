@@ -8,6 +8,6 @@ jobs:
   assign_author:
     runs-on: macos-latest
     steps:
-      - uses: samspills/assign-pr-to-author@v1
+      - uses: samspills/assign-pr-to-author@v1.0.2
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'

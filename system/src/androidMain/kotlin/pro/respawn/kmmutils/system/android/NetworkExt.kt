@@ -47,6 +47,7 @@ public val Uri.linkType: LinkType
 /**
  * Type of the [Uri]'s scheme
  */
+@Suppress("UndocumentedPublicProperty") // what's here to document?
 public enum class LinkType {
     Web,
     Mail,
@@ -85,6 +86,7 @@ public data class Email(
     val body: String? = null,
 ) {
 
+    @Suppress("UndocumentedPublicClass") // what's here to document?
     public companion object {
 
         /**

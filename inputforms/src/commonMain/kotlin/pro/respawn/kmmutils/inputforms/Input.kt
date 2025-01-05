@@ -51,5 +51,6 @@ public sealed interface Input {
         is Valid -> Valid(value)
     }
 
+    @Suppress("UndocumentedPublicClass") // what's here to document?
     public companion object
 }

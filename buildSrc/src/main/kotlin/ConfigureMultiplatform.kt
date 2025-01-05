@@ -1,4 +1,4 @@
-@file:Suppress("MissingPackageDeclaration", "unused", "UndocumentedPublicFunction", "LongMethod")
+@file:Suppress("MissingPackageDeclaration", "unused", "UndocumentedPublicFunction", "LongMethod", "UnusedImports")
 
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getValue
@@ -8,11 +8,11 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder
 
-@OptIn(ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class)
+@OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
 fun Project.configureMultiplatform(
     ext: KotlinMultiplatformExtension,
     jvm: Boolean = true,
-    android: Boolean = false,
+    android: Boolean = true,
     linux: Boolean = true,
     iOs: Boolean = true,
     js: Boolean = true,
@@ -21,17 +21,19 @@ fun Project.configureMultiplatform(
     watchOs: Boolean = true,
     windows: Boolean = true,
     wasmJs: Boolean = true,
-    wasmWasi: Boolean = false, // TODO: Coroutines do not support wasmWasi yet
+    wasmWasi: Boolean = false,
+    explicitApi: Boolean = true,
     configure: KotlinHierarchyBuilder.Root.() -> Unit = {},
 ) = ext.apply {
     val libs by versionCatalog
-    explicitApi()
+    if (explicitApi) explicitApi()
     applyDefaultHierarchyTemplate(configure)
     withSourcesJar(true)
-
     compilerOptions {
+        extraWarnings.set(true)
         freeCompilerArgs.addAll(Config.compilerArgs)
         optIn.addAll(Config.optIns)
+        progressiveMode.set(true)
     }
 
     if (linux) {
@@ -54,13 +56,24 @@ fun Project.configureMultiplatform(
         binaries.library()
     }
 
-    if (wasmWasi) wasmWasi()
-
-    if (android) androidTarget {
-        publishLibraryVariants("release")
+    if (wasmWasi) wasmWasi {
+        nodejs()
     }
 
-    if (jvm) jvm()
+    if (android) androidTarget {
+        publishLibraryVariants(Config.publishingVariant)
+        compilerOptions {
+            jvmTarget.set(Config.jvmTarget)
+            freeCompilerArgs.addAll(Config.jvmCompilerArgs)
+        }
+    }
+
+    if (jvm) jvm {
+        compilerOptions {
+            jvmTarget.set(Config.jvmTarget)
+            freeCompilerArgs.addAll(Config.jvmCompilerArgs)
+        }
+    }
 
     sequence {
         if (iOs) {
@@ -96,6 +109,7 @@ fun Project.configureMultiplatform(
         all {
             languageSettings {
                 progressiveMode = true
+                Config.optIns.forEach { optIn(it) }
             }
         }
     }

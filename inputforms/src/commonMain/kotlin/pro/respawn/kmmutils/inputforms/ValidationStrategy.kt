@@ -21,5 +21,6 @@ public sealed interface ValidationStrategy {
      */
     public data object LazyEval : ValidationStrategy
 
+    @Suppress("UndocumentedPublicClass") // what's here to document?
     public companion object
 }

@@ -17,8 +17,8 @@ object Config {
     const val artifactId = "$group.$artifact"
 
     const val majorRelease = 1
-    const val minorRelease = 4
-    const val patch = 4
+    const val minorRelease = 5
+    const val patch = 0
     const val postfix = ""
     const val versionName = "$majorRelease.$minorRelease.$patch$postfix"
 
@@ -34,23 +34,6 @@ object Config {
     const val name = "KMPUtils"
     // kotlin
 
-    val optIns = listOf(
-        "kotlinx.coroutines.ExperimentalCoroutinesApi",
-        "kotlinx.coroutines.FlowPreview",
-        "kotlin.RequiresOptIn",
-        "kotlin.experimental.ExperimentalTypeInference",
-        "kotlin.contracts.ExperimentalContracts"
-    )
-    val compilerArgs = listOf(
-        "-Xconsistent-data-class-copy-visibility",
-    )
-    val jvmCompilerArgs = buildList {
-        add("-Xjvm-default=all") // enable all jvm optimizations
-        add("-Xstring-concat=inline")
-        add("-Xbackend-threads=0") // parallel IR compilation
-        addAll(optIns.map { "-opt-in=$it" })
-    }
-
     val jvmTarget = JvmTarget.JVM_11
     val javaVersion = JavaVersion.VERSION_11
     const val compileSdk = 35
@@ -58,6 +41,32 @@ object Config {
     const val minSdk = 21
     const val appMinSdk = 26
     const val publishingVariant = "release"
+
+    val optIns = listOf(
+        "kotlinx.coroutines.ExperimentalCoroutinesApi",
+        "kotlinx.coroutines.FlowPreview",
+        "kotlin.RequiresOptIn",
+        "kotlin.experimental.ExperimentalTypeInference",
+        "kotlin.uuid.ExperimentalUuidApi",
+        "kotlin.contracts.ExperimentalContracts",
+    )
+    val compilerArgs = listOf(
+        "-Xbackend-threads=0", // parallel IR compilation
+        "-Xexpect-actual-classes",
+        "-Xwasm-use-new-exception-proposal",
+        "-Xconsistent-data-class-copy-visibility",
+        "-Xsuppress-warning=NOTHING_TO_INLINE",
+        "-Xsuppress-warning=UNUSED_ANONYMOUS_PARAMETER",
+        "-Xwasm-debugger-custom-formatters"
+    )
+    val jvmCompilerArgs = buildList {
+        addAll(compilerArgs)
+        add("-Xjvm-default=all") // enable all jvm optimizations
+        add("-Xcontext-receivers")
+        add("-Xstring-concat=inline")
+        add("-Xlambdas=indy")
+        add("-Xjdk-release=${jvmTarget.target}")
+    }
 
     // android
     const val namespace = artifactId

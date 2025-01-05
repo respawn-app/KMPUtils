@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.drawscope.withTransform
 /**
  * Defines available modes for the [flip] modifier
  */
+@Suppress("UndocumentedPublicProperty") // what's here to document?
 public enum class FlipDirection(internal val x: Float, internal val y: Float) {
     Vertical(1f, -1f),
     Horizontal(-1f, 1f)

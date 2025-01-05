@@ -167,3 +167,5 @@ hs_err_pid*
 !gradle/gradle-wrapper.jar
 /.idea/appInsightsSettings.xml
 /.idea/migrations.xml
+.kotlin
+kotlin-js-store/yarn.lock
