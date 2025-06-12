@@ -21,7 +21,7 @@ fun Project.configureMultiplatform(
     watchOs: Boolean = true,
     windows: Boolean = true,
     wasmJs: Boolean = true,
-    wasmWasi: Boolean = false,
+    wasmWasi: Boolean = true,
     explicitApi: Boolean = true,
     configure: KotlinHierarchyBuilder.Root.() -> Unit = {},
 ) = ext.apply {
@@ -50,10 +50,13 @@ fun Project.configureMultiplatform(
     }
 
     if (wasmJs) wasmJs {
-        moduleName = this@configureMultiplatform.name
+        outputModuleName.set(this@configureMultiplatform.name)
         nodejs()
         browser()
         binaries.library()
+        compilerOptions {
+            freeCompilerArgs.addAll(Config.wasmCompilerArgs)
+        }
     }
 
     if (wasmWasi) wasmWasi {
@@ -61,7 +64,7 @@ fun Project.configureMultiplatform(
     }
 
     if (android) androidTarget {
-        publishLibraryVariants(Config.publishingVariant)
+        publishLibraryVariants("release")
         compilerOptions {
             jvmTarget.set(Config.jvmTarget)
             freeCompilerArgs.addAll(Config.jvmCompilerArgs)

@@ -32,6 +32,12 @@ import kotlinx.coroutines.launch
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
+@Deprecated(
+    """
+     Use the new semantics-based Autofill APIs androidx.compose.ui.autofill.ContentType and
+        androidx.compose.ui.autofill.ContentDataType instead.
+"""
+)
 public fun Modifier.autofill(
     autofillType: AutofillType,
     vararg autofillTypes: AutofillType,
@@ -72,14 +78,11 @@ public fun Modifier.bringIntoViewOnFocus(): Modifier {
     val coroutineScope = rememberCoroutineScope()
     val requester = remember { BringIntoViewRequester() }
 
-    return bringIntoViewRequester(requester)
-        .onFocusEvent {
-            if (it.isFocused) {
-                coroutineScope.launch {
-                    requester.bringIntoView()
-                }
-            }
+    return bringIntoViewRequester(requester).onFocusEvent {
+        if (it.isFocused) {
+            coroutineScope.launch { requester.bringIntoView() }
         }
+    }
 }
 
 /**

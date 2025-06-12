@@ -20,9 +20,7 @@ public fun ObserveLifecycle(onEvent: (event: Lifecycle.Event) -> Unit) {
 
         lifecycle.lifecycle.addObserver(observer)
 
-        onDispose {
-            lifecycle.lifecycle.removeObserver(observer)
-        }
+        onDispose { lifecycle.lifecycle.removeObserver(observer) }
     }
 }
 

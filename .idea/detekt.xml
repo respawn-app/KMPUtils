@@ -8,7 +8,7 @@
     </option>
     <option name="configurationFiles">
       <list>
-        <option value="$PROJECT_DIR$/../../kmmutils/detekt.yml" />
+        <option value="$PROJECT_DIR$/detekt.yml" />
       </list>
     </option>
     <option name="enableDetekt" value="true" />

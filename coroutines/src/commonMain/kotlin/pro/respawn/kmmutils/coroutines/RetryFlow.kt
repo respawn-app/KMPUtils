@@ -1,10 +1,11 @@
 package pro.respawn.kmmutils.coroutines
 
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 
 /**
  * A [Flow] instance that can be retried by calling [retry].
@@ -15,30 +16,36 @@ public interface RetryFlow<T> : Flow<T> {
     /**
      * Retry the invocation of this flow. The flow that originally was used with this wrapper will be recreated
      */
-    public fun retry()
+    public fun retry(): Job
 }
 
-/**
- * Creates a new [RetryFlow] from [flow] builder
- */
-public fun <T> retryFlow(flow: suspend () -> Flow<T>): RetryFlow<T> = RetryFlowImpl(flow)
+private class RetryFlowImpl<T>(
+    private val scope: CoroutineScope,
+    private val loader: suspend () -> T,
+    private val delegate: MutableSharedFlow<T> = MutableSharedFlow(replay = 1),
+) : RetryFlow<T>, Flow<T> by delegate {
 
-/**
- * Creates a new [RetryFlow] from this [call] function, evaluated as a cold flow
- */
-public inline fun <T> retry(crossinline call: suspend () -> T): RetryFlow<T> = RetryFlowImpl({ flow { emit(call()) } })
-
-@PublishedApi
-internal class RetryFlowImpl<T>(
-    producer: suspend () -> Flow<T>,
-    private val delegate: Channel<Unit> = Channel(Channel.CONFLATED),
-) : RetryFlow<T>, Flow<T> by delegate.receiveAsFlow().flatMapLatest(transform = { producer() }) {
+    private val mutex = Mutex()
 
     init {
         retry()
     }
 
-    override fun retry() {
-        delegate.trySend(Unit)
+    override fun retry(): Job = scope.launch {
+        if (mutex.tryLock()) {
+            try {
+                delegate.emit(loader())
+            } finally {
+                mutex.unlock()
+            }
+        }
     }
 }
+
+/**
+ * Creates a new [RetryFlow] from this [call] function, evaluated as a cold flow
+ */
+@OverloadResolutionByLambdaReturnType
+public fun <T> CoroutineScope.retry(
+    @BuilderInference call: suspend () -> T
+): RetryFlow<T> = RetryFlowImpl(this, call)
