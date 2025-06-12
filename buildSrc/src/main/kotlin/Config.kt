@@ -34,7 +34,7 @@ object Config {
     const val name = "KMPUtils"
     // kotlin
 
-    const val compileSdk = 35
+    const val compileSdk = 36
     const val targetSdk = compileSdk
     const val minSdk = 21
     const val appMinSdk = 26
