@@ -27,12 +27,14 @@ public fun Vibrator.vibrateCompat(
     lengthMs: Long,
     usage: Int,
     amplitude: Int? = null,
-): Unit = when (Build.VERSION.SDK_INT) {
-    Build.VERSION_CODES.TIRAMISU -> vibrate(
+): Unit = when {
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> vibrate(
         VibrationEffect.createOneShot(lengthMs, amplitude ?: VibrationEffect.DEFAULT_AMPLITUDE),
         VibrationAttributes.createForUsage(usage)
     )
-    Build.VERSION_CODES.Q -> vibrate(VibrationEffect.createOneShot(lengthMs, VibrationEffect.DEFAULT_AMPLITUDE))
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> vibrate(
+        VibrationEffect.createOneShot(lengthMs, VibrationEffect.DEFAULT_AMPLITUDE)
+    )
     else -> vibrate(lengthMs)
 }
 
@@ -57,12 +59,12 @@ public fun Vibrator.vibrateCompat(
     waveform: LongArray,
     usage: Int,
     repeat: Int = -1,
-): Unit = when (Build.VERSION.SDK_INT) {
-    Build.VERSION_CODES.TIRAMISU -> vibrate(
+): Unit = when {
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> vibrate(
         VibrationEffect.createWaveform(waveform, repeat),
         VibrationAttributes.createForUsage(usage)
     )
-    Build.VERSION_CODES.Q -> vibrate(VibrationEffect.createWaveform(waveform, repeat))
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> vibrate(VibrationEffect.createWaveform(waveform, repeat))
     else -> vibrate(waveform, repeat)
 }
 
