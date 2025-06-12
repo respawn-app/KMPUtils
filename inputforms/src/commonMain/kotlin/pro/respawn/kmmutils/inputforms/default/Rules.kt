@@ -274,4 +274,15 @@ public data object Rules {
             it.length == length
         } checks { LengthIsNotExactly(it, length) }
     }
+
+    /**
+     * The input must not contain [needle]
+     */
+    public fun DoesNotContain(
+        needle: String,
+    ): Rule = Rule {
+        {
+            needle !in it
+        } checks { ValidationError.Contains(needle, it) }
+    }
 }

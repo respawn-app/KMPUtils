@@ -218,6 +218,14 @@ public sealed interface ValidationError {
     ) : ValidationError
 
     /**
+     * Input value contained [needle], which was disallowed
+     *
+     * @see pro.respawn.kmmutils.inputforms.default.Rules.DoesNotContain
+     */
+    @JvmInline
+    public data class Contains(override val value: String, val needle: String) : ValidationError
+
+    /**
      * Input value has no uppercase letters
      * @see
      */
