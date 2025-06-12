@@ -26,7 +26,6 @@ plugins {
     // alias(libs.plugins.kotlinMultiplatform) apply false
 }
 
-
 allprojects {
     group = Config.artifactId
     version = Config.versionName
