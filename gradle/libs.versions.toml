@@ -1,37 +1,38 @@
 [versions]
-androidx-activity = "1.10.0-rc01"
-androidx-core = "1.15.0"
-compose = "1.7.3"
+androidx-activity = "1.11.0-rc01"
+androidx-core = "1.16.0"
+compose = "1.8.1"
 composeDetektPlugin = "1.4.0"
-coroutines = "1.10.1"
-datetime = "0.6.1"
-dependencyAnalysisPlugin = "1.32.0"
-detekt = "1.23.7"
+coroutines = "1.10.2"
+datetime = "0.6.2"
+dependencyAnalysisPlugin = "2.18.0"
+detekt = "1.23.8"
 dokka = "2.0.0"
-gradleAndroid = "8.8.0-rc02"
-gradleDoctorPlugin = "0.10.0"
+gradleAndroid = "8.11.0-rc01"
+gradleDoctorPlugin = "0.11.0"
 junit = "4.13.2"
-kotest = "6.0.0.M1"
+kotest = "6.0.0.M4"
 # @pin
-kotlin = "2.1.0"
-kotlinx-atomicfu = "0.26.1"
-lifecycle = "2.8.4"
-maven-publish-plugin = "0.29.0"
-turbine = "1.2.0"
-versionCatalogUpdatePlugin = "0.8.4"
+kotlin = "2.2.0-RC2"
+kotlinx-atomicfu = "0.28.0"
+lifecycle = "2.9.0"
+maven-publish-plugin = "0.32.0"
+turbine = "1.2.1"
+versionCatalogUpdatePlugin = "1.0.0"
 
 [libraries]
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradleAndroid" }
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
-androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7"
+androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.1"
 compose-window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose" }
 detekt-compose = { module = "ru.kode:detekt-rules-compose", version.ref = "composeDetektPlugin" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 detekt-libraries = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
 dokka-android = { module = "org.jetbrains.dokka:android-documentation-plugin", version.ref = "dokka" }
+dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotest-framework = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
@@ -48,7 +49,6 @@ lifecycle-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runti
 lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "lifecycle" }
 lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
-dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 
 [bundles]
 unittest = [

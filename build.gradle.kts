@@ -14,7 +14,6 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 plugins {
     alias(libs.plugins.detekt)
-    alias(libs.plugins.gradleDoctor)
     alias(libs.plugins.version.catalog.update)
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.maven.publish) apply false
@@ -27,6 +26,7 @@ plugins {
     // alias(libs.plugins.kotlinMultiplatform) apply false
 }
 
+
 allprojects {
     group = Config.artifactId
     version = Config.versionName
@@ -35,7 +35,7 @@ allprojects {
 subprojects {
     plugins.withType<ComposeCompilerGradleSubplugin>().configureEach {
         the<ComposeCompilerGradlePluginExtension>().apply {
-            featureFlags.addAll(ComposeFeatureFlag.OptimizeNonSkippingGroups)
+            featureFlags.addAll(ComposeFeatureFlag.OptimizeNonSkippingGroups, ComposeFeatureFlag.PausableComposition)
             stabilityConfigurationFiles.add(rootProject.layout.projectDirectory.file("stability_definitions.txt"))
             if (properties["enableComposeCompilerReports"] == "true") {
                 val metricsDir = layout.buildDirectory.dir("compose_metrics")
@@ -87,13 +87,14 @@ subprojects {
         withType<Test>().configureEach {
             useJUnitPlatform()
             filter { isFailOnNoMatchingTests = true }
+            testLogging {
+                exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+                showStandardStreams = true
+                events("failed", "standardOut", "standardError")
+                showCauses = true
+                showStackTraces = true
+            }
         }
-    }
-}
-
-doctor {
-    javaHome {
-        ensureJavaHomeMatches.set(false)
     }
 }
 
@@ -110,8 +111,6 @@ versionCatalogUpdate {
 
     keep {
         keepUnusedVersions = true
-        keepUnusedLibraries = true
-        keepUnusedPlugins = true
     }
 }
 
