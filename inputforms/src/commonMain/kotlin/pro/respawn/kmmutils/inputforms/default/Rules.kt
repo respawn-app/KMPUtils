@@ -27,6 +27,9 @@ import pro.respawn.kmmutils.inputforms.ValidationError.NotSingleline
 import pro.respawn.kmmutils.inputforms.ValidationError.NotUppercase
 import pro.respawn.kmmutils.inputforms.ValidationError.TooLong
 import pro.respawn.kmmutils.inputforms.ValidationError.TooShort
+import pro.respawn.kmmutils.inputforms.default.Rules.LengthInRange
+import pro.respawn.kmmutils.inputforms.default.Rules.LongerThan
+import pro.respawn.kmmutils.inputforms.default.Rules.ShorterThan
 import pro.respawn.kmmutils.inputforms.dsl.checks
 
 /**
@@ -123,10 +126,10 @@ public data object Rules {
      *
      * @see Char.isLetterOrDigit
      */
-    public val AlphaNumeric: Rule = Rule {
+    public val AlphaNumeric: Rule = Rule { input ->
         {
-            it.any { it.isLetterOrDigit() }
-        } checks { NotAlphaNumeric(it) }
+            input.all { it.isLetterOrDigit() }
+        } checks { NotAlphaNumeric(input) }
     }
 
     /**
