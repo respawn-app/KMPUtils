@@ -222,7 +222,6 @@ public sealed interface ValidationError {
      *
      * @see pro.respawn.kmmutils.inputforms.default.Rules.DoesNotContain
      */
-    @JvmInline
     public data class Contains(override val value: String, val needle: String) : ValidationError
 
     /**
