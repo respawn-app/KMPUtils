@@ -2,12 +2,10 @@ import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.MavenPublishBasePlugin
-import com.vanniktech.maven.publish.SonatypeHost
 import nl.littlerobots.vcu.plugin.versionCatalogUpdate
 import nl.littlerobots.vcu.plugin.versionSelector
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradleSubplugin
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
@@ -34,7 +32,6 @@ allprojects {
 subprojects {
     plugins.withType<ComposeCompilerGradleSubplugin>().configureEach {
         the<ComposeCompilerGradlePluginExtension>().apply {
-            featureFlags.addAll(ComposeFeatureFlag.OptimizeNonSkippingGroups, ComposeFeatureFlag.PausableComposition)
             stabilityConfigurationFiles.add(rootProject.layout.projectDirectory.file("stability_definitions.txt"))
             if (properties["enableComposeCompilerReports"] == "true") {
                 val metricsDir = layout.buildDirectory.dir("compose_metrics")
@@ -53,7 +50,6 @@ subprojects {
                     androidVariantsToPublish = listOf("release"),
                 )
             )
-            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, false)
             if (isReleaseBuild) signAllPublications()
             coordinates(Config.artifactId, name, Config.version(isReleaseBuild))
             pom {

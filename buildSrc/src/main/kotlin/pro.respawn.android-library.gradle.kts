@@ -4,13 +4,12 @@ plugins {
 }
 
 kotlin {
+    compilerOptions {
+        jvmTarget.set(Config.jvmTarget)
+    }
     explicitApi()
 }
 
 android {
     configureAndroidLibrary(this)
-
-    kotlinOptions {
-        jvmTarget = Config.jvmTarget.target
-    }
 }

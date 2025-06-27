@@ -51,7 +51,7 @@ public infix fun LocalTime.distanceTo(other: LocalTime): LocalTime = LocalTime.f
  * Preserves [nanos] of previous time
  */
 public fun LocalDateTime.withTime(time: LocalTime, nanos: Int = nanosecond): LocalDateTime =
-    LocalDateTime(year, month, dayOfMonth, time.hour, time.minute, time.second, nanos)
+    LocalDateTime(year, month, day, time.hour, time.minute, time.second, nanos)
 
 /**
  * Returns this object as [kotlin.time.Duration]
