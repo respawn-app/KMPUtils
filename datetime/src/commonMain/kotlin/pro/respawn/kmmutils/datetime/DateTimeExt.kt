@@ -2,10 +2,8 @@
 
 package pro.respawn.kmmutils.datetime
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -15,6 +13,8 @@ import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.until
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 /**
  *  ISO8601 value of the day of the week, from 1 (Monday) to 7 (Sunday).
@@ -78,7 +78,7 @@ public fun LocalDateTime.minusDays(days: Int, zone: TimeZone): LocalDateTime = p
  * Returns a new [LocalDateTime] with the given [month] and everything else of [this].
  */
 public fun LocalDateTime.withMonth(month: Month): LocalDateTime =
-    LocalDateTime(year, month, dayOfMonth, hour, minute, second, nanosecond)
+    LocalDateTime(year, month, day, hour, minute, second, nanosecond)
 
 /**
  * Adds a specified number of [months] to [this]. Returns a new [LocalDateTime]
@@ -128,7 +128,7 @@ public fun LocalDateTime.withNextDayOfWeek(
 /**
  * Returns a new [LocalDateTime] set to the midnight.
  */
-public fun LocalDateTime.asMidnight(): LocalDateTime = LocalDateTime(year, month, dayOfMonth, 0, 0, 0, 0)
+public fun LocalDateTime.asMidnight(): LocalDateTime = LocalDateTime(year, month, day, 0, 0, 0, 0)
 
 /**
  * Returns an Instant of Jan 1st 1970  00:00:00.000 UTC.
@@ -147,7 +147,7 @@ public operator fun Instant.plus(time: LocalTime): Instant = this + time.asDurat
 public fun Month.length(year: Int): Int {
     val start = LocalDate(year, this, 1)
     val end = start.plus(1, DateTimeUnit.MONTH)
-    return start.until(end, DateTimeUnit.DAY)
+    return start.until(end, DateTimeUnit.DAY).toInt()
 }
 
 /**

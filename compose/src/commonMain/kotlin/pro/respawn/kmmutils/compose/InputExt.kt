@@ -38,6 +38,7 @@ import kotlinx.coroutines.launch
         androidx.compose.ui.autofill.ContentDataType instead.
 """
 )
+@Suppress("Deprecation")
 public fun Modifier.autofill(
     autofillType: AutofillType,
     vararg autofillTypes: AutofillType,
@@ -79,14 +80,12 @@ public fun Modifier.bringIntoViewOnFocus(): Modifier {
     val requester = remember { BringIntoViewRequester() }
 
     return bringIntoViewRequester(requester).onFocusEvent {
-        if (it.isFocused) {
-            coroutineScope.launch { requester.bringIntoView() }
-        }
+        if (it.isFocused) coroutineScope.launch { requester.bringIntoView() }
     }
 }
 
 /**
- * @param onOther an actions to be run when you specify one that is not the one that can be handled by focusManager
+ * @param onProceed an actions to be run when you specify one that is not the one that can be handled by focusManager
  *   e.g. Go, Search, and Send. By default does nothing.
  */
 @Composable

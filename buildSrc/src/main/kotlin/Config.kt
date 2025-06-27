@@ -17,7 +17,7 @@ object Config {
     const val artifactId = "$group.$artifact"
 
     const val majorRelease = 1
-    const val minorRelease = 6
+    const val minorRelease = 7
     const val patch = 0
     const val postfix = ""
     const val versionName = "$majorRelease.$minorRelease.$patch$postfix"
@@ -47,6 +47,7 @@ object Config {
         "kotlin.experimental.ExperimentalTypeInference",
         "kotlin.uuid.ExperimentalUuidApi",
         "kotlin.contracts.ExperimentalContracts",
+        "kotlin.time.ExperimentalTime",
     )
     val compilerArgs = listOf(
         "-Xexpect-actual-classes",
