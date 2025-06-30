@@ -1,6 +1,5 @@
 package pro.respawn.kmmutils.compose.resources
 
-import android.text.format.DateFormat
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.vector.AnimatedImageVector
@@ -20,6 +19,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
+import pro.respawn.kmmutils.system.android.isSystem24Hour
 
 @Composable
 public fun Int.plural(
@@ -86,6 +86,6 @@ public fun Int.dimen(): Dp = dimensionResource(this)
 @Composable
 public fun Int?.dimen(): Dp? = this?.dimen()
 
-public val isSystem24Hour: Boolean @Composable get() = DateFormat.is24HourFormat(LocalContext.current)
+public val isSystem24Hour: Boolean @Composable get() = LocalContext.current.isSystem24Hour
 
 public val displayDensity: Int @Composable get() = LocalConfiguration.current.densityDpi

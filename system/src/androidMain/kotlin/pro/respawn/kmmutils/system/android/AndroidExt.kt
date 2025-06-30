@@ -38,7 +38,12 @@ public fun Context.restartActivity() {
 /**
  * Returns whether the system is set to 24-hour time format right now.
  */
-public val Context.isSystem24Hour: Boolean get() = DateFormat.is24HourFormat(this)
+public val Context.isSystem24Hour: Boolean
+    get() = runCatching {
+        // this trash can throw on Android 15
+        // https://issuetracker.google.com/issues/406271687
+        DateFormat.is24HourFormat(this)
+    }.getOrDefault(true)
 
 /**
  * Use this [Uri] as a deeplink intent, i.e. open this uri in a new task.
