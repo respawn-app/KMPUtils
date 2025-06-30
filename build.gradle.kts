@@ -51,6 +51,7 @@ subprojects {
                 )
             )
             if (isReleaseBuild) signAllPublications()
+            publishToMavenCentral(!isReleaseBuild)
             coordinates(Config.artifactId, name, Config.version(isReleaseBuild))
             pom {
                 name = Config.name
