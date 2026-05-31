@@ -25,11 +25,11 @@ object Config {
     const val supportEmail = "hello@respawn.pro"
     const val vendorName = "Respawn Open Source Team"
     const val vendorId = "respawn-app"
-    const val url = "https://github.com/respawn-app/kmputils"
+    const val url = "https://github.com/respawn-llc/kmputils"
     const val developerUrl = "https://respawn.pro"
     const val licenseName = "The Apache Software License, Version 2.0"
     const val licenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt"
-    const val scmUrl = "https://github.com/respawn-app/KMPUtils.git"
+    const val scmUrl = "https://github.com/respawn-llc/KMPUtils.git"
     const val description = """A collection of Kotlin Multiplatform essentials"""
     const val name = "KMPUtils"
     // kotlin

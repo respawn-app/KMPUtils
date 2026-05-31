@@ -1,6 +1,6 @@
 # Datetime
 
-[Browse code](https://github.com/respawn-app/kmmutils/tree/master/datetime/src/commonMain/kotlin/pro/respawn/kmmutils/datetime)
+[Browse code](https://github.com/respawn-llc/kmmutils/tree/master/datetime/src/commonMain/kotlin/pro/respawn/kmmutils/datetime)
 
 Dependencies:
 

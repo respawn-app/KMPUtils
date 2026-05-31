@@ -1,7 +1,7 @@
 # Input Forms
 
 Browse
-code: [InputForms](https://github.com/respawn-app/kmmutils/tree/master/inputforms/src/commonMain/kotlin/pro/respawn/kmmutils/inputforms)
+code: [InputForms](https://github.com/respawn-llc/kmmutils/tree/master/inputforms/src/commonMain/kotlin/pro/respawn/kmmutils/inputforms)
 
 InputForms is a stateful form validation framework with clean dsl and a collection of prebuilt validations.
 The reason for its existence lies in the need for shifting the responsibility for validating inputs down from the UI

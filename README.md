@@ -1,12 +1,12 @@
 # KMPUtils
 
-[![CI](https://github.com/respawn-app/KMPUtils/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/respawn-app/KMPUtils/actions/workflows/ci.yml)
+[![CI](https://github.com/respawn-llc/KMPUtils/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/respawn-llc/KMPUtils/actions/workflows/ci.yml)
 ![Docs](https://img.shields.io/website?down_color=red&label=Docs&up_color=green&up_message=Online&url=http%3A%2F%2Fopensource.respawn.pro%2FKMPUtils%2F%23%2F)
-[![CodeFactor](https://www.codefactor.io/repository/github/respawn-app/KMPUtils/badge)](https://www.codefactor.io/repository/github/respawn-app/KMPUtils)
-![GitHub top language](https://img.shields.io/github/languages/top/respawn-app/KMPUtils)
-![GitHub](https://img.shields.io/github/license/respawn-app/KMPUtils)
-![GitHub issues](https://img.shields.io/github/issues/respawn-app/KMPUtils)
-![GitHub last commit](https://img.shields.io/github/last-commit/respawn-app/KMPUtils)
+[![CodeFactor](https://www.codefactor.io/repository/github/respawn-llc/KMPUtils/badge)](https://www.codefactor.io/repository/github/respawn-llc/KMPUtils)
+![GitHub top language](https://img.shields.io/github/languages/top/respawn-llc/KMPUtils)
+![GitHub](https://img.shields.io/github/license/respawn-llc/KMPUtils)
+![GitHub issues](https://img.shields.io/github/issues/respawn-llc/KMPUtils)
+![GitHub last commit](https://img.shields.io/github/last-commit/respawn-llc/KMPUtils)
 [![AndroidWeekly #556](https://androidweekly.net/issues/issue-556/badge)](https://androidweekly.net/issues/issue-556/)
 
 ![badge][badge-android] ![badge][badge-jvm] ![badge][badge-js] ![badge][badge-nodejs] ![badge][badge-linux] ![badge][badge-windows] ![badge][badge-ios] ![badge][badge-mac] ![badge][badge-watchos] ![badge][badge-tvos] ![badge-wasm]

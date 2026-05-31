@@ -1,6 +1,6 @@
 # Coroutines
 
-[Browse Code](https://github.com/respawn-app/kmmutils/tree/master/coroutines/src/commonMain/kotlin/pro/respawn/kmmutils/coroutines)
+[Browse Code](https://github.com/respawn-llc/kmmutils/tree/master/coroutines/src/commonMain/kotlin/pro/respawn/kmmutils/coroutines)
 
 A successor to AndroidUtils' `coroutines-ktx` that is in the process of migration.
 

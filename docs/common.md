@@ -1,6 +1,6 @@
 # Common
 
-[Browse code](https://github.com/respawn-app/kmmutils/tree/master/common/src)
+[Browse code](https://github.com/respawn-llc/kmmutils/tree/master/common/src)
 
 Includes many small quality of life improvements to the Kotlin standard library.
 
